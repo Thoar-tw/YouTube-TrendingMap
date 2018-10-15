@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'http'
+require 'net/http'
 require 'yaml'
 require 'json'
 
@@ -25,24 +26,56 @@ def get_place(name, output_format)
   response
 end
 
-# def get_place_details(placeid)
-#   param_key = 'key=' + GOOGLE_MAP_KEY
-#   param_id = 'placeid=' + placeid
-#   response = HTTP.get('https://maps.googleapis.com/maps/api/place/details/json?' + param_key + '&' + param_id)
-#   puts response
-# end
+def osm_api_path(params_str)
+  path = 'https://nominatim.openstreetmap.org/search?'
+  params_str.each.with_index do |param, index|
+    path += '&' unless index.zero?
+    path += param
+  end
+  path
+end
+
+def call_osm_url(url)
+  uri = URI.parse(url)
+  Net::HTTP.get(uri)
+end
+
+def get_country_data(country_name, output_format)
+  param_output_format = 'format=' + output_format
+  param_country = 'country=' + country_name
+  param_polygon_geojson = 'polygon_geojson=1'
+
+  request_url = osm_api_path([param_output_format, param_country, param_polygon_geojson])
+  response = call_osm_url(request_url)
+  response
+end
+
+def get_boundaries(country_name)
+  response = get_country_data(country_name, 'json')
+  coordinates = JSON.parse(response)[0]["geojson"]["coordinates"].flatten(2)
+  coordinates
+end
 
 # Valid request
-place_response = {}
-place_response['json'] = get_place('Taiwan', 'json')
-place_info = place_response['json'].parse['candidates'][0]
+country_response = {}
+country_results = {}
 
-place_results = {}
-place_results['place_id'] = place_info['place_id']
-place_results['geo_location'] = place_info['geometry']['location']['lat'].to_s + ', ' + place_info['geometry']['location']['lng'].to_s
+country_response['json'] = get_country_data('Taiwan', 'json')
+country_info = JSON.parse(country_response['json'])[0]
+# place_response = {}
+# place_response['json'] = get_place('Taiwan', 'json')
+# place_info = place_response['json'].parse['candidates'][0]
+
+country_results['place_id'] = country_info['place_id']
+country_results['geo_location'] = country_info['lon'].to_s + ', ' + country_info['lat'].to_s
+country_results['coordinates'] = country_info['geojson']['coordinates'].flatten(2)
+# place_results = {}
+# place_results['place_id'] = place_info['place_id']
+# place_results['geo_location'] = place_info['geometry']['location']['lat'].to_s + ', ' + place_info['geometry']['location']['lng'].to_s
 
 # Invalid request
-place_response['yaml'] = get_place('Taiwan', 'yaml')
+country_response['yaml'] = get_country_data('Taiwan', 'yaml')
+# place_response['yaml'] = get_place('Taiwan', 'yaml')
 
-File.write('../spec/fixtures/place_response.yml', place_response.to_yaml)
-File.write('../spec/fixtures/place_results.yml', place_results.to_yaml)
+File.write('../spec/fixtures/country_response.yml', country_response.to_yaml)
+File.write('../spec/fixtures/country_results.yml', country_results.to_yaml)
