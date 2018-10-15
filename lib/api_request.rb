@@ -25,13 +25,6 @@ def get_place(name, output_format)
   response
 end
 
-# def get_place_details(placeid)
-#   param_key = 'key=' + GOOGLE_MAP_KEY
-#   param_id = 'placeid=' + placeid
-#   response = HTTP.get('https://maps.googleapis.com/maps/api/place/details/json?' + param_key + '&' + param_id)
-#   puts response
-# end
-
 # Valid request
 place_response = {}
 place_response['json'] = get_place('Taiwan', 'json')
