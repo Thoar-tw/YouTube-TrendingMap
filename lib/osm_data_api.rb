@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'net/http'
 require 'json'
-require_relative 'country'
+require_relative 'countryexit'
 
 module APILibrary
   # class to get OpenStreetMap data
@@ -24,8 +24,6 @@ module APILibrary
       response = get_country_data(country_name, 'json')
       country_data = JSON.parse(response)[0]
       Country.new(country_data)
-      # coordinates = JSON.parse(response)[0]['geojson']['coordinates'].flatten(2)
-      # coordinates
     end
 
     private
