@@ -9,7 +9,8 @@ config = YAML.safe_load(File.read('../config/secrets.yml'))
 GOOGLE_MAP_KEY = config['development']['GOOGLE_CLOUD_KEY']
 
 def place_api_path(params_str, output_format)
-  path = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/' + output_format + '?'
+  path = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/'
+  path += output_format + '?'
   params_str.each.with_index do |param, index|
     path += '&' unless index.zero?
     path += param
