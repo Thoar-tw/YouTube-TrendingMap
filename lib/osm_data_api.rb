@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'net/http'
 require 'json'
 require_relative 'countryexit'
@@ -27,6 +28,7 @@ module APILibrary
     end
 
     private
+
     def osm_api_path(params_array)
       path = 'https://nominatim.openstreetmap.org/search?'
       params_array.each.with_index do |param, index|
