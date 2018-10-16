@@ -1,4 +1,7 @@
 # frozen_string_literal: true
+require 'net/http'
+require 'json'
+require_relative 'country'
 
 module APILibrary
   # class to get OpenStreetMap data
@@ -17,6 +20,15 @@ module APILibrary
       @cache = cache
     end
 
+    def country(country_name)
+      response = get_country_data(country_name, 'json')
+      country_data = JSON.parse(response)[0]
+      Country.new(country_data)
+      # coordinates = JSON.parse(response)[0]['geojson']['coordinates'].flatten(2)
+      # coordinates
+    end
+
+    private
     def osm_api_path(params_array)
       path = 'https://nominatim.openstreetmap.org/search?'
       params_array.each.with_index do |param, index|
@@ -40,12 +52,6 @@ module APILibrary
       request_url = osm_api_path(params_array)
       response = call_osm_url(request_url)
       response
-    end
-
-    def get_boundaries(country_name)
-      response = get_country_data(country_name, 'json')
-      coordinates = JSON.parse(response)[0]['geojson']['coordinates'].flatten(2)
-      coordinates
     end
   end
 end
