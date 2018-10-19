@@ -1,3 +1,5 @@
 .DS_Store
+lib/DS_Store
+
 config/secrets.yml
 spec/fixtures/
