@@ -1,6 +1,6 @@
 require 'minitest/autorun'
 require 'minitest/spec'
-#require 'spec_helper.rb'
+require 'spec_helper.rb'
 #require_relative  'osm_data_api'
 require_relative '../lib/youtube_api'
 #require 'yaml'

@@ -1,11 +1,21 @@
-require 'webmock/rspec'
-WebMock.disable_net_connect!(allow_localhost: true)
+require 'simplecov'
+SimpleCov.start
 
-RSpec.configure do |config|
-    config.before(:each) do
-      stub_request(:get, /api.github.com/).
-        with(headers: {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
-        to_return(status: 200, body: "stubbed response", headers: {})
-    end
-  end
+require 'yaml'
+
+require 'minitest/autorun'
+require 'minitest/rg'
+require 'vcr'
+require 'webmock'
+
+require_relative '../lib/github_api.rb'
+
+USERNAME = 'thoar'.freeze
+PROJECT_NAME = 'YoutubeTrendingMap'.freeze
+CONFIG = YAML.safe_load(File.read('config/secrets.yml'))
+GOOGLE_API_TOKEN = CONFIG['token']
+CORRECT = YAML.safe_load(File.read('spec/fixtures/results.yml'))
+
+CASSETTES_FOLDER = 'spec/fixtures/cassettes'.freeze
+CASSETTE_FILE = 'youtube_api'.freeze
   
