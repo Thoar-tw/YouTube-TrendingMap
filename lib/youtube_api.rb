@@ -24,8 +24,9 @@ module APILibrary
     end
 
     # attach params and keys
-    def self.youtube_api_path(path)
+    def self.youtube_api_path(params_str)
       path = 'https://www.googleapis.com/youtube/v3/search?'
+      path += params_str
       path += '&key=' + @api_key
       path
     end
