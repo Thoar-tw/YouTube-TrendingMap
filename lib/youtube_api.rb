@@ -17,13 +17,17 @@ module APILibrary
       401 => Errors::Unauthorized,
       404 => Errors::NotFound
     }.freeze
-    # def initialize(cache: {})
-    #     @cache = cache
-    # end
+
+    def initialize(key, cache: {})
+      @api_key = key
+      @cache = cache
+    end
 
     # attach params and keys
     def self.youtube_api_path(path)
-      'https://www.googleapis.com/youtube/v3/search?'+path+'&key=AIzaSyAD656N9isRF8t11FeFUvizKJCTB07Vrqo'
+      path = 'https://www.googleapis.com/youtube/v3/search?'
+      path += '&key=' + @api_key
+      path
     end
 
     # connect to http server and call api 
@@ -47,7 +51,7 @@ module APILibrary
           break
         end
       end
-      @params_str = 'part='+part+'&'+@params_str
+      @params_str = 'part=' + part + '&' + @params_str
       puts @params_str
       @response = call_yt_url(youtube_api_path(@params_str))
       @result = JSON.parse(@response)
