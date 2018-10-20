@@ -1,8 +1,8 @@
-# frozen_string_literal: true
+# frozen_string_literal: false
 
 require 'net/http'
 require 'json'
-require_relative 'countryexit'
+require_relative 'country.rb'
 
 module APILibrary
   # class to get OpenStreetMap data

@@ -1,10 +1,10 @@
-# frozen_string_literal: true
+# frozen_string_literal: false
 
 require 'net/http'
 require 'http'
 require 'json'
-# require_relative '' #parse project data
-# require_relative '' #parse contributor data
+
+require_relative 'popular_list.rb'
 
 module APILibrary
   # class to get Youtube data
@@ -13,6 +13,7 @@ module APILibrary
       class NotFound < StandardError; end
       class Unauthorized < StandardError; end
     end
+
     HTTP_ERROR = {
       401 => Errors::Unauthorized,
       404 => Errors::NotFound
@@ -23,45 +24,44 @@ module APILibrary
       @cache = cache
     end
 
-    # attach params and keys
-    def self.youtube_api_path(params_str)
-      path = 'https://www.googleapis.com/youtube/v3/search?'
-      path += params_str
-      path += '&key=' + @api_key
+    def popular_list(region_code)
+      response = get_most_popular_videos_list(region_code)
+      list_data = JSON.parse(response)
+      PopularList.new(list_data)
+    end
+
+    private
+
+    # attach params to url path
+    def youtube_api_path(params_array)
+      path = 'https://www.googleapis.com/youtube/v3/videos?'
+      params_array.each.with_index do |param, index|
+        path += '&' unless index.zero?
+        path += param
+      end
       path
     end
 
-    # connect to http server and call api 
-    def self.call_yt_url(url)
-      # result = @cache.fetch(url) do 
-      #     HTTP.headers('Accept' => )
-      @uri = URI.parse(url)
-      Net::HTTP.get(@uri)
+    # Use http get to get data from Youtube
+    def call_yt_url(url)
+      HTTP.get(url)
     end
 
-    # input query and output trending data with json format 
-    def self.videos_list_most_popular(part, params)
-      @params_str = ''
-      # parse query
-      params.each do |param, index|
-        if index != '' && @params_str != ''
-          @params_str = @params_str + '&' + param.to_s + '=' + index.to_s
-        elsif params_str == ''
-          @params_str = param.to_s + '=' + index.to_s
-        else
-          break
-        end
-      end
-      @params_str = 'part=' + part + '&' + @params_str
-      puts @params_str
-      @response = call_yt_url(youtube_api_path(@params_str))
-      @result = JSON.parse(@response)
-      puts @result
+    # input region code of the country and output trending data with json format
+    def get_most_popular_videos_list(region_code)
+      param_part = 'part=snippet,player,statistics'
+      param_chart = 'chart=mostPopular'
+      param_region_code = 'regionCode=' + region_code
+      param_video_category_id = 'video_category_id=\'\''
+      param_key = 'key=' + GOOGLE_CLOUD_KEY
+
+      param_array = [param_part, param_chart, param_region_code, param_video_category_id, param_key]
+      response = call_yt_url(youtube_api_path(param_array))
+      response
     end
   end
 end
 
-# YoutubeAPI.videos_list_most_popular('snippet',
-# {'chart': 'mostPopular',
-# 'region_code': 'US',
-# 'video_category_id': ''})
+response = File.read('../spec/fixtures/youtube_response.json')
+list_data = JSON.parse(response)
+PopularList.new(list_data)
