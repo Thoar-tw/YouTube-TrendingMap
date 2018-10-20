@@ -1,10 +1,13 @@
+# frozen_string_literal: true
+
 module APILibrary
+  # class to get Google Map data
   class GooglePlaceAPI
     module Errors
       class NotFound < StandardError; end
       class Unauthorized < StandardError; end
     end
-  
+
     HTTP_ERROR = {
       401 => Errors::Unauthorized,
       404 => Errors::NotFound
@@ -21,6 +24,7 @@ module APILibrary
     end
 
     private
+
     def place_api_path(params_str, output_format)
       path = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/' + output_format + '?'
       params_str.each.with_index do |param, index|
@@ -29,8 +33,7 @@ module APILibrary
       end
       path
     end
-    
-    private
+
     def get_place(name, output_format)
       param_key = 'key=' + @api_key
       param_input = 'input=' + name
