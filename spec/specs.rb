@@ -15,16 +15,23 @@ describe 'Api library' do
   # GOOGLE_API_TOKEN = CONFIG['token']
 
   # @osplace = OSMDataAPI.new
-  YOUTUBE_DATA = APILibrary::YoutubeAPI
+  YOUTUBE_service = APILibrary::YoutubeAPI
   SAMPLE_QUERY = 'part=snippet&chart=mostPopular&region_code=US'
 
   describe 'Project information' do
     it 'if url contains keys ' do
       #YOUTUBE_DATA.youtube_api_path(SAMPLE_QUERY).must_include GOOGLE_API_TOKEN
-      YOUTUBE_DATA.youtube_api_path(SAMPLE_QUERY).must_include 'AIzaSyAD656N9isRF8t11FeFUvizKJCTB07Vrqo'
+      YOUTUBE_service.youtube_api_path(SAMPLE_QUERY).must_include 'AIzaSyAD656N9isRF8t11FeFUvizKJCTB07Vrqo'
     end
-    it 'if connection success' do
+    it " apis exists" do 
+     ytService =  APILibrary::YoutubeAPI.new
+     expect(ytService).must_be_same_as(APILibrary::YoutubeAPI)
+    end 
+    it 'test cassette':vcr do
+    
+        ytService =  APILibrary::YoutubeAPI.new
 
+    
     end
   end
 end

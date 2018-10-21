@@ -10,6 +10,7 @@ GOOGLE_API_TOKEN = CREDENTIALS['token']
 VCR.configure do |c|
   c.cassette_library_dir = 'cassettes'
   c.hook_into :webmock
+  c.filter_sensitive_data("API_KEY"){GOOGLE_API_TOKEN}
 end
 
 VCR.insert_cassette 'youtube_api', record: :new_episodes
