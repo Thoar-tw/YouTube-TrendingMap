@@ -1,6 +1,6 @@
 # frozen_string_literal: false
 
-require 'minitest/spec'
+# require 'minitest/spec'
 require_relative 'spec_helper.rb'
 
 describe 'Tests Youtube API library' do
@@ -33,14 +33,10 @@ describe 'Tests Youtube API library' do
       end
     end
 
-    # it 'BAD: should raise exception while unauthorized' do
-    #   proc do
-    #     APILibrary::YoutubeAPI.new('BAD_TOKEN').popular_list(COUNTRY_NAME) 
-    #   end.must_raise APILibrary::YoutubeAPI::Response::Unauthorized
-    # end
-
-    # it 'test cassette':vcr do
-    #   ytService =  APILibrary::YoutubeAPI.new
-    # end
+    it 'BAD: should raise exception while the key is invalid' do
+      proc do
+        APILibrary::YoutubeAPI.new('INVALID_KEY').popular_list(COUNTRY_CODE)
+      end.must_raise APILibrary::YoutubeAPI::Errors::BadRequest
+    end
   end
 end

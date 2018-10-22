@@ -5,7 +5,7 @@ require 'net/http'
 require 'yaml'
 require 'json'
 
-config = YAML.safe_load(File.read('../config/secrets.yml'))
+config = YAML.safe_load(File.read('../../config/secrets.yml'))
 GOOGLE_CLOUD_KEY = config['development']['GOOGLE_CLOUD_KEY']
 
 # def place_api_path(params_str, output_format)

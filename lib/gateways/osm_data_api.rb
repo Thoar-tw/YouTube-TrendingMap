@@ -8,11 +8,13 @@ module APILibrary
   # class to get OpenStreetMap data
   class OSMDataAPI
     module Errors
+      class BadRequest < StandardError; end
       class NotFound < StandardError; end
       class Unauthorized < StandardError; end
     end
 
     HTTP_ERROR = {
+      400 => Errors::BadRequest,
       401 => Errors::Unauthorized,
       404 => Errors::NotFound
     }.freeze
@@ -40,7 +42,8 @@ module APILibrary
 
     def call_osm_url(url)
       uri = URI.parse(url)
-      Net::HTTP.get(uri)
+      result = Net::HTTP.get(uri)
+      successful?(result) ? result : raise_error(result)
     end
 
     def get_country_data(country_name, output_format)
@@ -52,6 +55,15 @@ module APILibrary
       request_url = osm_api_path(params_array)
       response = call_osm_url(request_url)
       response
+    end
+
+    def successful?(result)
+      # HTTP_ERROR.key(result.code) ? false : true
+      HTTP_ERROR.keys.include?(result.code) ? false : true
+    end
+
+    def raise_error(result)
+      raise(HTTP_ERROR[result.code])
     end
   end
 end

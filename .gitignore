@@ -1,5 +1,10 @@
+# Mac temp
 .DS_Store
 lib/DS_Store
 
+# credential
 config/secrets.yml
+
+# testing outputs
 spec/fixtures/
+coverage/
