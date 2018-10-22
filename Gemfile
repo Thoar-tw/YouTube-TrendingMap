@@ -7,3 +7,12 @@ gem 'http', '~> 3.0'
 # Testing
 gem 'minitest', '~> 5.0'
 gem 'minitest-rg', '~> 5.0'
+gem 'rake'
+gem 'simplecov'
+gem 'vcr'
+gem 'webmock'
+
+# Quality testing
+gem 'flog'
+gem 'reek'
+gem 'rubocop'
