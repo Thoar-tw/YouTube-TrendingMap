@@ -18,15 +18,33 @@ describe 'Tests Youtube API library' do
   end
 
   describe 'Youtube popular video list' do
-    it 'HAPPY: should provide a list of video of Video class' do
-      time_regex = /(\d\d\d\d)-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d).000Z/
-      link_regex = %r{https\:\/\/www\.youtube\.com\/embed\/(.*?)}
+    it 'HAPPY: should provide a list of videos, and each video has non nil Video attributes' do
       list = APILibrary::YoutubeAPI.new(GOOGLE_CLOUD_KEY).popular_list(COUNTRY_CODE)
       list.videos.each do |video|
         _(video.id).wont_be_nil
-        _(video.publish_time).must_match(time_regex)
+        _(video.publish_time).wont_be_nil
         _(video.title).wont_be_nil
+        _(video.description).wont_be_nil
         _(video.channel_title).wont_be_nil
+        _(video.view_count).wont_be_nil
+        _(video.like_count).wont_be_nil
+        _(video.dislike_count).wont_be_nil
+        _(video.embed_link).wont_be_nil
+      end
+    end
+
+    it 'HAPPY: should provide a list of videos, and each video has a publish_time attribute in the correct timestamp format' do
+      time_regex = /(\d\d\d\d)-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d).000Z/
+      list = APILibrary::YoutubeAPI.new(GOOGLE_CLOUD_KEY).popular_list(COUNTRY_CODE)
+      list.videos.each do |video|
+        _(video.publish_time).must_match(time_regex)
+      end
+    end
+
+    it 'HAPPY: should provide a list of videos, and each video has a embed_link attribute in the correct url prefix' do
+      link_regex = %r{https\:\/\/www\.youtube\.com\/embed\/(.*?)}
+      list = APILibrary::YoutubeAPI.new(GOOGLE_CLOUD_KEY).popular_list(COUNTRY_CODE)
+      list.videos.each do |video|
         _(video.embed_link).must_match(link_regex)
       end
     end

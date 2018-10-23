@@ -2,9 +2,9 @@
 .DS_Store
 lib/DS_Store
 
-# credential
+# Credential
 config/secrets.yml
 
-# testing outputs
+# Testing outputs
 spec/fixtures/
 coverage/
