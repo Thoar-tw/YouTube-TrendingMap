@@ -1,6 +1,5 @@
 # frozen_string_literal: false
 
-# require 'minitest/spec'
 require_relative 'spec_helper.rb'
 
 describe 'Tests Youtube API library' do
@@ -18,7 +17,6 @@ describe 'Tests Youtube API library' do
     VCR.eject_cassette
   end
 
-  # @osplace = OSMDataAPI.new
   describe 'Youtube popular video list' do
     it 'HAPPY: should provide a list of video of Video class' do
       time_regex = /(\d\d\d\d)-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d).000Z/

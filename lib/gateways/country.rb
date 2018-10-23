@@ -7,7 +7,7 @@ module APILibrary
       @country_data = country_data
     end
 
-    def id
+    def place_id
       @country_data['place_id']
     end
 
