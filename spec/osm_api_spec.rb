@@ -20,8 +20,9 @@ describe 'Tests OSM API library' do
   describe 'OSM country data' do
     it 'HAPPY: should provide a set of lat, lon of the country boundaries' do
       country = APILibrary::OSMDataAPI.new.country(COUNTRY_NAME)
+      geo_location = country.longitude.to_s + ', ' + country.latitude.to_s
       _(country.place_id).must_equal CORRECT_OSM['place_id']
-      _(country.longitude.to_s + ', ' + country.latitude.to_s).must_equal CORRECT_OSM['geo_location']
+      _(geo_location).must_equal CORRECT_OSM['geo_location']
       _(country.boundaries).must_equal CORRECT_OSM['coordinates']
     end
 
