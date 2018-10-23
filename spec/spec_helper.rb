@@ -15,7 +15,7 @@ require_relative '../lib/gateways/youtube_api.rb'
 
 COUNTRY_NAME = 'Taiwan'.freeze
 COUNTRY_CODE = 'tw'.freeze
-CONFIG = YAML.safe_load(File.read('../config/secrets.yml'))
+CONFIG = YAML.safe_load(File.read('config/secrets.yml'))
 GOOGLE_CLOUD_KEY = CONFIG['development']['GOOGLE_CLOUD_KEY']
 
 CORRECT_OSM = YAML.safe_load(File.read(__dir__ + '/fixtures/country_results.yml'))

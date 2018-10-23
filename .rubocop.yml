@@ -10,3 +10,9 @@ Metrics/BlockLength:
   Enabled: true
   Exclude:
     - spec/**/*
+
+# allow unsafe YAML loading in non-production code
+Security/YAMLLoad:
+  Enabled: true
+  Exclude:
+    - spec/**/*
