@@ -16,7 +16,6 @@ describe 'Tests OSM API library' do
     VCR.eject_cassette
   end
 
-  # @osplace = OSMDataAPI.new
   describe 'OSM country data' do
     it 'HAPPY: should provide a set of lat, lon of the country boundaries' do
       country = APILibrary::OSMDataAPI.new.country(COUNTRY_NAME)
