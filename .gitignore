@@ -5,6 +5,9 @@ lib/DS_Store
 # Credential
 config/secrets.yml
 
+# Tmp folder for testing files
+tmp/
+
 # Testing outputs
 spec/fixtures/
 coverage/

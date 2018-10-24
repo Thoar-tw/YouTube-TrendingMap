@@ -7,7 +7,7 @@ require 'webmock'
 include WebMock::API
 WebMock.enable!
 
-CREDENTIALS = YAML.load(File.read('config/secrets.yml'))
+CREDENTIALS = YAML.safe_load(File.read('config/secrets.yml'))
 GOOGLE_API_TOKEN = CREDENTIALS['token']
 CORRECT = YAML.safe_load(File.read('spec/fixtures/results.yml'))
 

@@ -1,10 +1,12 @@
+# frozen_string_literal: false
+
 require 'http'
 require 'yaml'
 
 require 'vcr'
 require 'webmock'
 
-CREDENTIALS = YAML.load(File.read('config/secrets.yml'))
+CREDENTIALS = YAML.safe_load(File.read('config/secrets.yml'))
 GOOGLE_API_TOKEN = CREDENTIALS['token']
 
 VCR.configure do |c|

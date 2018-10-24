@@ -4,7 +4,7 @@ require 'net/http'
 require 'http'
 require 'json'
 
-require_relative 'popular_list.rb'
+# require_relative 'popular_list.rb'
 
 module APILibrary
   # class to get Youtube data
@@ -21,15 +21,15 @@ module APILibrary
       404 => Errors::NotFound
     }.freeze
 
-    def initialize(key, cache: {})
-      @api_key = key
+    def initialize(api_key, cache: {})
+      @api_key = api_key
       @cache = cache
     end
 
-    def popular_list(region_code)
+    def popular_list_data(region_code)
       response = get_most_popular_videos_list(region_code)
-      list_data = JSON.parse(response)
-      PopularList.new(list_data)
+      JSON.parse(response)
+      # PopularList.new(list_data)
     end
 
     private
@@ -50,7 +50,7 @@ module APILibrary
       successful?(result) ? result : raise_error(result)
     end
 
-    # Input region code of the country and output data of trending videos with json format
+    # Input region code of the country and get trending videos with json format
     def get_most_popular_videos_list(region_code)
       param_part = 'part=snippet,player,statistics'
       param_chart = 'chart=mostPopular'

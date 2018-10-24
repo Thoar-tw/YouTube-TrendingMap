@@ -15,11 +15,12 @@ namespace :quality do
     sh 'reek lib/gateways/'
   end
   task :rubocop do
-    sh 'rubocop'
+    sh 'rubocop lib/'
+    sh 'rubocop spec/'
   end
 end
 
 namespace :quality do
   desc 'run all quality checks'
-  task all: [:rubocop, :flog, :reek]
+  task all: %i[rubocop flog reek]
 end

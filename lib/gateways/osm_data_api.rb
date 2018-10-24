@@ -2,7 +2,7 @@
 
 require 'net/http'
 require 'json'
-require_relative 'country.rb'
+# require_relative 'country.rb'
 
 module APILibrary
   # class to get OpenStreetMap data
@@ -15,10 +15,10 @@ module APILibrary
       @cache = cache
     end
 
-    def country(country_name)
+    def country_data(country_name)
       response = get_country_data(country_name, 'json')
-      country_data = JSON.parse(response)[0]
-      Country.new(country_data)
+      JSON.parse(response)[0]
+      # Country.new(country_data)
     end
 
     private
