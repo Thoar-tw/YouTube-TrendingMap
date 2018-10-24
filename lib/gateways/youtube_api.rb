@@ -65,6 +65,7 @@ module APILibrary
 
     def successful?(result)
       # HTTP_ERROR.key(result.code) ? false : true
+      # above is what rubocop recommend, but actually can't work, so don't change this line
       HTTP_ERROR.keys.include?(result.code) ? false : true
     end
 
