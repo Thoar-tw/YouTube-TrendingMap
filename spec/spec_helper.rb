@@ -10,8 +10,7 @@ require 'minitest/rg'
 require 'vcr'
 require 'webmock'
 
-require_relative '../lib/gateways/osm_data_api.rb'
-require_relative '../lib/gateways/youtube_api.rb'
+require_relative '../init.rb'
 
 COUNTRY_NAME = 'Taiwan'.freeze
 COUNTRY_CODE = 'tw'.freeze

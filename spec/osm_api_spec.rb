@@ -18,7 +18,7 @@ describe 'Tests OSM API library' do
 
   describe 'OSM country data' do
     it 'HAPPY: should provide correct country attributes' do
-      country = APILibrary::OSMDataAPI.new.country(COUNTRY_NAME)
+      country = APILibrary::CountryMapper.new.query(COUNTRY_NAME)
       geo_location = country.longitude.to_s + ', ' + country.latitude.to_s
       _(country.place_id).must_equal CORRECT_OSM['place_id']
       _(geo_location).must_equal CORRECT_OSM['geo_location']
@@ -27,7 +27,7 @@ describe 'Tests OSM API library' do
 
     it 'BAD: should raise exception while the query country name is invalid' do
       proc do
-        APILibrary::OSMDataAPI.new.country('mars')
+        APILibrary::CountryMapper.new.query('mars')
       end.must_raise APILibrary::OSMDataAPI::Errors::EmptyResponse
     end
   end
