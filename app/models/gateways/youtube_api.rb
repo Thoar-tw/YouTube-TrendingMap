@@ -26,8 +26,8 @@ module APILibrary
       @cache = cache
     end
 
-    def popular_list_data(region_code)
-      response = get_most_popular_videos_list(region_code)
+    def popular_list_data(region_code,category)
+      response = get_most_popular_videos_list(region_code,category)
       JSON.parse(response)
       # PopularList.new(list_data)
     end
@@ -51,11 +51,11 @@ module APILibrary
     end
 
     # Input region code of the country and get trending videos with json format
-    def get_most_popular_videos_list(region_code)
+    def get_most_popular_videos_list(region_code,category)
       param_part = 'part=snippet,player,statistics'
       param_chart = 'chart=mostPopular'
       param_region_code = 'regionCode=' + region_code
-      param_video_category_id = 'video_category_id=\'\''
+      param_video_category_id = 'video_category_id='+category
       param_key = 'key=' + @api_key
 
       param_array = [param_part, param_chart, param_region_code, param_video_category_id, param_key]
