@@ -2,7 +2,7 @@
 
 module APILibrary
   module Entity
-    # Domain entity for OSM country
+    # Domain entity for OSM countries
     class Country < Dry::Struct
       include Dry::Types.module
 
