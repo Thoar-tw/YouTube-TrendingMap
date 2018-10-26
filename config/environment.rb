@@ -4,8 +4,8 @@ require 'roda'
 require 'yaml'
 
 module APILibrary
-  class APP < roda
-    CONFIG = YAML.safe_load(File.read('secrets.yml'))
+  class APP < Roda
+    CONFIG = YAML.safe_load(File.read('config/secrets.yml'))
     GOOGLE_CLOUD_KEY = CONFIG['GOOGLE_CLOUD_KEY']
   end
 end
