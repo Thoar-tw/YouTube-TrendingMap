@@ -6,7 +6,20 @@ task :spec do
   sh 'ruby spec/yt_api_spec.rb'
 end
 
+desc 'Keep rerunning tests upon changes'
+task :respec do
+  sh "rerun -c 'rake spec' --ignore 'coverage/*'"
+end
+
+desc 'Restart my server upon changes'
+task :rerack do
+  sh "rerun -c rackup --ignore 'coverage/*'"
+end
+
 namespace :quality do
+  desc 'run all quality checks'
+  task all: %i[rubocop flog reek]
+
   task :flog do
     sh 'flog lib/gateways/'
   end
@@ -18,9 +31,4 @@ namespace :quality do
     sh 'rubocop lib/'
     sh 'rubocop spec/'
   end
-end
-
-namespace :quality do
-  desc 'run all quality checks'
-  task all: %i[rubocop flog reek]
 end

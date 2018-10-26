@@ -2,25 +2,17 @@ doctype html
 html
   head
     title YoutubeTrendingMap
-    link {
-      href="/favicon.png"
-      rel="icon"
-      type="image/png" 
-    }
+    meta name="viewport" content="width=device-width, initial-scale=1.0"
+    / favicon
+    link href="/favicon.png" rel="icon" type="image/png" 
 
-     / Bootstrap CSS and theme (United Theme)
-    link {
-      href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.3/cerulean/bootstrap.min.css"
-      rel="stylesheet" integrity="sha384-qVp3sGZJcZdk20BIG6O0Sb0sYRyedif3+Z8bZtQueBW/g7Dp67a0XdiMmmWCCm82"
-      crossorigin="anonymous"
-    }
-
+    / Google Icon Font
+    link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"
+    / Materialize CSS
+    link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet"
     / Mapbox CSS
-    link {
-      href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css"
-      rel="stylesheet"
-    }
-
+    link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css" rel="stylesheet"
+    
     / Custom CSS
     / link rel='stylesheet' href='/assets/css/style.css'
     == assets(:css)
@@ -33,32 +25,27 @@ html
     }
 
     / Popper
-    script { 
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-      crossorigin="anonymous" 
-    }
+    / script { 
+    /   src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    /   integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    /   crossorigin="anonymous" 
+    / }
 
     / Bootstrap
-    script {
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-      crossorigin="anonymous"
-    }
+    / script {
+    /   src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    /   integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    /   crossorigin="anonymous"
+    / }
 
-    script {
-      src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.js"
-    }
+    / Materialize JS
+    script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
+    / Mapbox JS
+    script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.js"
 
-    .container id='html_body'
-      section
-        .row style="vertical-align: middle;"
-          .col-12
-            h1 
-              a href="/" YtTrendingMap
+    == yield
 
-      section
-        == yield
-
-      footer
-        = "YtTrendingMap is a map-based website that can help you have a look for popular videos in each country!"
+    footer class="page-footer"
+      .footer-copyright
+        .container
+          | &copy; 2018 Copyright

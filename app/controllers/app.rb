@@ -24,18 +24,19 @@ module APILibrary
           routing.post do
             region_code = routing.params['region_code'].downcase
             category_id = routing.params['category_id'].downcase
-            # user enter specific region and category (category_id only from 1~44)  
-            routing.halt 400 unless (/^[A-Za-z]+$/ =~ region_code) && ([0-9]|[0-3][0-9]|[4][0-4] =~ category_id)
+            # user enter specific region and category (category_id only from 1~44)
+            routing.halt 400 unless (region_code =~ /^[A-Za-z]+$/) && (category_id =~ [0-9] | [0-3][0-9] | [4][0-4])
             routing.redirect "trending_map/#{region_code}/#{category_id}"
           end
         end
 
         routing.on String, String do |region_code, category_id|
-          trending_map = APILibrary::PopularListMapper
-            .new(GOOGLE_CLOUD_KEY)
-            .query(region_code, category_id)
+          # popular_list = APILibrary::PopularListMapper
+          #   .new(GOOGLE_CLOUD_KEY)
+          #   .query(region_code, category_id)
+          popular_list = "temp"
 
-          view 'trending_map', locals: { trending_map: trending_map }
+          view 'trending_map', locals: { popular_list: popular_list, mapbox_token: MAPBOX_TOKEN }
         end
       end
     end

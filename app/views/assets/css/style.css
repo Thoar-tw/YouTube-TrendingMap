@@ -1,6 +1,42 @@
+html {
+    height: 100%;
+}
 body {
     margin:0; padding:0;
+    height: 100%;
 }
 #map {
-    position:absolute; top:0; bottom:0; width:80%;
+    position:absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+.page-footer{
+    position: relative;
+    z-index: 1;
+    bottom: 0;
+    width: 100%;
+    height: 7%;
+    padding: 0;
+}
+#trending_map {
+    height: 93%;
+}
+#trending_map .row {
+    height: 100%;
+}
+#trending_map .row .s3 {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    box-shadow: 1px 0px 10px #00000061;
+}
+#trending_map .row .s3 form .row .input-field {
+    margin-top: 25px;
+}
+#trending_map .row .s9 {
+    height: 100%;
+    padding: 0;
 }

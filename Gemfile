@@ -16,6 +16,7 @@ gem 'dry-types', '~> 0.13'
 # Testing
 gem 'minitest', '~> 5.11'
 gem 'minitest-rg', '~> 5.0'
+gem 'rerun', '~> 0.13'
 gem 'simplecov', '~> 0.16'
 gem 'vcr', '~> 4.0'
 gem 'webmock', '~> 3.4'
