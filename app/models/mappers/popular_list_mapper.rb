@@ -11,8 +11,8 @@ module APILibrary
       @gateway = gateway_class.new(api_key)
     end
 
-    def query(region_code)
-      data = @gateway.popular_list_data(region_code)
+    def query(region_code, category_id)
+      data = @gateway.popular_list_data(region_code, category_id)
       build_entity(data)
     end
 
