@@ -1,11 +1,13 @@
+# frozen_string_literal: false
+
 require 'roda'
 require 'slim'
 
 module APILibrary
   #web app 
   class App < Roda
-    plugin :render,engine: 'slim',views:'app/views'
-    plugin :assets, css:'style.css',path: 'app/views/assets'
+    plugin :render, engine: 'slim', views:'app/views'
+    plugin :assets, css:'style.css', path: 'app/views/assets'
     plugin :halt
     
     route do |routing|
@@ -16,28 +18,25 @@ module APILibrary
         view 'home'
       end
 
-      routing.on 'project' do 
+      routing.on 'trending_map' do 
         routing.is do 
-          #POST /project/
+          #POST /trending_map/
           routing.post do 
-            region = routing.params['region'].downcase
-            categoryid = routing.params['categoryid'].downcase
-            # user enter specific region and category 
-            # categoryid only from 1~44  
-            if (/^[A-Za-z]+$/ =~ region && [0-9]|[0-3][0-9]|[4][0-4]=~categoryid)then
-              routing.redirect "ytTrendMap/#{region}/#{category}"
-            else
-              routing.halt.400
+            region_code = routing.params['region_code'].downcase
+            category_id = routing.params['category_id'].downcase
+            # user enter specific region and category (category_id only from 1~44)  
+            routing.halt 400 unless (/^[A-Za-z]+$/ =~ region_code) && ([0-9]|[0-3][0-9]|[4][0-4] =~ category_id)
+            routing.redirect "trending_map/#{region_code}/#{category_id}"
             end 
           end
         end
 
-        routing.on String,String do |region,category|
-          youtubeTrendingMap = APILibrary::PopularListMapper
+        routing.on String, String do |region_code,category_id|
+          TrendingMap = APILibrary::PopularListMapper
             .new(GOOGLE_CLOUD_KEY)
-            .query(place,categoryid)
+            .query(region_code,category_id)
           
-          view 'project',locals : {project: youtubeTrendingMap} 
+          view 'trending_map',locals: { popularList: TrendingMap } 
         end
       end
 
