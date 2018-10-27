@@ -8,18 +8,43 @@
                 type='text' name='country_name'
                 id='country_name_input'
                 class="autocomplete"
-                placeholder="ex: Taiwan"
+                placeholder="Search a country"
               }
-              label for="country_name_input" Search a country
+              label for="country_name_input" Country
+            .input-field.col.s12
+              select id="select_category"
+                <option value="" disabled selected>Choose a category</option>
+              label Video category
       .col.s9
         #map
 
+
 javascript:
-  $('input.autocomplete').autocomplete({
-    source: ''
-    select: function(event, ui) { 
-      $("#form").submit(); 
-    }
+  var data_categories = "#{ categories.to_json }".replace(/&quot;/g,'"').replace(/&amp;/g, '&');
+  
+  var data_countries = "#{ countries }".replace(/&quot;/g,'').replace(/&#39;/g, '\'');
+  data_countries = data_countries.slice(2, data_countries.length - 2).split(', ');
+  var countries_obj = new Object();
+  data_countries.forEach(function(ele){
+    countries_obj[ele] = null;
+  });
+
+  $(document).ready(function(){
+    $('input.autocomplete').autocomplete({
+      data: countries_obj,
+      /*
+      select: function(event, ui) { 
+        $("#form").submit(); 
+      }
+      */
+    });
+
+    $.each(JSON.parse(data_categories), function(key, value) {  
+      $('#select_category').append(
+        $("<option></option>").attr("value",key).text(value)
+      ); 
+    });
+    $('#select_category').formSelect();
   });
 
   mapboxgl.accessToken = "#{mapbox_token}"

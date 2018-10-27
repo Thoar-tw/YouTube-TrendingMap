@@ -25,18 +25,36 @@ module APILibrary
             region_code = routing.params['region_code'].downcase
             category_id = routing.params['category_id'].downcase
             # user enter specific region and category (category_id only from 1~44)
-            routing.halt 400 unless (region_code =~ /^[A-Za-z]+$/) && (category_id =~ [0-9] | [0-3][0-9] | [4][0-4])
+            routing.halt 400 unless (region_code =~ /^[A-Za-z]+$/ && region_code.length == 2) && (category_id =~ [0-9] | [0-3][0-9] | [4][0-4])
             routing.redirect "trending_map/#{region_code}/#{category_id}"
           end
+
+          view 'trending_map', locals: {
+            mapbox_token: MAPBOX_TOKEN,
+            countries: COUNTRIES,
+            categories: CATEGORIES
+          }
         end
 
         routing.on String, String do |region_code, category_id|
-          # popular_list = APILibrary::PopularListMapper
-          #   .new(GOOGLE_CLOUD_KEY)
-          #   .query(region_code, category_id)
-          popular_list = "temp"
+          popular_list = APILibrary::PopularListMapper
+            .new(GOOGLE_CLOUD_KEY)
+            .query(region_code, category_id)
 
-          view 'trending_map', locals: { popular_list: popular_list, mapbox_token: MAPBOX_TOKEN }
+          routing.post do
+            region_code = routing.params['region_code'].downcase
+            category_id = routing.params['category_id'].downcase
+            # user enter specific region and category (category_id only from 1~44)
+            routing.halt 400 unless (region_code =~ /^[A-Za-z]+$/) && (category_id =~ [0-9] | [0-3][0-9] | [4][0-4])
+            routing.redirect "trending_map/#{region_code}/#{category_id}"
+          end
+
+          view 'trending_map', locals: {
+            popular_list: popular_list,
+            mapbox_token: MAPBOX_TOKEN,
+            countries: COUNTRIES,
+            categories: CATEGORIES
+          }
         end
       end
     end

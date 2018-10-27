@@ -9,6 +9,7 @@ module APILibrary
     GOOGLE_CLOUD_KEY = SECRETS['development']['GOOGLE_CLOUD_KEY']
     MAPBOX_TOKEN = SECRETS['development']['MAPBOX_TOKEN']
 
-    VIDEO_CATEGORIES = YAML.safe_load(File.read('config/category.yml'))
+    COUNTRIES = YAML.safe_load(File.read('config/country.yml'))
+    CATEGORIES = YAML.safe_load(File.read('config/category.yml'))
   end
 end
