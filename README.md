@@ -1,10 +1,8 @@
-# API-Library(YOUTUBE TRENDING MAP)
+# Youtube Trending Map API-Library
 
-## GOAL
+## Overview
 
-We aim to create a web service that shows youtube **trending_map**.
-
-## METHOD
+We aim to create a web service that shows **Youtube Trending Map**.
 
 By using the Youtube API and Mapbox frontend UI interaction, the **Youtube Trending Map** is able to show the most popular videos based on **categories** and **countries**. Therefore, Users can get more information about youtube trending videos around the word from our **Youtube Trending Map**.
 
