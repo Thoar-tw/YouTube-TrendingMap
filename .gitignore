@@ -11,3 +11,6 @@ tmp/
 # Testing outputs
 spec/fixtures/
 coverage/
+
+# Test databases
+*.db
