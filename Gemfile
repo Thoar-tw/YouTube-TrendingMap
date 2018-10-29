@@ -2,9 +2,19 @@ source 'https://rubygems.org'
 ruby '2.5.1'
 
 # Web application related
+gem 'econfig', '~> 2.1'
 gem 'puma', '~> 3.12'
 gem 'roda', '~> 3.13'
 gem 'slim', '~> 4.0'
+
+# Database related
+gem 'hirb'
+gem 'sequel'
+
+group :development, :test do 
+  gem 'database_cleaner'
+  gem 'sqlite3'
+end
 
 # Networking
 gem 'http', '~> 4.0'
