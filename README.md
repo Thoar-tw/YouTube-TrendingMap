@@ -14,4 +14,4 @@ Combining YOUTUBE API and OSM API, we use enterprise application architectures a
 
 ## ACKNOWLEDGEMENT
 
-We thank [Soumya Ray](https://soumyaray.com/)for his excellent lectures, valuable feedback and helpful discussions. This project is term project of Service Oriented Architecture (SOA) lectured by professor [Soumya Ray](https://soumyaray.com/).
+We thank [Soumya Ray](https://soumyaray.com/) for his excellent lectures, valuable feedback and helpful discussions. This project is the term project of Service Oriented Architecture (SOA) lectured by professor [Soumya Ray](https://soumyaray.com/).
