@@ -6,6 +6,27 @@ require 'json'
 
 module APILibrary
   class App < Roda
+    plugin :environments
+    
+    extend Econfig::Shortcut
+    Econfig.env = environment.to_s
+    Econfig.root = '.'
+
+    configure :development,:test development do 
+      ENV['DATABASE_URL'] = 'sqlite://' + config.DB_FILENAME
+    end
+    configure :production do 
+      # Use deployment platform's DATABASE_URL environment variable
+    end
+    configure  do 
+      require 'sequel'
+      DB = Sequel.connect(ENV['DATABASE_URL'])
+      def self.DB #rubocop:disable Naming/MethodName
+        DB
+      end
+    end
+
+
     SECRETS = YAML.safe_load(File.read('config/secrets.yml'))
     GOOGLE_CLOUD_KEY = SECRETS['development']['GOOGLE_CLOUD_KEY']
     MAPBOX_TOKEN = SECRETS['development']['MAPBOX_TOKEN']

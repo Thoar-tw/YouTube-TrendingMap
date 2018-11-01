@@ -1,17 +1,22 @@
-# API-Library(YOUTUBE TRENDING MAP)
+# Youtube Trending Map API-Library
 
-## GOAL
+## Overview
 
-We aim to create a web service that shows youtube **trending_map**.
+We aim to create a web service that shows **Youtube Trending Map**.
 
-## METHOD
+By using the Youtube API and Mapbox frontend UI interaction, the **Youtube Trending Map** is able to show the most popular videos based on **categories** and **countries**. Therefore, Users can get more information about youtube trending videos around the word from our **Youtube Trending Map**.
 
-Combining YOUTUBE API and OSM API, we use enterprise application architectures and MVC model to create youtube **trending_map**. The map is able to show the most popular videos based on categories and countries. Therefore, Users can get more information about youtube trending videos around the word from our youtube **trending_map**.
+## Reminder
+Please type `bundle install` after you clone this repository.
 
-## DOMAIN NAME
+## Acknowledgement
 
+<<<<<<< HEAD
 "**trending_map**/#{region_code}/#{category_id}"
 
 ## ACKNOWLEDGEMENT
 
 We thank [Soumya Ray](https://soumyaray.com/) for his excellent lectures, valuable feedback and helpful discussions. This project is the term project of Service Oriented Architecture (SOA) lectured by professor [Soumya Ray](https://soumyaray.com/).
+=======
+We thank [Soumya Ray](https://soumyaray.com/) for his excellent lectures, valuable feedback and helpful discussions. This project is term project of Service Oriented Architecture (SOA) lectured by professor [Soumya Ray](https://soumyaray.com/).
+>>>>>>> d9f18bf9b2d4e333585ccd0ceee258055d5bb6a6
