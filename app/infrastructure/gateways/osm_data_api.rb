@@ -42,8 +42,7 @@ module APILibrary
     def get_country_data(country_name, output_format)
       param_output_format = 'format=' + output_format
       param_country = 'country=' + country_name
-      param_polygon_geojson = 'polygon_geojson=1'
-      params_array = [param_output_format, param_country, param_polygon_geojson]
+      params_array = [param_output_format, param_country]
 
       request_url = osm_api_path(params_array)
       response = call_osm_url(request_url)

@@ -30,16 +30,16 @@ module APILibrary
           end
 
           view 'trending_map', locals: {
-            mapbox_token: MAPBOX_TOKEN,
+            mapbox_token: App.config.MAPBOX_TOKEN,
             countries: COUNTRIES,
             categories: CATEGORIES
           }
         end
 
         routing.on String, String do |region_code, category_id|
-          popular_list = APILibrary::PopularListMapper
-            .new(GOOGLE_CLOUD_KEY)
-            .query(region_code, category_id)
+          popular_list =  APILibrary::PopularListMapper
+                          .new(App.config.GOOGLE_CLOUD_KEY)
+                          .query(region_code, category_id)
 
           routing.post do
             region_code = routing.params['region_code'].downcase
@@ -51,7 +51,7 @@ module APILibrary
 
           view 'trending_map', locals: {
             popular_list: popular_list,
-            mapbox_token: MAPBOX_TOKEN,
+            mapbox_token: App.config.MAPBOX_TOKEN,
             countries: COUNTRIES,
             categories: CATEGORIES
           }

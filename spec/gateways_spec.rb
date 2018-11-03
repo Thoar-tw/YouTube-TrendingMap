@@ -1,20 +1,41 @@
 # frozen_string_literal: false
 
 require_relative 'spec_helper.rb'
+require_relative 'helpers/vcr_helper.rb'
 
-describe 'Tests Youtube API library' do
-  VCR.configure do |c|
-    c.cassette_library_dir = CASSETTES_FOLDER
-    c.hook_into :webmock
-    c.filter_sensitive_data('<GOOGLE CLOUD KEY>') { GOOGLE_CLOUD_KEY }
-  end
-
+describe 'Tests OSM API library' do
   before do
-    VCR.insert_cassette CASSETTE_FILE_YT, record: :new_episodes, match_requests_on: %i[method uri headers]
+    VcrHelper.configure_vcr_for_osm
   end
 
   after do
-    VCR.eject_cassette
+    VcrHelper.eject_vcr
+  end
+
+  describe 'OSM country data' do
+    it 'HAPPY: should provide correct country attributes' do
+      country = APILibrary::CountryMapper.new.query(COUNTRY_NAME)
+      _(country.place_id).must_equal CORRECT_OSM['place_id']
+      _(country.name).must_equal CORRECT_OSM['name']
+      _(country.lon).must_equal CORRECT_OSM['lon']
+      _(country.lat).must_equal CORRECT_OSM['lat']
+    end
+
+    it 'BAD: should raise exception while the query country name is invalid' do
+      proc do
+        APILibrary::CountryMapper.new.query('mars')
+      end.must_raise APILibrary::OSMDataAPI::Errors::EmptyResponse
+    end
+  end
+end
+
+describe 'Tests Youtube API library' do
+  before do
+    VcrHelper.configure_vcr_for_youtube
+  end
+
+  after do
+    VcrHelper.eject_vcr
   end
 
   describe 'Youtube popular video list' do

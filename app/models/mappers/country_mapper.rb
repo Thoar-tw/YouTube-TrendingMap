@@ -26,16 +26,20 @@ module APILibrary
       def build_entity
         Entity::Country.new(
           place_id: place_id,
+          name: name,
           latitude: latitude,
-          longitude: longitude,
-          boundaries: boundaries
+          longitude: longitude
         )
       end
 
       private
 
       def place_id
-        @country_data['place_id']
+        @country_data['place_id'].to_i
+      end
+
+      def name
+        @country_data['name']
       end
 
       def latitude
@@ -44,11 +48,6 @@ module APILibrary
 
       def longitude
         @country_data['lon'].to_f
-      end
-
-      # return an array of [lon, lat] for boundary points
-      def boundaries
-        @country_data['geojson']['coordinates'].flatten(2)
       end
     end
   end
