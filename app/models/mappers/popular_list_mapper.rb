@@ -2,10 +2,10 @@
 
 require_relative 'youtube_video_mapper.rb'
 
-module APILibrary
+module YouTubeTrendingMap
   # Data structure of popular list queried from Youtube
   class PopularListMapper
-    def initialize(api_key, gateway_class = APILibrary::YoutubeAPI)
+    def initialize(api_key, gateway_class = YouTubeTrendingMap::YoutubeAPI)
       # @api_key = api_key
       # @gateway_class = gateway_class
       @gateway = gateway_class.new(api_key)
@@ -28,7 +28,7 @@ module APILibrary
       end
 
       def build_entity
-        APILibrary::Entity::PopularList.new(
+        YouTubeTrendingMap::Entity::PopularList.new(
           id: nil,
           count: count,
           videos: videos

@@ -3,7 +3,7 @@
 require 'roda'
 require 'slim'
 
-module APILibrary
+module YouTubeTrendingMap
   # Web app
   class App < Roda
     plugin :render, engine: 'slim', views: 'app/views'
@@ -39,7 +39,7 @@ module APILibrary
         end
 
         routing.on String, String do |region_code, category_id|
-          popular_list =  APILibrary::PopularListMapper
+          popular_list =  YouTubeTrendingMap::PopularListMapper
                           .new(App.config.GOOGLE_CLOUD_KEY)
                           .query(region_code, category_id)
 

@@ -3,7 +3,7 @@
 require 'http'
 require 'json'
 
-module APILibrary
+module YouTubeTrendingMap
   # class to get Youtube data
   class YoutubeAPI
     module Errors

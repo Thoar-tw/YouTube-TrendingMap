@@ -5,7 +5,7 @@ require 'econfig'
 require 'yaml'
 require 'json'
 
-module APILibrary
+module YouTubeTrendingMap
   # Configuration for the App
   class App < Roda
     plugin :environments

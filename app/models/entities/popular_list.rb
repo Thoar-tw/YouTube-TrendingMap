@@ -1,6 +1,6 @@
 # frozen_string_literal: false
 
-module APILibrary
+module YouTubeTrendingMap
   module Entity
     # Domain entity for Youtube popular lists
     class PopularList < Dry::Struct

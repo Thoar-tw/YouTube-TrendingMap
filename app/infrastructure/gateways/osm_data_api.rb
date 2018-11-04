@@ -3,7 +3,7 @@
 require 'net/http'
 require 'json'
 
-module APILibrary
+module YouTubeTrendingMap
   # class to get OpenStreetMap data
   class OSMDataAPI
     module Errors

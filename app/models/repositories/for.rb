@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module APILibrary
+module YouTubeTrendingMap
   module Repository
     # Finds the right repository for an entity object or class
     class For

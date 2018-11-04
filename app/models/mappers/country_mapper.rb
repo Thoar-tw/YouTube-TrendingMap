@@ -1,6 +1,6 @@
 # frozen_string_literal: false
 
-module APILibrary
+module YouTubeTrendingMap
   # Provide access to country data from OSM
   class CountryMapper
     def initialize(gateway_class = OSMDataAPI)

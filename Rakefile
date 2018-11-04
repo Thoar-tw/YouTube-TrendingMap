@@ -21,7 +21,7 @@ namespace :db do
     require_relative  'config/environment.rb'
     require_relative  'spec/helpers/database_helper.rb'
     def app
-      APILibrary::App
+      YouTubeTrendingMap::App
     end
   end
 
@@ -45,8 +45,8 @@ namespace :db do
       return
     end
 
-    FileUtils.rm(APILibrary::App.config.DB_FILENAME)
-    puts "Deleted #{APILibrary::App.config.DB_FILENAME}"
+    FileUtils.rm(YouTubeTrendingMap::App.config.DB_FILENAME)
+    puts "Deleted #{YouTubeTrendingMap::App.config.DB_FILENAME}"
   end
 end
 

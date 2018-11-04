@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module APILibrary
+module YouTubeTrendingMap
   module Repository
     # Repository for Countries
     class Countries

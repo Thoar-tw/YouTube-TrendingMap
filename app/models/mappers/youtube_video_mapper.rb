@@ -1,6 +1,6 @@
 # frozen_string_literal: false
 
-module APILibrary
+module YouTubeTrendingMap
   # Data structure of an Youtube video
   class YoutubeVideoMapper
     def initialize; end
@@ -22,7 +22,7 @@ module APILibrary
       end
 
       def build_entity # rubocop:disable Metrics/MethodLength
-        APILibrary::Entity::YoutubeVideo.new(
+        YouTubeTrendingMap::Entity::YoutubeVideo.new(
           id: nil,
           origin_id: origin_id,
           publish_time: publish_time,
