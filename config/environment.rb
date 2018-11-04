@@ -15,6 +15,15 @@ module APILibrary
     Econfig.root = '.'
 
     configure :development, :test do
+      require 'pry'
+
+      # Allows running reload! in pry to restart entire app
+      def self.reload!
+        exec 'pry -r ./init.rb'
+      end
+    end
+
+    configure :development, :test do
       ENV['DATABASE_URL'] = 'sqlite://' + config.DB_FILENAME
     end
 

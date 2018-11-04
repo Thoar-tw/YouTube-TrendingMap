@@ -15,23 +15,6 @@ task :rerack do
   sh "rerun -c rackup --ignore 'coverage/*'"
 end
 
-namespace :quality do
-  desc 'run all quality checks'
-  task all: %i[rubocop flog reek]
-
-  task :flog do
-    sh 'flog lib/gateways/'
-  end
-
-  task :reek do
-    sh 'reek lib/gateways/'
-  end
-  task :rubocop do
-    sh 'rubocop lib/'
-    sh 'rubocop spec/'
-  end
-end
-
 namespace :db do
   task :config do
     require 'sequel'
@@ -70,4 +53,32 @@ end
 desc 'Run application console (pry)'
 task :console do
   sh 'pry -r ./init.rb'
+end
+
+namespace :vcr do
+  desc 'delete cassette fixtures'
+  task :wipe do
+    sh 'rm spec/fixtures/cassettes/*.yml' do |ok, _|
+      puts(ok ? 'Cassettes deleted' : 'No cassettes found')
+    end
+  end
+end
+
+namespace :quality do
+  CODE = 'app/'
+
+  desc 'run all quality checks'
+  task all: %i[rubocop flog reek]
+
+  task :rubocop do
+    sh 'rubocop'
+  end
+
+  task :flog do
+    sh "flog #{CODE}"
+  end
+
+  task :reek do
+    sh "reek #{CODE}"
+  end
 end

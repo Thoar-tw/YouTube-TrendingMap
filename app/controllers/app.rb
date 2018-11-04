@@ -25,7 +25,7 @@ module APILibrary
             region_code = routing.params['region_code'].downcase
             category_id = routing.params['category_id'].downcase
             # user enter specific region and category (category_id only from 1~44)
-            routing.halt 400 unless (region_code =~ /^[A-Za-z]+$/ && region_code.length == 2) && (category_id =~ [0-9] | [0-3][0-9] | [4][0-4])
+            routing.halt 400 unless (region_code =~ /^[A-Za-z]+$/ && region_code.length == 2) && (category_id =~ [0 - 9] | [0 - 3][0 - 9] | [4][0 - 4])
             routing.redirect "trending_map/#{region_code}/#{category_id}"
           end
 
@@ -45,7 +45,7 @@ module APILibrary
             region_code = routing.params['region_code'].downcase
             category_id = routing.params['category_id'].downcase
             # user enter specific region and category (category_id only from 1~44)
-            routing.halt 400 unless (region_code =~ /^[A-Za-z]+$/) && (category_id =~ [0-9] | [0-3][0-9] | [4][0-4])
+            routing.halt 400 unless (region_code =~ /^[A-Za-z]+$/) && (category_id =~ [0 - 9] | [0 - 3][0 - 9] | [4][0 - 4])
             routing.redirect "trending_map/#{region_code}/#{category_id}"
           end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 ruby '2.5.1'
 
@@ -11,7 +13,7 @@ gem 'slim', '~> 4.0'
 gem 'hirb'
 gem 'sequel'
 
-group :development, :test do 
+group :development, :test do
   gem 'database_cleaner'
   gem 'sqlite3'
 end

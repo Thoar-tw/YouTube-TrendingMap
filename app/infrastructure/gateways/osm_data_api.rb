@@ -2,7 +2,6 @@
 
 require 'net/http'
 require 'json'
-# require_relative 'country.rb'
 
 module APILibrary
   # class to get OpenStreetMap data

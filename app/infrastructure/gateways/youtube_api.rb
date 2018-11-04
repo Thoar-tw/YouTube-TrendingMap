@@ -1,10 +1,7 @@
 # frozen_string_literal: false
 
-require 'net/http'
 require 'http'
 require 'json'
-
-# require_relative 'popular_list.rb'
 
 module APILibrary
   # class to get Youtube data
@@ -65,8 +62,7 @@ module APILibrary
 
     def successful?(result)
       # HTTP_ERROR.key(result.code) ? false : true
-      # above is what rubocop recommend, but actually can't work, so don't change this line
-      HTTP_ERROR.keys.include?(result.code) ? false : true
+      HTTP_ERROR.keys.include?(result.code) ? false : true # rubocop:disable Performance/InefficientHashSearch
     end
 
     def raise_error(result)

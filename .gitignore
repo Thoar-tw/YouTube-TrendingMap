@@ -6,7 +6,7 @@ lib/DS_Store
 config/secrets.yml
 
 # Tmp folder for testing files
-tmp/
+_tmp/
 
 # Testing outputs
 spec/fixtures/
