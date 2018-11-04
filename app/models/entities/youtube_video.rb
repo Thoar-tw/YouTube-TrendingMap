@@ -6,7 +6,8 @@ module APILibrary
     class YoutubeVideo < Dry::Struct
       include Dry::Types.module
 
-      attribute :id,              Strict::String
+      attribute :id,              Integer.optional
+      attribute :origin_id,       Strict::String
       attribute :publish_time,    Strict::String.constrained(
         format: /(\d\d\d\d)-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d).000Z/
       )

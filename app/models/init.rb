@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 folders = %w[entities mappers repositories]
 folders.each do |folder|

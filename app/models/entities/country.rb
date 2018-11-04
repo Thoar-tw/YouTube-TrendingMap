@@ -6,6 +6,7 @@ module APILibrary
     class Country < Dry::Struct
       include Dry::Types.module
 
+      attribute :id,              Integer.optional
       attribute :place_id,        Strict::Integer
       attribute :name,            Strict::String
       attribute :latitude,        Strict::Float

@@ -2,7 +2,7 @@
 
 module APILirary
   module Database
-    # Object Relational Mapper for Project Entities
+    # Object Relational Mapper for PopularList Entities
     class PopularListOrm < Sequel::Model(:popular_lists)
       many_to_one   :belonging_country,
                     class: :'APILirary::Database::CounrtyOrm'

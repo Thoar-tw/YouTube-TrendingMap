@@ -21,9 +21,10 @@ module APILibrary
         @video_data = video_data
       end
 
-      def build_entity
+      def build_entity # rubocop:disable Metrics/MethodLength
         APILibrary::Entity::YoutubeVideo.new(
-          id: id,
+          id: nil,
+          origin_id: origin_id,
           publish_time: publish_time,
           title: title,
           description: description,
@@ -37,7 +38,7 @@ module APILibrary
 
       private
 
-      def id
+      def origin_id
         @video_data['id']
       end
 

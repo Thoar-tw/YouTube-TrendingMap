@@ -25,6 +25,7 @@ module APILibrary
 
       def build_entity
         Entity::Country.new(
+          id: nil,
           place_id: place_id,
           name: name,
           latitude: latitude,

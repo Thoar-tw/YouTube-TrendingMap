@@ -10,6 +10,8 @@ require 'yaml'
 require 'minitest/autorun'
 require 'minitest/rg'
 
+require 'pry' # for debugging
+
 require_relative '../init.rb'
 
 COUNTRY_NAME = 'Taiwan'.freeze

@@ -29,6 +29,7 @@ module APILibrary
 
       def build_entity
         APILibrary::Entity::PopularList.new(
+          id: nil,
           count: count,
           videos: videos
         )

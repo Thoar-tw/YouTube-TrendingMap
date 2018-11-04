@@ -6,6 +6,7 @@ module APILibrary
     class PopularList < Dry::Struct
       include Dry::Types.module
 
+      attribute :id,        Integer.optional
       attribute :count,     Strict::Integer
       attribute :videos,    Strict::Array.of(YoutubeVideo)
     end
