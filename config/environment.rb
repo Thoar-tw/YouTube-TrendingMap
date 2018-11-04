@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 require 'roda'
 require 'econfig'
@@ -25,6 +25,7 @@ module APILibrary
 
     configure :development, :test do
       ENV['DATABASE_URL'] = 'sqlite://' + config.DB_FILENAME
+      puts 'after ENV[DATABASE_URL] = sqlite:// + config.DB_FILENAME'
     end
 
     configure :production do
