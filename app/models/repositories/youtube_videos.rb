@@ -4,10 +4,6 @@ module YouTubeTrendingMap
   module Repository
     # Repository for Countries
     class YoutubeVideos
-      def self.find_id(id)
-        rebuild_entity Database::YoutubeVideoOrm.first(id: id)
-      end
-
       def self.find_title(title)
         rebuild_entity Database::YoutubeVideoOrm.first(title: title)
       end

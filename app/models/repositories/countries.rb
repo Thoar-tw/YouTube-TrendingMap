@@ -4,12 +4,9 @@ module YouTubeTrendingMap
   module Repository
     # Repository for Countries
     class Countries
-      def self.find_id(id)
-        rebuild_entity Database::CountryOrm.first(id: id)
-      end
-
       def self.find_country_name(name)
-        rebuild_entity Database::CountryOrm.first(name: name)
+        db_record = Database::CountryOrm.first(name: name)
+        rebuild_entity(db_record)
       end
 
       def self.rebuild_entity(db_record)

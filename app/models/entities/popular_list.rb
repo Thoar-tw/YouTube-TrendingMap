@@ -10,6 +10,10 @@ module YouTubeTrendingMap
       attribute :count,               Strict::Integer
       attribute :belonging_country,   Country
       attribute :videos,              Strict::Array.of(YoutubeVideo)
+
+      def to_attr_hash
+        to_hash.reject { |key, _| [:id, :belonging_country, :videos].include? key }
+      end
     end
   end
 end

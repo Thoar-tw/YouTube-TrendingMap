@@ -11,6 +11,10 @@ module YouTubeTrendingMap
       attribute :name,            Strict::String
       attribute :latitude,        Strict::Float
       attribute :longitude,       Strict::Float
+
+      def to_attr_hash
+        to_hash.reject { |key, _| [:id].include? key }
+      end
     end
   end
 end

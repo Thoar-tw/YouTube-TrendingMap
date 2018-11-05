@@ -20,6 +20,10 @@ module YouTubeTrendingMap
       attribute :embed_link,      Strict::String.constrained(
         format: %r{https\:\/\/www\.youtube\.com\/embed\/(.*?)}
       )
+
+      def to_attr_hash
+        to_hash.reject { |key, _| [:id].include? key }
+      end
     end
   end
 end
