@@ -25,8 +25,9 @@ module YouTubeTrendingMap
 
     def popular_list_data(region_code, category_id)
       response = get_most_popular_videos_list(region_code, category_id)
-      JSON.parse(response)
-      # PopularList.new(list_data)
+      data = JSON.parse(response)
+      data['region_code'] = region_code
+      data
     end
 
     private
