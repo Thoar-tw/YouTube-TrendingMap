@@ -1,6 +1,7 @@
 # frozen_string_literal: false
 
 require_relative 'youtube_video_mapper.rb'
+require_relative 'country_mapper.rb'
 
 module YouTubeTrendingMap
   # Data structure of popular list queried from Youtube
@@ -25,12 +26,14 @@ module YouTubeTrendingMap
       def initialize(list_data)
         @list_data = list_data
         @yt_video_mapper = YoutubeVideoMapper.new
+        @country_mapper = CountryMapper.new
       end
 
       def build_entity
         YouTubeTrendingMap::Entity::PopularList.new(
           id: nil,
           count: count,
+          belonging_country: belonging_country,
           videos: videos
         )
       end
@@ -39,6 +42,10 @@ module YouTubeTrendingMap
 
       def count
         @list_data['items'].length
+      end
+
+      def belonging_country
+        @country_mapper.build_entity_from_region_code(@list_data['region_code'])
       end
 
       # Return an array of YoutubeVideo objects

@@ -1,6 +1,10 @@
 # frozen_string_literal: false
 
+require 'yaml'
+
 module YouTubeTrendingMap
+  COUNTRY_CODES = YAML.safe_load(File.read('config/country_code_iso_alpha2.yml'))
+
   # Provide access to country data from OSM
   class CountryMapper
     def initialize(gateway_class = OSMDataAPI)
@@ -9,6 +13,12 @@ module YouTubeTrendingMap
     end
 
     def query(country_name)
+      data = @gateway.country_data(country_name)
+      build_entity(data)
+    end
+
+    def build_entity_from_region_code(region_code)
+      country_name = COUNTRY_CODES.key(region_code.upcase)
       data = @gateway.country_data(country_name)
       build_entity(data)
     end
@@ -40,7 +50,7 @@ module YouTubeTrendingMap
       end
 
       def name
-        @country_data['name']
+        @country_data['display_name']
       end
 
       def latitude
