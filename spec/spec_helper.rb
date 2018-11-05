@@ -16,6 +16,7 @@ require_relative '../init.rb'
 
 COUNTRY_NAME = 'Taiwan'.freeze
 COUNTRY_CODE = 'tw'.freeze
+DEFAULT_CATEGORY = 0
 
 GOOGLE_CLOUD_KEY = YouTubeTrendingMap::App.config.GOOGLE_CLOUD_KEY
 VIDEO_CATEGORIES = YAML.safe_load(File.read('config/category.yml'))

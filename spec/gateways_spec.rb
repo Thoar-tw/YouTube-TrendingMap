@@ -15,10 +15,10 @@ describe 'Tests OSM API library' do
   describe 'OSM country data' do
     it 'HAPPY: should provide correct country attributes' do
       country = YouTubeTrendingMap::CountryMapper.new.query(COUNTRY_NAME)
-      _(country.place_id).must_equal CORRECT_OSM['place_id']
+      _(country.place_id).must_equal CORRECT_OSM['place_id'].to_i
       _(country.name).must_equal CORRECT_OSM['name']
-      _(country.lon).must_equal CORRECT_OSM['lon']
-      _(country.lat).must_equal CORRECT_OSM['lat']
+      _(country.longitude).must_equal CORRECT_OSM['lon'].to_f
+      _(country.latitude).must_equal CORRECT_OSM['lat'].to_f
     end
 
     it 'BAD: should raise exception while the query country name is invalid' do
@@ -40,9 +40,9 @@ describe 'Tests Youtube API library' do
 
   describe 'Youtube popular video list' do
     it 'HAPPY: should provide a list of videos, and each video has non nil Video attributes' do
-      list = YouTubeTrendingMap::PopularListMapper.new(GOOGLE_CLOUD_KEY).query(COUNTRY_CODE)
+      list = YouTubeTrendingMap::PopularListMapper.new(GOOGLE_CLOUD_KEY).query(COUNTRY_CODE, DEFAULT_CATEGORY)
       list.videos.each do |video|
-        _(video.id).wont_be_nil
+        _(video.origin_id).wont_be_nil
         _(video.publish_time).wont_be_nil
         _(video.title).wont_be_nil
         _(video.description).wont_be_nil
@@ -56,7 +56,7 @@ describe 'Tests Youtube API library' do
 
     it 'HAPPY: should provide a list of videos, and each video has a publish_time attribute in the correct timestamp format' do
       time_regex = /(\d\d\d\d)-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d).000Z/
-      list = YouTubeTrendingMap::PopularListMapper.new(GOOGLE_CLOUD_KEY).query(COUNTRY_CODE)
+      list = YouTubeTrendingMap::PopularListMapper.new(GOOGLE_CLOUD_KEY).query(COUNTRY_CODE, DEFAULT_CATEGORY)
       list.videos.each do |video|
         _(video.publish_time).must_match(time_regex)
       end
@@ -64,7 +64,7 @@ describe 'Tests Youtube API library' do
 
     it 'HAPPY: should provide a list of videos, and each video has a embed_link attribute in the correct url prefix' do
       link_regex = %r{https\:\/\/www\.youtube\.com\/embed\/(.*?)}
-      list = YouTubeTrendingMap::PopularListMapper.new(GOOGLE_CLOUD_KEY).query(COUNTRY_CODE)
+      list = YouTubeTrendingMap::PopularListMapper.new(GOOGLE_CLOUD_KEY).query(COUNTRY_CODE, DEFAULT_CATEGORY)
       list.videos.each do |video|
         _(video.embed_link).must_match(link_regex)
       end
@@ -72,7 +72,7 @@ describe 'Tests Youtube API library' do
 
     it 'BAD: should raise exception while the key is invalid' do
       proc do
-        YouTubeTrendingMap::PopularListMapper.new('INVALID_KEY').query(COUNTRY_CODE)
+        YouTubeTrendingMap::PopularListMapper.new('INVALID_KEY').query(COUNTRY_CODE, DEFAULT_CATEGORY)
       end.must_raise YouTubeTrendingMap::YoutubeAPI::Errors::BadRequest
     end
   end
