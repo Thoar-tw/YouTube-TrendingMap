@@ -21,7 +21,7 @@ module YouTubeTrendingMap
 
       def self.find_all_with_video(video_title)
         # SELECT * FROM `popular_lists` LEFT JOIN `youtube_videos`
-        # ON (`youtube_videos`.`id` = `popular_lists`.``)
+        # ON (`youtube_videos`.`id` = `popular_lists`.`on_list_video_id`?)
         # WHERE (`title` = `video_title`)
       end
 
@@ -51,7 +51,8 @@ module YouTubeTrendingMap
 
       private_class_method :rebuild_entity, :rebuild_many
 
-      # Helper class to persist project and its members to database
+      # Helper class to create popular_list entity,
+      # also check its belonging country & videos on it from the databases
       class PopularListCreateHelper
         def initialize(entity)
           @entity = entity
