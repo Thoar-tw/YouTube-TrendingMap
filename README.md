@@ -1,9 +1,9 @@
-# Youtube Trending Map
+# YouTube Trending Map
 
 ## Overview
-We aim to create a web service that shows *Youtube Trending Map*.
+We aim to create a web service that shows *YouTube Trending Map*.
 
-By using the Youtube API and Mapbox frontend interactive map, the *Youtube Trending Map* is able to **show** the most popular videos based on **categories** and **countries**. Therefore, Users can get more information about youtube trending videos around the word from our *Youtube Trending Map*.
+By using the Youtube API and Mapbox frontend interactive map, the *YouTube Trending Map* is able to **show** the most popular videos based on **categories** and **countries**. Therefore, Users can get more information about YouTube trending videos around the word from our *YouTube Trending Map*.
 
 ## Installation
 ### Clone
