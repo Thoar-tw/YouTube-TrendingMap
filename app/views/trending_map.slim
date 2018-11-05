@@ -87,7 +87,12 @@ javascript:
 
         var countryCode = (countryCodeISO == '-99') ? countryCodeWB : countryCodeISO;
         var codeFormat = (countryCodeISO == '-99') ? 'WB_A2' : 'ISO_A2';
-        
+        if (countryName == 'Somaliland') {
+          countryCode = 'SO';
+        }
+        if (countryName == 'Baikonur') {
+          countryCode = 'KZ';
+        }
         // Check if the layer for clicked country has existed
         var mapLayer = map.getLayer('country_clicked');
         if(typeof mapLayer == 'undefined') {
