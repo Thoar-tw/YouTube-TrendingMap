@@ -25,7 +25,6 @@ module YouTubeTrendingMap
 
     configure :development, :test do
       ENV['DATABASE_URL'] = 'sqlite://' + config.DB_FILENAME
-      puts 'after ENV[DATABASE_URL] = sqlite:// + config.DB_FILENAME'
     end
 
     configure :production do
