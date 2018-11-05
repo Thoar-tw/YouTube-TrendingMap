@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module APILirary
+module YouTubeTrendingMap
   module Database
     # Object Relational Mapper for PopularList Entities
     class PopularListOrm < Sequel::Model(:popular_lists)

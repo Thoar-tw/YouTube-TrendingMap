@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module APILirary
+module YouTubeTrendingMap
   module Database
     # Object Relational Mapper for YoutubeVideo Entities
     class YoutubeVideoOrm < Sequel::Model(:youtube_videos)
