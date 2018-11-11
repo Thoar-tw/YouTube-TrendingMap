@@ -14,3 +14,6 @@ coverage/
 
 # Test databases
 *.db
+
+# Other ignores
+.bundle/
