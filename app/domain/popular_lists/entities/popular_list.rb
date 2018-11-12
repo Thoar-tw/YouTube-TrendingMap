@@ -12,7 +12,7 @@ module YouTubeTrendingMap
       attribute :videos,              Strict::Array.of(YoutubeVideo)
 
       def to_attr_hash
-        to_hash.reject { |key, _| [:id, :belonging_country, :videos].include? key }
+        to_hash.reject { |key, _| %i[id belonging_country videos].include? key }
       end
     end
   end
