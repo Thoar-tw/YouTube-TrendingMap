@@ -6,14 +6,13 @@ require_relative 'VideoViewCounts'
 
 module YouTubeTrendingMap
   module Entity
-    # Entity for trending videos in a continent
-    class ContinentTrending < Dry::Struct
+    # Entity for ranked trending videos in the gloal world
+    class GlobalRanking < Dry::Struct
       include Mixins::SortHelper
-      attr_reader :trending_list,:continent
+      attr_reader :trending_list
 
-      def initialize(trending_list:,continent:)
+      def initialize(trending_list:)
         @trending_list = trending_list
-        @continent = continent
       end
 
       # don't know if redundant

@@ -6,8 +6,8 @@ require_relative 'VideoViewCounts'
 
 module YouTubeTrendingMap
   module Entity
-    # Entity for trending videos in a country
-    class CountryTrending < Dry::Struct
+    # Entity for ranked trending videos in a country
+    class CountryRanking < Dry::Struct
       include Mixins::SortHelper
       attr_reader :trending_list,:area
 
