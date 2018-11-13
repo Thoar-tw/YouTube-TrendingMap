@@ -1,18 +1,35 @@
 # frozen_string_literal: true
 
-desc 'run tests'
-task :spec do
-  sh 'ruby spec/gateways_spec.rb'
+require 'rake/testtask'
+
+task :default do
+  puts `rake -T`
 end
 
-desc 'Keep rerunning tests upon changes'
+desc 'Run unit and integration tests'
+Rake::TestTask.new(:spec) do |t|
+  t.pattern = 'spec/*_spec.rb'
+  t.warning = false
+end
+
+desc 'Keep rerunning unit/integration tests upon changes'
 task :respec do
   sh "rerun -c 'rake spec' --ignore 'coverage/*'"
 end
 
-desc 'Restart my server upon changes'
+desc 'Keep restarting app server upon changes'
 task :rerack do
   sh "rerun -c rackup --ignore 'coverage/*'"
+end
+
+namespace :run do
+  task :dev do
+    sh 'rerun -c "rackup -p 9292"'
+  end
+
+  task :test do
+    sh 'RACK_ENV=test rackup -p 9000'
+  end
 end
 
 namespace :db do
