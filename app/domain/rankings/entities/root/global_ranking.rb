@@ -1,14 +1,10 @@
 # frozen_string_literal: true
 
-require 'dry-types'
-require 'dry-struct'
-require_relative 'VideoViewCounts'
-
 module YouTubeTrendingMap
   module Entity
     # Entity for ranked trending videos in the gloal world
-    class GlobalRanking < Dry::Struct
-      include Mixins::SortHelper
+    class GlobalRanking
+      include Mixins::RankingCalculator
       attr_reader :trending_list
 
       def initialize(trending_list:)

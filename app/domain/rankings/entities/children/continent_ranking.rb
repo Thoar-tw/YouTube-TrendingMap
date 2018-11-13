@@ -1,17 +1,13 @@
 # frozen_string_literal: true
 
-require 'dry-types'
-require 'dry-struct'
-require_relative 'VideoViewCounts'
-
 module YouTubeTrendingMap
   module Entity
     # Entity for ranked trending videos in a continent
-    class ContinentRanking < Dry::Struct
-      include Mixins::SortHelper
-      attr_reader :trending_list,:continent
+    class ContinentRanking
+      include Mixins::RankingCalculator
+      attr_reader :trending_list, :continent
 
-      def initialize(trending_list:,continent:)
+      def initialize(trending_list:, continent:)
         @trending_list = trending_list
         @continent = continent
       end

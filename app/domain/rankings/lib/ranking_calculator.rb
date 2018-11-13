@@ -3,13 +3,16 @@
 module YouTubeTrendingMap
   module Mixins
     # Trending video rankings calculation methods
-    module RankingCalaulator
-      def list_selection
-        # TODO: select top ten videos from different countries (same continent) to sort
+    module RankingCalculator
+      def top_n(n)
       end
 
       def sort_by_view_counts
-        trending_list.sort()
+        trending_list.sort
+      end
+
+      def within_time_interval(days)
+        
       end
     end
   end
