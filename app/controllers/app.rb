@@ -39,7 +39,7 @@ module YouTubeTrendingMap
         end
 
         routing.on String, String do |region_code, category_id|
-          popular_list =  YouTubeTrendingMap::PopularListMapper
+          trending_list =  YouTubeTrendingMap::TrendingListMapper
                           .new(App.config.GOOGLE_CLOUD_KEY)
                           .query(region_code, category_id)
 
@@ -53,7 +53,7 @@ module YouTubeTrendingMap
           end
 
           view 'trending_map', locals: {
-            popular_list: popular_list,
+            trending_list: trending_list,
             mapbox_token: App.config.MAPBOX_TOKEN,
             countries: COUNTRIES,
             categories: CATEGORIES

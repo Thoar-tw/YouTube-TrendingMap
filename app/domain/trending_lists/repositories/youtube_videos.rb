@@ -30,16 +30,16 @@ module YouTubeTrendingMap
       end
 
       def self.rebuild_many(db_records)
-        db_records.map do |db_member|
-          YoutubeVideos.rebuild_entity(db_member)
+        db_records.map do |db_record|
+          YoutubeVideos.rebuild_entity(db_record)
         end
       end
 
-      def self.db_find_or_create(entity)
+      def self.find_or_create(entity)
         Database::YoutubeVideoOrm.find_or_create(entity.to_attr_hash)
       end
 
-      private_class_method :rebuild_entity, :rebuild_many, :db_find_or_create
+      private_class_method :rebuild_entity, :rebuild_many
     end
   end
 end

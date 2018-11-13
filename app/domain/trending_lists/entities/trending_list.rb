@@ -1,9 +1,12 @@
 # frozen_string_literal: false
 
+require_relative 'country.rb'
+require_relative 'youtube_video.rb'
+
 module YouTubeTrendingMap
   module Entity
-    # Domain entity for Youtube popular lists
-    class PopularList < Dry::Struct
+    # Domain entity for Youtube trending lists
+    class TrendingList < Dry::Struct
       include Dry::Types.module
 
       attribute :id,                  Integer.optional

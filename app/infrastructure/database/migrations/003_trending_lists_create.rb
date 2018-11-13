@@ -2,7 +2,7 @@
 
 Sequel.migration do
   change do
-    create_table(:popular_lists) do
+    create_table(:trending_lists) do
       primary_key :id
       foreign_key :belonging_country_id, :countries
 

@@ -4,10 +4,10 @@ module YouTubeTrendingMap
   module Database
     # Object Relational Mapper for YoutubeVideo Entities
     class YoutubeVideoOrm < Sequel::Model(:youtube_videos)
-      many_to_many  :popular_lists_within,
-                    class: :'APILirary::Database::PopularListOrm',
-                    join_table: :popular_list_videos,
-                    left_key: :youtube_video_id, right_key: :popular_list_id
+      many_to_many  :trending_lists_within,
+                    class: :'YouTubeTrendingMap::Database::TrendingListOrm',
+                    join_table: :trending_list_videos,
+                    left_key: :youtube_video_id, right_key: :trending_list_id
 
       plugin :timestamps, update_on_create: true
 

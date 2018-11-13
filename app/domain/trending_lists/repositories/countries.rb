@@ -27,11 +27,11 @@ module YouTubeTrendingMap
         end
       end
 
-      def self.db_find_or_create(entity)
+      def self.find_or_create(entity)
         Database::CountryOrm.find_or_create(entity.to_attr_hash)
       end
 
-      private_class_method :rebuild_entity, :rebuild_many, :db_find_or_create
+      private_class_method :rebuild_entity, :rebuild_many
     end
   end
 end
