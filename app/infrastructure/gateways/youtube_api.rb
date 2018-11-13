@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 require 'http'
 require 'json'
@@ -23,8 +23,8 @@ module YouTubeTrendingMap
       @cache = cache
     end
 
-    def popular_list_data(region_code, category_id)
-      response = get_most_popular_videos_list(region_code, category_id)
+    def trending_list_data(region_code, category_id, max_results_count)
+      response = get_most_popular_videos_list(region_code, category_id, max_results_count)
       data = JSON.parse(response)
       data['region_code'] = region_code
       data
@@ -49,14 +49,15 @@ module YouTubeTrendingMap
     end
 
     # Input region code of the country and get trending videos with json format
-    def get_most_popular_videos_list(region_code, category_id)
+    def get_most_popular_videos_list(region_code, category_id, max_results_count)
       param_part = 'part=snippet,player,statistics'
       param_chart = 'chart=mostPopular'
       param_region_code = 'regionCode=' + region_code
       param_video_category_id = 'videoCategoryId=' + category_id.to_s
+      param_max_results = 'maxResults=' + max_results_count.to_s
       param_key = 'key=' + @api_key
 
-      param_array = [param_part, param_chart, param_region_code, param_video_category_id, param_key]
+      param_array = [param_part, param_chart, param_region_code, param_video_category_id, param_max_results, param_key]
       response = call_yt_url(youtube_api_path(param_array))
       response
     end
