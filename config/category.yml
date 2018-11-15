@@ -1,8 +1,4 @@
 ---
-  development  :
-    DB_FILENAME = app/infrastructure/database/local/dev.db
-  test:
-    DB_FILENAME = app/infrastructure/database/local/test.db v
 '1': Film & Animation
 '2': Autos & Vehicles
 '10': Music
