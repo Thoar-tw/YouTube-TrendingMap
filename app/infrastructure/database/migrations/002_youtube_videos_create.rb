@@ -5,7 +5,8 @@ Sequel.migration do
     create_table(:youtube_videos) do
       primary_key :id
 
-      String      :title
+      String      :origin_id, unique: true, null: false
+      String      :title, unique: true, null: false
       String      :publish_time
       String      :description
       String      :channel_title

@@ -38,8 +38,6 @@ module YouTubeTrendingMap
       def self.find_or_create(entity)
         Database::YoutubeVideoOrm.find_or_create(entity.to_attr_hash)
       end
-
-      private_class_method :rebuild_entity, :rebuild_many
     end
   end
 end
