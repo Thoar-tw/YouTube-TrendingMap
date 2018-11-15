@@ -9,7 +9,7 @@ body {
     position:absolute;
     top: 0;
     bottom: 0;
-    width: 100%;
+    width: 75%;
     height: 95%;
     z-index: 0;
 }
@@ -24,7 +24,24 @@ body {
 .page-footer .footer-copyright {
     padding: 0;
     min-height: 35px;
+    height: 100%;
 }
+
+/* home */
+#home {
+    height: 95%;
+}
+#home .row {
+    height: 100%;
+}
+#home .row .s12{
+    padding: 0;
+}
+#home #map {
+    height: 95%;
+}
+
+/* trending_map */
 #trending_map {
     height: 95%;
 }
@@ -37,11 +54,43 @@ body {
     height: 100%;
     box-shadow: 1px 0px 10px #00000061;
 }
-#trending_map .row .s3 form .row .input-field {
+#trending_map .row .s3 #search_area {
+    margin-bottom: 20px;
+}
+#trending_map .row .s3 #search_area form .row .input-field {
     margin-top: 25px;
 }
-#trending_map .row .col.s3 form .row .s12 button {
+#trending_map .row .s3 #search_area form .row .s12 button {
     width: 90%;
+}
+#trending_map .row .s3 #trending_list {
+    /* height: 67%; */
+}
+#trending_map .row .s3 #trending_list .collection {
+    border: 0;
+    height: 100%;
+    overflow: scroll;
+}
+#trending_map .row .s3 #trending_list .collection .collection-item iframe {
+    width: 100%;
+}
+#trending_map .row .s3 #trending_list .collection .collection-item p {
+    margin: 0;
+} 
+#trending_map .row .s3 #trending_list .collection .collection-item .title {
+    font-size: 16px;
+    font-weight: bold;
+}
+#trending_map .row .s3 #trending_list .collection .collection-item .channel_title {
+    font-size: 14px;
+    color: #111111cc;
+}
+#trending_map .row .s3 #trending_list .collection .collection-item .view_count {
+    font-size: 14px;
+    color: #111111cc;
+}
+#trending_map .row .s3 #trending_list .collection .collection-item .secondary-content {
+    color: #ef5350;
 }
 #trending_map .row .s9 {
     height: 100%;

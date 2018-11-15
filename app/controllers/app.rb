@@ -10,24 +10,33 @@ module YouTubeTrendingMap
     plugin :assets, css: 'style.css', path: 'app/views/assets'
     plugin :halt
 
-    route do |routing|
+    route do |routing| # rubocop:disable Metrics/BlockLength
       routing.assets # load CSS
 
       # GET /
       routing.root do
-        view 'home'
+        trending_list = Mapper::TrendingList.get(region_code, category_id, max_results).all
+        if trending_list.none?
+          puts 'no trending list!!'
+          # flash.now[:notice] = 'Add a Github project to get started'
+        end
+        view 'home', locals: {
+          mapbox_token: App.config.MAPBOX_TOKEN,
+          trending_list: trending_list
+        }
       end
 
       routing.on 'trending_map' do
         routing.is do
           # POST /trending_map/
           routing.post do
-            region_code = routing.params['region_code'].downcase
+            # user enter specific region and category
+            country_name = routing.params['country_name']
             category_id = routing.params['category_id'].downcase
-            # user enter specific region and category (category_id only from 1~44)
-            routing.halt 400 unless (region_code =~ /^[A-Za-z]+$/) &&
-                                    (region_code.length == 2) &&
-                                    (category_id =~ [0 - 9] | [0 - 3][0 - 9] | [4][0 - 4])
+            region_code = COUNTRY_CODES[country_name]
+
+            # category_id only from 1 to 44
+            routing.halt 400 unless (region_code =~ /^[A-Za-z]+$/) && (region_code.length == 2)
             routing.redirect "trending_map/#{region_code}/#{category_id}"
           end
 
@@ -39,9 +48,9 @@ module YouTubeTrendingMap
         end
 
         routing.on String, String do |region_code, category_id|
-          trending_list =  YouTubeTrendingMap::TrendingListMapper
+          trending_list = YouTubeTrendingMap::Mapper::TrendingList
                           .new(App.config.GOOGLE_CLOUD_KEY)
-                          .query(region_code, category_id)
+                          .get(region_code, category_id, 10)
 
           routing.post do
             region_code = routing.params['region_code'].downcase
