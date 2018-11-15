@@ -29,8 +29,12 @@ module YouTubeTrendingMap
 
       def self.find_all_with_video(video_title)
         # SELECT * FROM `trending_lists` LEFT JOIN `youtube_videos`
-        # ON (`youtube_videos`.`id` = `trending_lists`.`on_list_video_id`?)
+        # ON (`youtube_videos`.`id` = `trending_lists`.`video_id`?)
         # WHERE (`title` = `video_title`)
+      end
+
+      def self.find_or_create(entity)
+        find(entity) || create(entity)
       end
 
       def self.create(entity)
@@ -46,7 +50,7 @@ module YouTubeTrendingMap
         Entity::TrendingList.new(
           db_record.to_hash.merge(
             belonging_country: Countries.rebuild_entity(db_record.belonging_country),
-            on_list_videos: YoutubeVideos.rebuild_many(db_record.on_list_videos)
+            videos: YoutubeVideos.rebuild_many(db_record.videos)
           )
         )
       end
@@ -77,7 +81,7 @@ module YouTubeTrendingMap
             db_list.update(belonging_country: belonging_country)
 
             @entity.videos.each do |video|
-              db_list.add_on_list_video(YoutubeVideos.find_or_create(video))
+              db_list.add_video(YoutubeVideos.find_or_create(video))
             end
           end
         end

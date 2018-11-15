@@ -7,7 +7,7 @@ module YouTubeTrendingMap
       many_to_one   :belonging_country,
                     class: :'YouTubeTrendingMap::Database::CountryOrm'
 
-      many_to_many  :on_list_videos,
+      many_to_many  :videos,
                     class: :'YouTubeTrendingMap::Database::YoutubeVideoOrm',
                     join_table: :trending_list_videos,
                     left_key: :trending_list_id, right_key: :youtube_video_id

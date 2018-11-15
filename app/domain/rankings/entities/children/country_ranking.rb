@@ -5,11 +5,11 @@ module YouTubeTrendingMap
     # Entity for ranked trending videos in a country
     class CountryRanking < Dry::Struct
       include Mixins::RankingCalculator
-      attr_reader :trending_list, :area
+      attr_reader :trending_list, :country
 
-      def initialize(trending_list:, area:)
+      def initialize(trending_list:, country:)
         @trending_list = trending_list
-        @area = area
+        @country = country
       end
 
       # don't know if redundant

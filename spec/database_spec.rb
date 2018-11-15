@@ -29,11 +29,10 @@ describe 'Integration Tests of Github API and Database' do
       rebuilt = YouTubeTrendingMap::Repository::For.entity(list).create(list)
 
       _(rebuilt.count).must_equal(list.count)
-      _(rebuilt.belonging_country).must_equal(list.belonging_country)
-      _(rebuilt.videos).must_equal(list.videos)
+      _(rebuilt.belonging_country.place_id).must_equal(list.belonging_country.place_id)
 
       list.videos.each do |video|
-        found = rebuilt.on_list_videos.find do |potential|
+        found = rebuilt.videos.find do |potential|
           potential.origin_id == video.origin_id
         end
 
