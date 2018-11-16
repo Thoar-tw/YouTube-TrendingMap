@@ -1,12 +1,12 @@
 # frozen_string_literal: false
-
+# exactly trending videos from youtube api query 
 require_relative 'country.rb'
 require_relative 'youtube_video.rb'
 
 module YouTubeTrendingMap
   module Entity
     # Domain entity for Youtube trending lists
-    class TrendingList < Dry::Struct
+    class TrendingVideos < Dry::Struct
       include Dry::Types.module
 
       attribute :id,                  Integer.optional

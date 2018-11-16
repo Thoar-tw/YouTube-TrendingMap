@@ -1,10 +1,9 @@
-# frozen_string_literal: true
-
+# our own trending lists not all dependents on "youtube trending list 
 module YouTubeTrendingMap
   module Entity
     # Entity for ranked trending videos in a continent
-    class ContinentRanking
-      include Mixins::RankingCalculator
+    class MostInterestedTrendingVideos
+      include Mixins::Trending
       attr_reader :trending_list, :continent
 
       def initialize(trending_list:, continent:)
