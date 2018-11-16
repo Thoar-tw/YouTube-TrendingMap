@@ -13,7 +13,8 @@ module YouTubeTrendingMap
 
       # don't know if redundant
       def decide_interested_video_type
-        
+      
+      end
       def sort_view_counts
         trending_list.sort_by_view_counts
       end

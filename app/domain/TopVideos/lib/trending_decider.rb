@@ -1,13 +1,14 @@
 module YouTubeTrendingMap
   module Mixins
     # Trending video rankings calculation methods
-    module trendingDecider
+    module TrendingDecider
       def top_n(n)
       end
 
-      def sort_by_view_counts
-        trending_list.sort
-      end
+      def decide_interested_video_type
+          trending_list.select{}
+      end 
+  
 
       def within_time_interval(days)
         
