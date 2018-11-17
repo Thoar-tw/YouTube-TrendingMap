@@ -26,6 +26,10 @@
       #trending_list
         ul class="collection"
           - unless trending_list.nil?
+            #list_title
+              i class="material-icons" location_on
+              span
+                = trending_list.belonging_country.name
             - trending_list.videos.each.with_index do |video, index|
               li class="collection-item"
                 iframe {
@@ -147,6 +151,23 @@ javascript:
         }
 
         console.log("You clicked on " + countryName + " (" + countryCode + ")");
-
+        /*
+        console.log(window.location.pathname);
+        console.log(window.location.host);
+        console.log(window.location.origin);
+        */
+        var category_id = $('input[name=category_id]').val() == null? 0 : $('input[name=category_id]').val();
+        $.ajax({
+          url: window.location.pathname,
+          method: 'POST',
+          data: {
+            'region_code': countryCode,
+            'category_id': category_id
+          } 
+        }).done(function(msg){
+          console.log('sent back to controller!');
+          $('#trending_list').load(" #trending_list > *");
+          
+        });
       });
   });
