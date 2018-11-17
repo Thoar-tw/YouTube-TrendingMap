@@ -71,6 +71,14 @@ body {
     height: 100%;
     overflow: scroll;
 }
+#trending_map .row .s3 #trending_list .collection #list_title {
+    text-align: center;
+}
+#trending_map .row .s3 #trending_list .collection #list_title span {
+    position: relative;
+    bottom: 5px;
+    font-size: 18px;
+}
 #trending_map .row .s3 #trending_list .collection .collection-item iframe {
     width: 100%;
 }

@@ -10,6 +10,8 @@ module YouTubeTrendingMap
     plugin :assets, css: 'style.css', path: 'app/views/assets'
     plugin :halt
 
+    trending_list = nil
+
     route do |routing| # rubocop:disable Metrics/BlockLength
       routing.assets # load CSS
 
@@ -31,43 +33,61 @@ module YouTubeTrendingMap
           # POST /trending_map/
           routing.post do
             # user enter specific region and category
-            country_name = routing.params['country_name']
-            category_id = routing.params['category_id'].downcase
-            region_code = COUNTRY_CODES[country_name]
+            if routing.params['country_name'].nil?
+              region_code = routing.params['region_code']
+            else
+              country_name = routing.params['country_name']
+              region_code = COUNTRY_CODES[country_name]
+            end
+
+            category_id = routing.params['category_id']
+
+            trending_list = YouTubeTrendingMap::Mapper::TrendingList
+                            .new(App.config.GOOGLE_CLOUD_KEY)
+                            .get(region_code, category_id, 10)
 
             # category_id only from 1 to 44
             routing.halt 400 unless (region_code =~ /^[A-Za-z]+$/) && (region_code.length == 2)
-            routing.redirect "trending_map/#{region_code}/#{category_id}"
+            routing.redirect '/trending_map'
           end
 
           view 'trending_map', locals: {
             mapbox_token: App.config.MAPBOX_TOKEN,
-            countries: COUNTRIES,
-            categories: CATEGORIES
-          }
-        end
-
-        routing.on String, String do |region_code, category_id|
-          trending_list = YouTubeTrendingMap::Mapper::TrendingList
-                          .new(App.config.GOOGLE_CLOUD_KEY)
-                          .get(region_code, category_id, 10)
-
-          routing.post do
-            region_code = routing.params['region_code'].downcase
-            category_id = routing.params['category_id'].downcase
-            # user enter specific region and category (category_id only from 1~44)
-            routing.halt 400 unless (region_code =~ /^[A-Za-z]+$/) &&
-                                    (category_id =~ [0 - 9] | [0 - 3][0 - 9] | [4][0 - 4])
-            routing.redirect "trending_map/#{region_code}/#{category_id}"
-          end
-
-          view 'trending_map', locals: {
             trending_list: trending_list,
-            mapbox_token: App.config.MAPBOX_TOKEN,
             countries: COUNTRIES,
             categories: CATEGORIES
           }
         end
+
+        # routing.on String, Integer do |path_region_code, path_category_id|
+        #   puts 'routing on...' + path_region_code + '/' + path_category_id.to_s
+        #   trending_list = YouTubeTrendingMap::Mapper::TrendingList
+        #                   .new(App.config.GOOGLE_CLOUD_KEY)
+        #                   .get(path_region_code, path_category_id, 10)
+
+        #   routing.post do
+        #     if routing.params['country_name'].nil?
+        #       region_code = routing.params['region_code']
+        #     else
+        #       country_name = routing.params['country_name']
+        #       region_code = COUNTRY_CODES[country_name]
+        #     end
+        #     category_id = routing.params['category_id']
+        #     puts 'in routing post...'
+
+        #     # user enter specific region and category (category_id only from 1~44)
+        #     routing.halt 400 unless (region_code =~ /^[A-Za-z]+$/) && (region_code.length == 2)
+        #     puts "/trending_map/#{region_code}/#{category_id}"
+        #     routing.redirect "/trending_map/#{region_code}/#{category_id}"
+        #   end
+
+        #   view 'trending_map', locals: {
+        #     trending_list: trending_list,
+        #     mapbox_token: App.config.MAPBOX_TOKEN,
+        #     countries: COUNTRIES,
+        #     categories: CATEGORIES
+        #   }
+        # end
       end
     end
   end

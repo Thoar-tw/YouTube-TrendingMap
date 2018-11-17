@@ -5,7 +5,7 @@ html
     meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
     meta name="viewport" content="width=device-width, initial-scale=1.0"
     / favicon
-    link rel="icon" type="image/png" href="favicon.ico"
+    / link rel="icon" type="image/png" href="favicon.ico"
 
     / Google Icon Font
     link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"
@@ -18,11 +18,17 @@ html
     / link rel='stylesheet' href='/assets/css/style.css'
     == assets(:css)
   body
-    / JQuery
+    / JQuery Slim
     script { 
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" 
       crossorigin="anonymous" 
+    }
+    / JQuery
+    script {
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"
     }
 
     / Bootstrap
