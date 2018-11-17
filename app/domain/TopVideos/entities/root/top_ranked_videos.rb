@@ -1,10 +1,9 @@
-# frozen_string_literal: true
 
 module YouTubeTrendingMap
   module Entity
     # Entity for ranked trending videos in a continent
-    class ContinentRanking
-      include Mixins::RankingCalculator
+    class TopRankedVideos
+      include Mixins::trendingDecider
       attr_reader :trending_list, :continent
 
       def initialize(trending_list:, continent:)
@@ -13,6 +12,9 @@ module YouTubeTrendingMap
       end
 
       # don't know if redundant
+      def decide_interested_video_type
+      
+      end
       def sort_view_counts
         trending_list.sort_by_view_counts
       end
