@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module YouTubeTrendingMap
   module Mixins
     # Trending video rankings calculation methods
@@ -6,12 +8,10 @@ module YouTubeTrendingMap
       end
 
       def decide_interested_video_type
-          trending_list.select{}
-      end 
-  
+        trending_list.select{}
+      end
 
       def within_time_interval(days)
-        
       end
     end
   end
