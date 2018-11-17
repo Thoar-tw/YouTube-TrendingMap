@@ -5,6 +5,7 @@ ruby '2.5.1'
 
 # Web application related
 gem 'econfig', '~> 2.1'
+gem 'rack', '~> 2.0.6'
 gem 'puma', '~> 3.12'
 gem 'roda', '~> 3.13'
 gem 'slim', '~> 4.0'
