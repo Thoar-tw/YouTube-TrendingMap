@@ -46,5 +46,6 @@ module YouTubeTrendingMap
     # Files for Country mapping
     COUNTRIES = YAML.safe_load(File.read('config/country.yml'))
     COUNTRY_CODES = YAML.safe_load(File.read('config/country_code_iso_alpha2.yml'))
+    CONTINENT_COUNTRY_CODES = JSON.parse(File.read('config/continent_country_codes.json'))
   end
 end
