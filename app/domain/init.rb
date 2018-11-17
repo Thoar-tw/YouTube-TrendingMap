@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-folders = %w[trending_lists rankings]
+folders = %w[trends top_videos]
 folders.each do |folder|
   require_relative "#{folder}/init.rb"
 end

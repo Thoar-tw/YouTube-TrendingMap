@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-module CodePraise
+module YouTubeTrendingMap
   module Value
     # Value of a file's full path (delegates to String)
     class YoutubeVideoData < SimpleDelegator
-      # rubocop:disable Style/RedundantSelf
-    
-      attr_reader :video_id, :view_counts,:area,:video_creation_time
+      attr_reader :video_id, :view_counts, :area, :video_creation_time
 
       def initialize(viewcounts)
         super(viewcounts)
