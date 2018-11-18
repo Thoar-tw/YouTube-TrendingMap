@@ -2,7 +2,7 @@
 
 Sequel.migration do
   change do
-    create_table(:youtube_videos) do
+    create_table(:hot_videos) do
       primary_key :id
 
       String      :origin_id, unique: true, null: false

@@ -6,7 +6,7 @@ module YouTubeTrendingMap
     class HotVideoOrm < Sequel::Model(:hot_videos)
       many_to_many  :hot_videos_lists_within,
                     class: :'YouTubeTrendingMap::Database::HotVideosListOrm',
-                    join_table: :on_hot_list_videos,
+                    join_table: :hot_videos_lists_hot_videos,
                     left_key: :hot_video_id, right_key: :hot_videos_list_id
 
       plugin :timestamps, update_on_create: true

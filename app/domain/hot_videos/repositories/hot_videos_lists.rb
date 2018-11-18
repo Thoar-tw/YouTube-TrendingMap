@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# require_relative 'countries'
-# require_relative 'youtube_videos'
-
 module YouTubeTrendingMap
   module Repository
     # Repository for Countries
@@ -18,15 +15,15 @@ module YouTubeTrendingMap
         rebuild_entity(db_record)
       end
 
-      def self.find_all_by_country(country_name)
-        # SELECT * FROM `trending_lists` LEFT JOIN `countries`
-        # ON (`countries`.`id` = `trending_lists`.`belonging_country_id`)
-        # WHERE (`name` = `country_name`)
-        db_lists =  Database::HotVideosListOrm
-                    .left_join(:countries, id: :belonging_country_id)
-                    .where(name: country_name)
-        rebuild_many(db_lists)
-      end
+      # def self.find_all_by_country(country_name)
+      #   # SELECT * FROM `trending_lists` LEFT JOIN `countries`
+      #   # ON (`countries`.`id` = `trending_lists`.`belonging_country_id`)
+      #   # WHERE (`name` = `country_name`)
+      #   db_lists =  Database::HotVideosListOrm
+      #               .left_join(:countries, id: :belonging_country_id)
+      #               .where(name: country_name)
+      #   rebuild_many(db_lists)
+      # end
 
       def self.find_all_with_video(video_title)
         # SELECT * FROM `trending_lists` LEFT JOIN `youtube_videos`
@@ -45,20 +42,20 @@ module YouTubeTrendingMap
         rebuild_entity(db_list)
       end
 
-      def self.rebuild_entity(db_record)
+      def self.rebuild_entity(db_list)
         return nil unless db_record
 
         Entity::HotVideosList.new(
-          db_record.to_hash.merge(
-            belonging_country: Countries.rebuild_entity(db_record.belonging_country),
-            videos: HotVideos.rebuild_many(db_record.videos)
+          db_list.to_hash.merge(
+            # belonging_country: Countries.rebuild_entity(db_record.belonging_country),
+            videos: HotVideos.rebuild_many(db_list.videos)
           )
         )
       end
 
       def self.rebuild_many(db_records)
-        db_records.map do |db_member|
-          HotVideosLists.rebuild_entity(db_member)
+        db_records.map do |db_record|
+          HotVideosLists.rebuild_entity(db_record)
         end
       end
 
@@ -76,10 +73,10 @@ module YouTubeTrendingMap
         end
 
         def call
-          belonging_country = Countries.find_or_create(@entity.belonging_country)
+          # belonging_country = Countries.find_or_create(@entity.belonging_country)
 
           create_entity.tap do |db_list|
-            db_list.update(belonging_country: belonging_country)
+            # db_list.update(belonging_country: belonging_country)
 
             @entity.videos.each do |video|
               db_list.add_video(HotVideos.find_or_create(video))

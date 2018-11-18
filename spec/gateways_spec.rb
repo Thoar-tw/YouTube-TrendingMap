@@ -42,9 +42,9 @@ describe 'Tests Youtube API library' do
     VcrHelper.eject_vcr
   end
 
-  describe 'Youtube trending video list' do
+  describe 'Youtube hot videos list' do
     it 'HAPPY: should provide a list of videos, and each video has non nil Video attributes' do
-      list =  YouTubeTrendingMap::Mapper::TrendingList
+      list =  YouTubeTrendingMap::Mapper::HotVideosList
               .new(GOOGLE_CLOUD_KEY)
               .get(COUNTRY_CODE, DEFAULT_CATEGORY, DEFAULT_MAX_RESULTS)
       list.videos.each do |video|
@@ -62,7 +62,7 @@ describe 'Tests Youtube API library' do
 
     it 'HAPPY: should provide a list of videos, and each video has a publish_time attribute in the correct timestamp format' do
       time_regex = /(\d\d\d\d)-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d).000Z/
-      list =  YouTubeTrendingMap::Mapper::TrendingList
+      list =  YouTubeTrendingMap::Mapper::HotVideosList
               .new(GOOGLE_CLOUD_KEY)
               .get(COUNTRY_CODE, DEFAULT_CATEGORY, DEFAULT_MAX_RESULTS)
       list.videos.each do |video|
@@ -72,7 +72,7 @@ describe 'Tests Youtube API library' do
 
     it 'HAPPY: should provide a list of videos, and each video has a embed_link attribute in the correct url prefix' do
       link_regex = %r{https\:\/\/www\.youtube\.com\/embed\/(.*?)}
-      list =  YouTubeTrendingMap::Mapper::TrendingList
+      list =  YouTubeTrendingMap::Mapper::HotVideosList
               .new(GOOGLE_CLOUD_KEY)
               .get(COUNTRY_CODE, DEFAULT_CATEGORY, DEFAULT_MAX_RESULTS)
       list.videos.each do |video|
@@ -82,7 +82,7 @@ describe 'Tests Youtube API library' do
 
     it 'BAD: should raise exception while the key is invalid' do
       proc do
-        YouTubeTrendingMap::Mapper::TrendingList
+        YouTubeTrendingMap::Mapper::HotVideosList
         .new('INVALID_KEY')
         .get(COUNTRY_CODE, DEFAULT_CATEGORY, DEFAULT_MAX_RESULTS)
       end.must_raise YouTubeTrendingMap::YoutubeAPI::Errors::BadRequest

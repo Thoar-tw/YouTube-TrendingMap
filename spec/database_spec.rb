@@ -21,15 +21,15 @@ describe 'Integration Tests of Github API and Database' do
       DatabaseHelper.wipe_database
     end
 
-    it 'HAPPY: should be able to save remote trending list data to database' do
-      list =  YouTubeTrendingMap::Mapper::TrendingList
+    it 'HAPPY: should be able to save remote hot videos list data to database' do
+      list =  YouTubeTrendingMap::Mapper::HotVideosList
               .new(GOOGLE_CLOUD_KEY)
               .get(COUNTRY_CODE, DEFAULT_CATEGORY, DEFAULT_MAX_RESULTS)
 
       rebuilt = YouTubeTrendingMap::Repository::For.entity(list).create(list)
 
       _(rebuilt.count).must_equal(list.count)
-      _(rebuilt.belonging_country.place_id).must_equal(list.belonging_country.place_id)
+      _(rebuilt.belonging_country).must_equal(list.belonging_country)
 
       list.videos.each do |video|
         found = rebuilt.videos.find do |potential|

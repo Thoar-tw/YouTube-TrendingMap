@@ -52,6 +52,7 @@ module YouTubeTrendingMap
         path += '&' unless index.zero?
         path += param
       end
+      puts path
       path
     end
 
@@ -59,6 +60,12 @@ module YouTubeTrendingMap
     def call_yt_url(url)
       result = HTTP.get(url)
       successful?(result) ? result : raise_error(result)
+    end
+
+    def call_yt_url_with_net(url)
+      uri = URI.parse(url)
+      result = Net::HTTP.get(uri)
+      JSON.parse(result).key?('error') ? raise_error(result) : result
     end
 
     # Input region code of the country and get trending videos with json format
@@ -78,13 +85,15 @@ module YouTubeTrendingMap
     def get_videos_ordered_by_view_count(region_code, category_id, max_results_count)
       param_part = 'part=snippet'
       param_region_code = 'regionCode=' + region_code
-      param_video_category_id = 'videoCategoryId=' + category_id.to_s
+      param_video_category_id =
+        category_id.zero? ? '' : 'type=video&videoCategoryId=' + category_id.to_s
       param_max_results = 'maxResults=' + max_results_count.to_s
       param_order = 'order=viewCount'
       param_key = 'key=' + @api_key
 
       param_array = [param_part, param_region_code, param_video_category_id, param_max_results, param_order, param_key]
-      response = call_yt_url(youtube_api_path(param_array, 'search'))
+
+      response = call_yt_url_with_net(youtube_api_path(param_array, 'search'))
       response
     end
 
@@ -92,11 +101,12 @@ module YouTubeTrendingMap
       param_part = 'part=snippet,player,statistics'
       param_id = 'id='
       video_ids.each.with_index do |video_id, index|
-        param_id += index == (video_ids.size - 1) ? video_id + ', ' : video_id
+        param_id += index < (video_ids.size - 1) ? video_id + ', ' : video_id
+      end
       param_key = 'key=' + @api_key
 
       param_array = [param_part, param_id, param_key]
-      response = call_yt_url(youtube_api_path(param_array, 'videos'))
+      response = call_yt_url_with_net(youtube_api_path(param_array, 'videos'))
       response
     end
 

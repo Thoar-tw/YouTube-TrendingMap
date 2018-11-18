@@ -16,23 +16,24 @@ module YouTubeTrendingMap
       end
 
       def build_entity(data)
-        DataMapper.new(data).build_entity
+        DataMapper.new(data, @gateway).build_entity
       end
 
       # Extracts entity specific elements from raw response data structure
       class DataMapper
-        def initialize(list_data)
+        def initialize(list_data, gateway)
           @list_data = list_data
+          @gateway = gateway
           @top_video_mapper = Mapper::TopVideo.new
           @country_mapper = Mapper::Country.new
         end
 
         def build_entity
-          YouTubeTrendingMap::Entity::CountryRanking.new(
+          YouTubeTrendingMap::Entity::CountryTopVideos.new(
             id: nil,
             count: count,
             belonging_country: belonging_country,
-            top_videos: top_videos
+            videos: videos
           )
         end
 
@@ -47,15 +48,15 @@ module YouTubeTrendingMap
         end
 
         # Return an array of TopVideo entities
-        def top_videos
+        def videos
           video_ids = []
           @list_data['items'].each do |top_video|
-            video_ids.push(top_video['id']['videoId'])
+            video_ids.push(top_video['id']['videoId']) unless top_video['id']['videoId'].nil?
           end
 
           # since we need to call youtube/api/videos to get the embed_link
           videos_data = @gateway.certain_id_videos_data(video_ids)
-          @top_video_mapper.build_video_items(videos_data)
+          @top_video_mapper.build_video_items(videos_data['items'])
         end
       end
     end

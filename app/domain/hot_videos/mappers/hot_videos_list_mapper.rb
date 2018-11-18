@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative 'hot_video_mapper.rb'
-require_relative 'country_mapper.rb'
 
 module YouTubeTrendingMap
   module Mapper
@@ -24,8 +23,8 @@ module YouTubeTrendingMap
       class DataMapper
         def initialize(list_data)
           @list_data = list_data
-          @yt_video_mapper = Mapper::YoutubeVideo.new
-          @country_mapper = Mapper::Country.new
+          @hot_video_mapper = Mapper::HotVideo.new
+          # @country_mapper = Mapper::Country.new
         end
 
         def build_entity
@@ -43,14 +42,16 @@ module YouTubeTrendingMap
           @list_data['items'].length
         end
 
-        def belonging_country_code
+        def belonging_country
           # @country_mapper.build_entity_from_region_code(@list_data['region_code'])
-          @list_data['region_code']
+          COUNTRY_CODES.key(@list_data['region_code'].upcase)
+        rescue Error
+          nil
         end
 
         # Return an array of YoutubeVideo objects
         def videos
-          @yt_video_mapper.build_video_items(@list_data['items'])
+          @hot_video_mapper.build_video_items(@list_data['items'])
         end
       end
     end

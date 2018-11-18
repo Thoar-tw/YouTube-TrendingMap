@@ -2,13 +2,11 @@
 
 Sequel.migration do
   change do
-    create_table(:countries) do
+    create_table(:hot_videos_lists) do
       primary_key :id
 
-      Integer     :place_id
-      String      :name
-      Float       :latitude
-      Float       :longitude
+      Integer     :count
+      String      :belonging_country
 
       DateTime    :create_at
       DateTime    :update_at

@@ -10,13 +10,9 @@ module YouTubeTrendingMap
 
       attr_reader :continent_top_videos
 
-      attribute :id,                  Integer.optional
-      attribute :count,               Strict::Integer
-      attribute :videos,              Strict::Array.of(TopVideo)
-
-      def to_attr_hash
-        to_hash.reject { |key, _| %i[id videos].include? key }
-      end
+      # attribute :id,                  Integer.optional
+      # attribute :count,               Strict::Integer
+      # attribute :videos,              Strict::Array.of(TopVideo)
     end
   end
 end

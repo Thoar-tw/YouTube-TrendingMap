@@ -8,14 +8,11 @@ module YouTubeTrendingMap
     class ContinentTopVideos
       include Mixins::TopVideosAggregator
 
-      attribute :id,                  Integer.optional
-      attribute :count,               Strict::Integer
-      attribute :belonging_continent, Strict::String
-      attribute :videos,              Strict::Array.of(TopVideo)
+      # attribute :id,                  Integer.optional
+      # attribute :count,               Strict::Integer
+      # attribute :belonging_continent, Strict::String
+      # attribute :videos,              Strict::Array.of(TopVideo)
 
-      def to_attr_hash
-        to_hash.reject { |key, _| %i[id videos].include? key }
-      end
     end
   end
 end
