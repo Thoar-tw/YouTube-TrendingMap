@@ -3,7 +3,7 @@
 module YouTubeTrendingMap
   module Mapper
     # Data structure of an Youtube video
-    class YoutubeVideo
+    class HotVideo
       def initialize; end
 
       def build_video_items(items_data)
@@ -23,7 +23,7 @@ module YouTubeTrendingMap
         end
 
         def build_entity # rubocop:disable Metrics/MethodLength
-          YouTubeTrendingMap::Entity::YoutubeVideo.new(
+          YouTubeTrendingMap::Entity::HotVideo.new(
             id: nil,
             origin_id: origin_id,
             publish_time: publish_time,

@@ -8,15 +8,15 @@ module YouTubeTrendingMap
       end
 
       def aggregate_from_same_continent(country_top_videos_array, continent)
-        top_videos_same_continent =
+        same_continent_top_videos =
           country_top_videos_array.select do |top_videos_list|
             belonging_continent(top_videos_list.region_code) == continent
           end
 
-          remove_duplicate_videos(top_videos_same_continent)
+        remove_duplicates(same_continent_top_videos)
       end
 
-      def remove_duplicate_videos(top_videos)
+      def remove_duplicates(top_videos)
       end
 
       def belonging_continent(country_code)

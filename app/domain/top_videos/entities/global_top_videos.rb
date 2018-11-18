@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
-require_relative 'youtube_video.rb'
+require_relative 'top_video.rb'
 
 module YouTubeTrendingMap
   module Entity
     # Domain entity for Youtube trending lists
     class GlobalTopVideos
-      include Mixins::TopVideosMerger
+      include Mixins::TopVideosAggregator
+
+      attr_reader :continent_top_videos
 
       attribute :id,                  Integer.optional
       attribute :count,               Strict::Integer

@@ -1,22 +1,22 @@
 # frozen_string_literal: true
 
 # exactly trending videos from youtube api query
-require_relative '../values/country.rb'
-require_relative 'youtube_video.rb'
+require_relative 'country.rb'
+require_relative 'hot_video.rb'
 
 module YouTubeTrendingMap
   module Entity
-    # Domain entity for Youtube trending lists
+    # Domain entity for Youtube hot videos lists
     class HotVideosList < Dry::Struct
       include Dry::Types.module
 
-      attribute :id,                  Integer.optional
-      attribute :count,               Strict::Integer
-      attribute :belonging_country,   Country
-      attribute :videos,              Strict::Array.of(HotVideo)
+      attribute :id,                        Integer.optional
+      attribute :count,                     Strict::Integer
+      attribute :belonging_country_code,    Strict::String
+      attribute :videos,                    Strict::Array.of(HotVideo)
 
       def to_attr_hash
-        to_hash.reject { |key, _| %i[id belonging_country videos].include? key }
+        to_hash.reject { |key, _| %i[id videos].include? key }
       end
     end
   end

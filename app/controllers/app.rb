@@ -17,7 +17,7 @@ module YouTubeTrendingMap
 
       # GET /
       routing.root do
-        trending_list = Mapper::TrendingList.get(region_code, category_id, max_results).all
+        trending_list = Mapper::HotVideosList.get(region_code, category_id, max_results).all
         if trending_list.none?
           puts 'no trending list!!'
           # flash.now[:notice] = 'Add a Github project to get started'
@@ -42,7 +42,7 @@ module YouTubeTrendingMap
 
             category_id = routing.params['category_id']
 
-            trending_list = YouTubeTrendingMap::Mapper::TrendingList
+            trending_list = YouTubeTrendingMap::Mapper::HotVideosList
                             .new(App.config.GOOGLE_CLOUD_KEY)
                             .get(region_code, category_id, 10)
 
@@ -61,7 +61,7 @@ module YouTubeTrendingMap
 
         # routing.on String, Integer do |path_region_code, path_category_id|
         #   puts 'routing on...' + path_region_code + '/' + path_category_id.to_s
-        #   trending_list = YouTubeTrendingMap::Mapper::TrendingList
+        #   trending_list = YouTubeTrendingMap::Mapper::HotVideosList
         #                   .new(App.config.GOOGLE_CLOUD_KEY)
         #                   .get(path_region_code, path_category_id, 10)
 

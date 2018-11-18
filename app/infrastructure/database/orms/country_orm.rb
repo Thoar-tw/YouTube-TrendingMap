@@ -5,7 +5,7 @@ module YouTubeTrendingMap
     # Object Relational Mapper for Country Entities
     class CountryOrm < Sequel::Model(:countries)
       one_to_many :local_trending_lists,
-                  class: :'YouTubeTrendingMap::Database::TrendingListOrm',
+                  class: :'YouTubeTrendingMap::Database::HotVideosListOrm',
                   key: :belonging_country_id
 
       plugin :timestamps, update_on_create: true

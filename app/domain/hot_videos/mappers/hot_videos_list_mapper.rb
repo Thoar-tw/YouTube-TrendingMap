@@ -1,20 +1,18 @@
 # frozen_string_literal: true
 
-require_relative 'youtube_video_mapper.rb'
+require_relative 'hot_video_mapper.rb'
 require_relative 'country_mapper.rb'
 
 module YouTubeTrendingMap
   module Mapper
     # Data structure of trending list queried from Youtube
-    class TrendingList
+    class HotVideosList
       def initialize(api_key, gateway_class = YouTubeTrendingMap::YoutubeAPI)
-        # @api_key = api_key
-        # @gateway_class = gateway_class
         @gateway = gateway_class.new(api_key)
       end
 
       def get(region_code, category_id, max_results)
-        data = @gateway.trending_list_data(region_code, category_id, max_results)
+        data = @gateway.hot_videos_data(region_code, category_id, max_results)
         build_entity(data)
       end
 
@@ -31,7 +29,7 @@ module YouTubeTrendingMap
         end
 
         def build_entity
-          YouTubeTrendingMap::Entity::TrendingList.new(
+          YouTubeTrendingMap::Entity::HotVideosList.new(
             id: nil,
             count: count,
             belonging_country: belonging_country,
@@ -45,18 +43,14 @@ module YouTubeTrendingMap
           @list_data['items'].length
         end
 
-        def belonging_country
-          @country_mapper.build_entity_from_region_code(@list_data['region_code'])
+        def belonging_country_code
+          # @country_mapper.build_entity_from_region_code(@list_data['region_code'])
+          @list_data['region_code']
         end
 
         # Return an array of YoutubeVideo objects
         def videos
           @yt_video_mapper.build_video_items(@list_data['items'])
-          # @videos = []
-          # @list_data['items'].each do |item|
-          #   @videos << YoutubeVideo.new(item)
-          # end
-          # @videos
         end
       end
     end

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require_relative 'countries'
-require_relative 'trending_lists'
-require_relative 'youtube_videos'
+require_relative 'hot_videos_lists'
+require_relative 'hot_videos'
 
 module YouTubeTrendingMap
   module Repository
@@ -10,8 +10,8 @@ module YouTubeTrendingMap
     class For
       ENTITY_REPOSITORY = {
         Entity::Country => Countries,
-        Entity::TrendingList => TrendingLists,
-        Entity::YoutubeVideo => YoutubeVideos
+        Entity::HotVideosList => HotVideosLists,
+        Entity::HotVideo => HotVideos
       }.freeze
 
       def self.klass(entity_klass)

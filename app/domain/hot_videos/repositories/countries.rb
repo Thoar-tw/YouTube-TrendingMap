@@ -13,11 +13,11 @@ module YouTubeTrendingMap
         return nil unless db_record
 
         Entity::Country.new(
-          id:         db_record.id,
-          place_id:   db_record.place_id,
-          name:       db_record.name,
-          latitude:   db_record.latitude,
-          longitude:  db_record.longitude
+          id: db_record.id,
+          place_id: db_record.place_id,
+          name: db_record.name,
+          latitude: db_record.latitude,
+          longitude: db_record.longitude
         )
       end
 

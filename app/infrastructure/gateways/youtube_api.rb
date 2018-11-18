@@ -23,7 +23,7 @@ module YouTubeTrendingMap
       @cache = cache
     end
 
-    def trending_list_data(region_code, category_id, max_results_count)
+    def hot_videos_data(region_code, category_id, max_results_count)
       response = get_most_popular_videos(region_code, category_id, max_results_count)
       data = JSON.parse(response)
       data['region_code'] = region_code
@@ -31,7 +31,7 @@ module YouTubeTrendingMap
     end
 
     def top_videos_data(region_code, category_id, max_results_count)
-      response = get_video_list_order_by_view_count(region_code, category_id, max_results_count)
+      response = get_videos_ordered_by_view_count(region_code, category_id, max_results_count)
       data = JSON.parse(response)
       data['region_code'] = region_code
       data
@@ -75,7 +75,7 @@ module YouTubeTrendingMap
       response
     end
 
-    def get_video_list_order_by_view_count(region_code, category_id, max_results_count)
+    def get_videos_ordered_by_view_count(region_code, category_id, max_results_count)
       param_part = 'part=snippet'
       param_region_code = 'regionCode=' + region_code
       param_video_category_id = 'videoCategoryId=' + category_id.to_s
