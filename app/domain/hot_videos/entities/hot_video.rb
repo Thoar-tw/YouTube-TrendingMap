@@ -3,7 +3,7 @@
 module YouTubeTrendingMap
   module Entity
     # Youtube trending videos in a certain region
-    class YoutubeVideo < Dry::Struct
+    class HotVideo < Dry::Struct
       include Dry::Types.module
 
       attribute :origin_id,       Strict::String

@@ -7,16 +7,16 @@ require_relative 'youtube_video.rb'
 module YouTubeTrendingMap
   module Entity
     # Domain entity for Youtube trending lists
-    class TrendingList < Dry::Struct
-      include Dry::Types.module
+    class ContinentTopVideos
+      include Mixins::TopVideosMerger
 
       attribute :id,                  Integer.optional
       attribute :count,               Strict::Integer
-      attribute :belonging_country,   Country
+      attribute :belonging_continent, Strict::String
       attribute :videos,              Strict::Array.of(YoutubeVideo)
 
       def to_attr_hash
-        to_hash.reject { |key, _| %i[id belonging_country videos].include? key }
+        to_hash.reject { |key, _| %i[id videos].include? key }
       end
     end
   end

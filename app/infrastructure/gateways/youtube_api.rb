@@ -24,17 +24,30 @@ module YouTubeTrendingMap
     end
 
     def trending_list_data(region_code, category_id, max_results_count)
-      response = get_most_popular_videos_list(region_code, category_id, max_results_count)
+      response = get_most_popular_videos(region_code, category_id, max_results_count)
       data = JSON.parse(response)
       data['region_code'] = region_code
+      data
+    end
+
+    def top_videos_data(region_code, category_id, max_results_count)
+      response = get_video_list_order_by_view_count(region_code, category_id, max_results_count)
+      data = JSON.parse(response)
+      data['region_code'] = region_code
+      data
+    end
+
+    def certain_id_videos_data(video_ids)
+      response = get_videos_data_by_id(video_ids)
+      data = JSON.parse(response)
       data
     end
 
     private
 
     # Attach params to url path
-    def youtube_api_path(params_array)
-      path = 'https://www.googleapis.com/youtube/v3/videos?'
+    def youtube_api_path(params_array, type)
+      path = 'https://www.googleapis.com/youtube/v3/' + type + '?'
       params_array.each.with_index do |param, index|
         path += '&' unless index.zero?
         path += param
@@ -49,7 +62,7 @@ module YouTubeTrendingMap
     end
 
     # Input region code of the country and get trending videos with json format
-    def get_most_popular_videos_list(region_code, category_id, max_results_count)
+    def get_most_popular_videos(region_code, category_id, max_results_count)
       param_part = 'part=snippet,player,statistics'
       param_chart = 'chart=mostPopular'
       param_region_code = 'regionCode=' + region_code
@@ -58,7 +71,32 @@ module YouTubeTrendingMap
       param_key = 'key=' + @api_key
 
       param_array = [param_part, param_chart, param_region_code, param_video_category_id, param_max_results, param_key]
-      response = call_yt_url(youtube_api_path(param_array))
+      response = call_yt_url(youtube_api_path(param_array, 'videos'))
+      response
+    end
+
+    def get_video_list_order_by_view_count(region_code, category_id, max_results_count)
+      param_part = 'part=snippet'
+      param_region_code = 'regionCode=' + region_code
+      param_video_category_id = 'videoCategoryId=' + category_id.to_s
+      param_max_results = 'maxResults=' + max_results_count.to_s
+      param_order = 'order=viewCount'
+      param_key = 'key=' + @api_key
+
+      param_array = [param_part, param_region_code, param_video_category_id, param_max_results, param_order, param_key]
+      response = call_yt_url(youtube_api_path(param_array, 'search'))
+      response
+    end
+
+    def get_videos_data_by_id(video_ids)
+      param_part = 'part=snippet,player,statistics'
+      param_id = 'id='
+      video_ids.each.with_index do |video_id, index|
+        param_id += index == (video_ids.size - 1) ? video_id + ', ' : video_id
+      param_key = 'key=' + @api_key
+
+      param_array = [param_part, param_id, param_key]
+      response = call_yt_url(youtube_api_path(param_array, 'videos'))
       response
     end
 
