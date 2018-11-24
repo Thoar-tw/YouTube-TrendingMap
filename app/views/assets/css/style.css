@@ -63,44 +63,54 @@ body {
 #trending_map .row .s3 #search_area form .row .s12 button {
     width: 90%;
 }
-#trending_map .row .s3 #trending_list {
-    /* height: 67%; */
+#trending_map .row .s3 #hot_videos_list .card .card-content {
+    padding: 16px;
+    font-size: 16px;
 }
-#trending_map .row .s3 #trending_list .collection {
+#trending_map .row .s3 #hot_videos_list .card .card-title {
+    font-weight: 500;
+}
+#trending_map .row .s3 #hot_videos_list .collection {
     border: 0;
     height: 100%;
     overflow: scroll;
 }
-#trending_map .row .s3 #trending_list .collection #list_title {
+#trending_map .row .s3 #hot_videos_list .collection #list_title {
     text-align: center;
 }
-#trending_map .row .s3 #trending_list .collection #list_title span {
+#trending_map .row .s3 #hot_videos_list .collection #list_title span {
     position: relative;
     bottom: 5px;
     font-size: 18px;
 }
-#trending_map .row .s3 #trending_list .collection .collection-item iframe {
+#trending_map .row .s3 #hot_videos_list .collection .collection-item iframe {
     width: 100%;
 }
-#trending_map .row .s3 #trending_list .collection .collection-item p {
+#trending_map .row .s3 #hot_videos_list .collection .collection-item p {
     margin: 0;
 } 
-#trending_map .row .s3 #trending_list .collection .collection-item .title {
+#trending_map .row .s3 #hot_videos_list .collection .collection-item .title {
     font-size: 16px;
     font-weight: bold;
 }
-#trending_map .row .s3 #trending_list .collection .collection-item .channel_title {
+#trending_map .row .s3 #hot_videos_list .collection .collection-item .channel_title {
     font-size: 14px;
     color: #111111cc;
 }
-#trending_map .row .s3 #trending_list .collection .collection-item .view_count {
+#trending_map .row .s3 #hot_videos_list .collection .collection-item .view_count {
     font-size: 14px;
     color: #111111cc;
 }
-#trending_map .row .s3 #trending_list .collection .collection-item .secondary-content {
+#trending_map .row .s3 #hot_videos_list .collection .collection-item .secondary-content {
     color: #ef5350;
 }
 #trending_map .row .s9 {
     height: 100%;
     padding: 0;
+}
+
+#trending_map #toast-container {
+    left: 1%;
+    top: 60%;
+    width: 50%;
 }
