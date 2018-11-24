@@ -38,6 +38,7 @@ group :test do
   gem 'simplecov', '~> 0.16'
   gem 'vcr', '~> 4.0'
   gem 'webmock', '~> 3.4'
+  gem 'watir', '~> 6.15'
 end
 
 # Quality testing
