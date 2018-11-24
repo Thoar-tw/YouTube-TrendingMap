@@ -182,7 +182,7 @@ DEPENDENCIES
   slim (~> 4.0)
   sqlite3
   vcr (~> 4.0)
-  watir
+  watir (~> 6.15)
   webmock (~> 3.4)
 
 RUBY VERSION
