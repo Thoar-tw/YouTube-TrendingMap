@@ -9,27 +9,28 @@ module YouTubeTrendingMap
     plugin :render, engine: 'slim', views: 'app/views'
     plugin :assets, css: 'style.css', path: 'app/views/assets'
     plugin :halt
+    plugin :flash
 
-    trending_list = nil
+    hot_videos_list = nil
 
     route do |routing| # rubocop:disable Metrics/BlockLength
       routing.assets # load CSS
 
       # GET /
       routing.root do
-        trending_list = Mapper::HotVideosList.get(region_code, category_id, max_results).all
-        if trending_list.none?
+        global_top_videos = Mapper::GlobalTopVideos.get(region_code, category_id, max_results).all
+        if global_top_videos.none?
           puts 'no trending list!!'
-          # flash.now[:notice] = 'Add a Github project to get started'
+          flash.now[:notice] = 'Add a Github project to get started'
         end
         view 'home', locals: {
           mapbox_token: App.config.MAPBOX_TOKEN,
-          trending_list: trending_list
+          hot_videos_list: hot_videos_list
         }
       end
 
-      routing.on 'trending_map' do
-        routing.is do
+      routing.on 'trending_map' do # rubocop:disable Metrics/BlockLength
+        routing.is do # rubocop:disable Metrics/BlockLength
           # POST /trending_map/
           routing.post do
             # user enter specific region and category
@@ -42,9 +43,19 @@ module YouTubeTrendingMap
 
             category_id = routing.params['category_id']
 
-            trending_list = YouTubeTrendingMap::Mapper::HotVideosList
-                            .new(App.config.GOOGLE_CLOUD_KEY)
-                            .get(region_code, category_id, 10)
+            begin
+              hot_videos_list = YouTubeTrendingMap::Mapper::HotVideosList
+                                .new(App.config.GOOGLE_CLOUD_KEY)
+                                .get(region_code, category_id, 10)
+
+              if hot_videos_list.nil?
+                flash[:error] = 'hot videos list is nil'
+                routing.redirect '/trending_map'
+              end
+            rescue StandardError
+              flash[:error] = 'Having trouble getting hot videos list'
+              routing.redirect '/trending_map'
+            end
 
             # category_id only from 1 to 44
             routing.halt 400 unless (region_code =~ /^[A-Za-z]+$/) && (region_code.length == 2)
@@ -53,7 +64,7 @@ module YouTubeTrendingMap
 
           view 'trending_map', locals: {
             mapbox_token: App.config.MAPBOX_TOKEN,
-            trending_list: trending_list,
+            hot_videos_list: hot_videos_list,
             countries: COUNTRIES,
             categories: CATEGORIES
           }

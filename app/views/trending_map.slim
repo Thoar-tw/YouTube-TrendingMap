@@ -23,14 +23,23 @@
                 type="submit" name="action"
               } Search
                 <i class="material-icons right">search</i>
-      #trending_list
-        ul class="collection"
-          - unless trending_list.nil?
+      #hot_videos_list
+        - if hot_videos_list.nil?
+          .row
+            .col.s12
+              .card.red.lighten-1
+                .card-content.white-text
+                  span class="card-title center"
+                    | Reminder
+                  p
+                    | Click a country on the map to see what's HOT there!
+        - else
+          ul class="collection"
             #list_title
               i class="material-icons" location_on
               span
-                = trending_list.belonging_country
-            - trending_list.videos.each.with_index do |video, index|
+                = hot_videos_list.belonging_country
+            - hot_videos_list.videos.each.with_index do |video, index|
               li class="collection-item"
                 iframe {
                   src= video.embed_link
@@ -79,9 +88,10 @@ javascript:
     });
 
     $('#select_category').formSelect();
+    
     var left_nav_height = $('#search_area').parent().height();
     var top_height = $('#search_area').height();
-    $('#trending_list').height(left_nav_height - top_height - 20);
+    $('#hot_videos_list').height(left_nav_height - top_height - 20);
   });
 
   mapboxgl.accessToken = "#{mapbox_token}"
@@ -166,8 +176,7 @@ javascript:
           } 
         }).done(function(msg){
           console.log('sent back to controller!');
-          $('#trending_list').load(" #trending_list > *");
-          
+          $('#hot_videos_list').load(" #hot_videos_list > *");
         });
       });
   });
