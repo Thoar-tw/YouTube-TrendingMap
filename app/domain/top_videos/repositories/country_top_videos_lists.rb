@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
 module YouTubeTrendingMap
-  module HotVideosRepository
+  module TopVideosRepository
     # Repository for Countries
-    class HotVideosLists
+    class CountryTopVideosLists
       def self.all
-        Database::HotVideosListOrm.all.map do |db_record|
+        Database::CountryTopVideosListOrm.all.map do |db_record|
           rebuild_entity(db_record)
         end
       end
 
       def self.find(entity)
-        db_record = Database::HotVideosListOrm.first(id: entity.id)
+        db_record = Database::CountryTopVideosListOrm.first(id: entity.id)
         rebuild_entity(db_record)
       end
 

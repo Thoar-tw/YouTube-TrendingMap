@@ -4,7 +4,7 @@ require_relative 'hot_videos_lists'
 require_relative 'hot_videos'
 
 module YouTubeTrendingMap
-  module Repository
+  module HotVideosRepository
     # Finds the right repository for an entity object or class
     class For
       ENTITY_REPOSITORY = {

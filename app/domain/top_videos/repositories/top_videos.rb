@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module YouTubeTrendingMap
-  module HotVideosRepository
+  module TopVideosRepository
     # Repository for Countries
-    class HotVideos
+    class TopVideos
       def self.find_title(title)
         rebuild_entity Database::HotVideoOrm.first(title: title)
       end
@@ -15,7 +15,7 @@ module YouTubeTrendingMap
       def self.rebuild_entity(db_record) # rubocop:disable Metrics/MethodLength
         return nil unless db_record
 
-        Entity::HotVideo.new(
+        Entity::TopVideo.new(
           id: db_record.id,
           origin_id: db_record.origin_id,
           publish_time: db_record.publish_time,
