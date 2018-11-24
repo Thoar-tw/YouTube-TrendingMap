@@ -7,7 +7,7 @@ require_relative 'top_video.rb'
 module YouTubeTrendingMap
   module Entity
     # Domain entity for Youtube trending lists
-    class CountryTopVideos < Dry::Struct
+    class CountryTopVideosList < Dry::Struct
       include Dry::Types.module
 
       attribute :id,                  Integer.optional
