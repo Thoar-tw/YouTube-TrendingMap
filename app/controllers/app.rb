@@ -12,12 +12,16 @@ module YouTubeTrendingMap
     plugin :flash
 
     hot_videos_list = nil
+    view_hot_videos_list = nil
 
     route do |routing| # rubocop:disable Metrics/BlockLength
       routing.assets # load CSS
 
       # GET /
       routing.root do
+        # Get viewer's previously seen lists from session
+        session[:watching] ||= []
+
         global_top_videos = Mapper::GlobalTopVideos.get(region_code, category_id, max_results).all
         if global_top_videos.none?
           puts 'no trending list!!'
@@ -52,6 +56,9 @@ module YouTubeTrendingMap
                 flash[:error] = 'hot videos list is nil'
                 routing.redirect '/trending_map'
               end
+
+              view_hot_videos_list = Views::HotVideosList.new(hot_videos_list)
+
             rescue StandardError
               flash[:error] = 'Having trouble getting hot videos list'
               routing.redirect '/trending_map'
@@ -64,7 +71,7 @@ module YouTubeTrendingMap
 
           view 'trending_map', locals: {
             mapbox_token: App.config.MAPBOX_TOKEN,
-            hot_videos_list: hot_videos_list,
+            hot_videos_list: view_hot_videos_list,
             countries: COUNTRIES,
             categories: CATEGORIES
           }

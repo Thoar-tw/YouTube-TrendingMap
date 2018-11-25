@@ -39,7 +39,7 @@
               i class="material-icons" location_on
               span
                 = hot_videos_list.belonging_country
-            - hot_videos_list.videos.each.with_index do |video, index|
+            - hot_videos_list.each do |video|
               li class="collection-item"
                 iframe {
                   src= video.embed_link
