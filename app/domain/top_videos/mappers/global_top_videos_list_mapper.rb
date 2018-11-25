@@ -3,7 +3,7 @@
 module YouTubeTrendingMap
   module Mapper
     # Data structure of trending list queried from Youtube
-    class GlobalTopVideos
+    class GlobalTopVideosList
       include Mixins::TopVideosAggregator
 
       def initialize(api_key, gateway_class = YouTubeTrendingMap::YoutubeAPI)

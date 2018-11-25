@@ -5,7 +5,7 @@ require_relative 'top_video_mapper.rb'
 module YouTubeTrendingMap
   module Mapper
     # Data structure of trending list queried from Youtube
-    class CountryTopVideos
+    class CountryTopVideosList
       def initialize(api_key, gateway_class = YouTubeTrendingMap::YoutubeAPI)
         @gateway = gateway_class.new(api_key)
       end
