@@ -10,7 +10,7 @@ module YouTubeTrendingMap
       end
 
       def index_str
-        "project[#{@index}]"
+        "video[#{@index}]"
       end
 
       def entity

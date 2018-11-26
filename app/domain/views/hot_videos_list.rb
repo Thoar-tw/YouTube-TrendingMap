@@ -8,7 +8,10 @@ module YouTubeTrendingMap
     class HotVideosList
       def initialize(list)
         @list = list
-        @videos = list.videos.map.with_index { |video, i| Video.new(video, i) }
+        @videos =
+          list.videos.map.with_index do |video, i|
+            Video.new(video, i + 1)
+          end
       end
 
       def each

@@ -40,7 +40,7 @@
               span
                 = hot_videos_list.belonging_country
             - hot_videos_list.each do |video|
-              li class="collection-item"
+              li class="collection-item" id="#{video.index_str}"
                 iframe {
                   src= video.embed_link
                   width="100%"
