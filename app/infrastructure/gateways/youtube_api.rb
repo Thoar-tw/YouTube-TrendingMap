@@ -52,7 +52,7 @@ module YouTubeTrendingMap
         path += '&' unless index.zero?
         path += param
       end
-      puts path
+
       path
     end
 

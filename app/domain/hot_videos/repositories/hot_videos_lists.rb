@@ -42,13 +42,13 @@ module YouTubeTrendingMap
         rebuild_entity(db_list)
       end
 
-      def self.rebuild_entity(db_list)
+      def self.rebuild_entity(db_record)
         return nil unless db_record
 
         Entity::HotVideosList.new(
-          db_list.to_hash.merge(
+          db_record.to_hash.merge(
             # belonging_country: Countries.rebuild_entity(db_record.belonging_country),
-            videos: HotVideos.rebuild_many(db_list.videos)
+            videos: HotVideos.rebuild_many(db_record.videos)
           )
         )
       end
@@ -61,7 +61,7 @@ module YouTubeTrendingMap
 
       private_class_method :rebuild_entity, :rebuild_many
 
-      # Helper class to create trending_list entity,
+      # Helper class to create hot videos list entity,
       # also check its belonging country & videos on it from the databases
       class HotVideosListCreateHelper
         def initialize(entity)
