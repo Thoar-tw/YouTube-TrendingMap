@@ -4,25 +4,43 @@ module YouTubeTrendingMap
   module Mixins
     # line credit calculation methods
     module TopVideosAggregator
-      def aggregate(top_videos_array)
+      def aggregate(videos_list)
         # same_continent_top_videos =
         #   country_top_videos_array.select do |top_videos_list|
         #     belonging_continent(top_videos_list.region_code) == continent
         #   end
+        videos = []
+        videos_list.each do |list|
+          list.videos.each do |video|
+            videos << video
+          end
+        end
+        puts ">> in aggregator"
+        videos.each do |video|
+          puts video.origin_id
+        end
 
-        remove_duplicates(top_videos_array)
+        videos = remove_duplicates(videos)
+        puts ">> after removing duplicates"
+        videos.each do |video|
+          puts video.origin_id
+        end
+
+        videos = sort_by_view_counts(videos)
+        puts ">> after sorting"
+        videos.each do |video|
+          puts video.origin_id
+        end
+
+        videos
       end
 
-      def remove_duplicates(top_videos)
+      def remove_duplicates(videos)
+        videos.uniq(&:origin_id)
       end
 
-      # def belonging_continent(country_code)
-      #   CONTINENT_COUNTRY_CODES.each do |continent, countries|
-      #     return continent if countries.key?(country_code)
-      #   end
-      # end
-
-      def sort_by_view_counts
+      def sort_by_view_counts(videos)
+        videos.sort_by(&:view_count).reverse
       end
     end
   end

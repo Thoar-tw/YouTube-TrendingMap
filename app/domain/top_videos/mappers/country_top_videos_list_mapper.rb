@@ -29,7 +29,7 @@ module YouTubeTrendingMap
         end
 
         def build_entity
-          YouTubeTrendingMap::Entity::CountryTopVideos.new(
+          YouTubeTrendingMap::Entity::CountryTopVideosList.new(
             id: nil,
             count: count,
             belonging_country: belonging_country,

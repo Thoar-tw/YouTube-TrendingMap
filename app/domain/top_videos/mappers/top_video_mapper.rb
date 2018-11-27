@@ -19,7 +19,7 @@ module YouTubeTrendingMap
       # Extracts entity specific elements from raw response data structure
       class DataMapper
         def initialize(video_data)
-          puts video_data
+          # puts video_data
           @video_data = video_data
         end
 
@@ -41,7 +41,6 @@ module YouTubeTrendingMap
         private
 
         def origin_id
-          puts @video_data['id']
           @video_data['id']
         end
 
