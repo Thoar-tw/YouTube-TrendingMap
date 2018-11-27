@@ -11,6 +11,9 @@ module YouTubeTrendingMap
     plugin :halt
     plugin :flash
 
+    DEFAULT_CATEGORY = 0
+    DEFAULT_MAX_RESULTS = 10
+
     hot_videos_list = nil
     view_hot_videos_list = nil
 
@@ -22,30 +25,42 @@ module YouTubeTrendingMap
         # Get viewer's previously seen lists from session
         session[:watching] ||= []
 
-        global_top_videos = Mapper::GlobalTopVideos.get(region_code, category_id, max_results).all
-        if global_top_videos.none?
-          puts 'no trending list!!'
-          flash.now[:notice] = 'Add a Github project to get started'
+        global_top_videos_list =  Mapper::GlobalTopVideosList
+                                  .new(App.config.GOOGLE_CLOUD_KEY)
+                                  .get(DEFAULT_CATEGORY, DEFAULT_MAX_RESULTS)
+
+        if global_top_videos_list.nil?
+          flash[:error] = 'global top videos list is nil'
+          routing.redirect '/'
         end
+
         view 'home', locals: {
           mapbox_token: App.config.MAPBOX_TOKEN,
-          hot_videos_list: hot_videos_list
+          global_top_videos_list: global_top_videos_list
         }
       end
 
-      routing.on 'trending_map' do # rubocop:disable Metrics/BlockLength
+      routing.on 'hot_videos' do # rubocop:disable Metrics/BlockLength
         routing.is do # rubocop:disable Metrics/BlockLength
           # POST /trending_map/
-          routing.post do
+          routing.post do # rubocop:disable Metrics/BlockLength
             # user enter specific region and category
-            if routing.params['country_name'].nil?
-              region_code = routing.params['region_code']
-            else
-              country_name = routing.params['country_name']
-              region_code = COUNTRY_CODES[country_name]
-            end
+            region_code =
+              if routing.params['country_name'].nil?
+                routing.params['region_code']
+              else
+                COUNTRY_CODES[routing.params['country_name']]
+              end
 
             category_id = routing.params['category_id']
+
+            # region_code: e.g., US, TW; category_id: 1 - 44
+            unless  (region_code =~ /^[A-Za-z]+$/) &&
+                    (region_code.length == 2) &&
+                    (category_id =~ /\d/)
+              response.status = 400
+              routing.redirect '/hot_videos'
+            end
 
             begin
               hot_videos_list = YouTubeTrendingMap::Mapper::HotVideosList
@@ -54,58 +69,73 @@ module YouTubeTrendingMap
 
               if hot_videos_list.nil?
                 flash[:error] = 'hot videos list is nil'
-                routing.redirect '/trending_map'
+                routing.redirect '/hot_videos'
               end
 
               view_hot_videos_list = Views::HotVideosList.new(hot_videos_list)
-
             rescue StandardError
               flash[:error] = 'Having trouble getting hot videos list'
-              routing.redirect '/trending_map'
+              routing.redirect '/hot_videos'
             end
 
-            # category_id only from 1 to 44
-            routing.halt 400 unless (region_code =~ /^[A-Za-z]+$/) && (region_code.length == 2)
-            routing.redirect '/trending_map'
+            routing.redirect '/hot_videos'
           end
 
-          view 'trending_map', locals: {
+          view 'hot_videos', locals: {
             mapbox_token: App.config.MAPBOX_TOKEN,
             hot_videos_list: view_hot_videos_list,
             countries: COUNTRIES,
             categories: CATEGORIES
           }
         end
+      end
 
-        # routing.on String, Integer do |path_region_code, path_category_id|
-        #   puts 'routing on...' + path_region_code + '/' + path_category_id.to_s
-        #   trending_list = YouTubeTrendingMap::Mapper::HotVideosList
-        #                   .new(App.config.GOOGLE_CLOUD_KEY)
-        #                   .get(path_region_code, path_category_id, 10)
+      routing.on 'top_videos' do # rubocop:disable Metrics/BlockLength
+        routing.is do # rubocop:disable Metrics/BlockLength
+          # POST /trending_map/
+          routing.post do # rubocop:disable Metrics/BlockLength
+            # user enter specific region and category
 
-        #   routing.post do
-        #     if routing.params['country_name'].nil?
-        #       region_code = routing.params['region_code']
-        #     else
-        #       country_name = routing.params['country_name']
-        #       region_code = COUNTRY_CODES[country_name]
-        #     end
-        #     category_id = routing.params['category_id']
-        #     puts 'in routing post...'
+            routing.redirect '/top_videos'
+          end
 
-        #     # user enter specific region and category (category_id only from 1~44)
-        #     routing.halt 400 unless (region_code =~ /^[A-Za-z]+$/) && (region_code.length == 2)
-        #     puts "/trending_map/#{region_code}/#{category_id}"
-        #     routing.redirect "/trending_map/#{region_code}/#{category_id}"
-        #   end
+          view 'top_videos', locals: {
+            mapbox_token: App.config.MAPBOX_TOKEN,
+            # global_top_videos_list: global_top_videos_list,
+            countries: COUNTRIES,
+            categories: CATEGORIES
+          }
+        end
 
-        #   view 'trending_map', locals: {
-        #     trending_list: trending_list,
-        #     mapbox_token: App.config.MAPBOX_TOKEN,
-        #     countries: COUNTRIES,
-        #     categories: CATEGORIES
-        #   }
-        # end
+        routing.on 'global' do
+
+          view 'top_videos', locals: {
+            mapbox_token: App.config.MAPBOX_TOKEN,
+            # global_top_videos_list: global_top_videos_list,
+            countries: COUNTRIES,
+            categories: CATEGORIES
+          }
+        end
+
+        routing.on 'continent' do
+
+          view 'top_videos', locals: {
+            mapbox_token: App.config.MAPBOX_TOKEN,
+            # global_top_videos_list: global_top_videos_list,
+            countries: COUNTRIES,
+            categories: CATEGORIES
+          }
+        end
+
+        routing.on 'country' do
+
+          view 'top_videos', locals: {
+            mapbox_token: App.config.MAPBOX_TOKEN,
+            # global_top_videos_list: global_top_videos_list,
+            countries: COUNTRIES,
+            categories: CATEGORIES
+          }
+        end
       end
     end
   end

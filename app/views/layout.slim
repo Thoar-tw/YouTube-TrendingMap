@@ -17,6 +17,8 @@ html
     / Custom CSS
     / link rel='stylesheet' href='/assets/css/style.css'
     == assets(:css)
+    == assets(:img)
+
   body
     / JQuery Slim
     script { 
@@ -43,6 +45,7 @@ html
     / Mapbox JS
     script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.js"
 
+    include :flash_bar
     == yield
 
     footer class="page-footer red accent-2"

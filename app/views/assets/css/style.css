@@ -5,14 +5,6 @@ body {
     margin:0; padding:0;
     height: 100%;
 }
-#map {
-    position:absolute;
-    top: 0;
-    bottom: 0;
-    width: 75%;
-    height: 95%;
-    z-index: 0;
-}
 .page-footer{
     position: relative;
     z-index: 1;
@@ -27,7 +19,7 @@ body {
     height: 100%;
 }
 
-/* home */
+/* Home */
 #home {
     height: 95%;
 }
@@ -38,79 +30,127 @@ body {
     padding: 0;
 }
 #home #map {
+    position:absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
     height: 95%;
+    z-index: 0;
 }
 
-/* trending_map */
-#trending_map {
+/* Hot Videos */
+#hot_videos {
     height: 95%;
 }
-#trending_map .row {
+#hot_videos .row {
     height: 100%;
 }
-#trending_map .row .s3 {
+#hot_videos .row .s3 {
     position: relative;
     z-index: 1;
     height: 100%;
     box-shadow: 1px 0px 10px #00000061;
 }
-#trending_map .row .s3 #search_area {
+#hot_videos .row .s3 #search_area {
     margin-bottom: 20px;
 }
-#trending_map .row .s3 #search_area form .row .input-field {
+#hot_videos .row .s3 #search_area form .row .input-field {
     margin-top: 25px;
 }
-#trending_map .row .s3 #search_area form .row .s12 button {
+#hot_videos .row .s3 #search_area form .row .s12 button {
     width: 90%;
 }
-#trending_map .row .s3 #hot_videos_list .card .card-content {
+#hot_videos .row .s3 #hot_videos_list .card .card-content {
     padding: 16px;
     font-size: 16px;
 }
-#trending_map .row .s3 #hot_videos_list .card .card-title {
+#hot_videos .row .s3 #hot_videos_list .card .card-title {
     font-weight: 500;
 }
-#trending_map .row .s3 #hot_videos_list .collection {
+#hot_videos .row .s3 #hot_videos_list .collection {
     border: 0;
     height: 100%;
     overflow: scroll;
 }
-#trending_map .row .s3 #hot_videos_list .collection #list_title {
+#hot_videos .row .s3 #hot_videos_list .collection #list_title {
     text-align: center;
 }
-#trending_map .row .s3 #hot_videos_list .collection #list_title span {
+#hot_videos .row .s3 #hot_videos_list .collection #list_title span {
     position: relative;
     bottom: 5px;
     font-size: 18px;
 }
-#trending_map .row .s3 #hot_videos_list .collection .collection-item iframe {
+#hot_videos .row .s3 #hot_videos_list .collection .collection-item iframe {
     width: 100%;
 }
-#trending_map .row .s3 #hot_videos_list .collection .collection-item p {
+#hot_videos .row .s3 #hot_videos_list .collection .collection-item p {
     margin: 0;
 } 
-#trending_map .row .s3 #hot_videos_list .collection .collection-item .title {
+#hot_videos .row .s3 #hot_videos_list .collection .collection-item .title {
     font-size: 16px;
     font-weight: bold;
 }
-#trending_map .row .s3 #hot_videos_list .collection .collection-item .channel_title {
+#hot_videos .row .s3 #hot_videos_list .collection .collection-item .channel_title {
     font-size: 14px;
     color: #111111cc;
 }
-#trending_map .row .s3 #hot_videos_list .collection .collection-item .view_count {
+#hot_videos .row .s3 #hot_videos_list .collection .collection-item .view_count {
     font-size: 14px;
     color: #111111cc;
 }
-#trending_map .row .s3 #hot_videos_list .collection .collection-item .secondary-content {
+#hot_videos .row .s3 #hot_videos_list .collection .collection-item .secondary-content {
     color: #ef5350;
 }
-#trending_map .row .s9 {
+#hot_videos .row .s9 {
     height: 100%;
     padding: 0;
 }
-
-#trending_map #toast-container {
+#hot_videos .row .s9 #map {
+    position:absolute;
+    top: 0;
+    bottom: 0;
+    width: 75%;
+    height: 95%;
+    z-index: 0;
+}
+#hot_videos #toast-container {
     left: 1%;
     top: 60%;
     width: 50%;
+}
+
+/* Top Videos */
+#top_videos {
+    height: 95%;
+}
+#top_videos .row {
+    /* height: 100%; */
+}
+#top_videos .vertical-s9 {
+    height: 75%;
+    margin-bottom: auto;
+}
+#top_videos .vertical-s9 #map {
+    position: relative;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+#top_videos .vertical-s9 #mode {
+    position: absolute;
+    top: 0;
+    margin-top: 1%;
+    width: 100%;
+}
+#top_videos .vertical-s9 #mode a {
+    margin-left: 1%;
+}
+#top_videos .vertical-s3 {
+    position: relative;
+    height: 25%;
+    margin-bottom: auto;
+    box-shadow: 0px -3px 10px #00000061;
+    z-index: 1;
 }

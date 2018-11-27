@@ -1,0 +1,241 @@
+#top_videos
+  .row.vertical-s9
+    #map
+    / a class="waves-effect waves-light btn-large"
+    /   img src="world.png" alt="global" /
+    / | Global
+    #mode
+      <a href="/top_videos/global" class="waves-effect waves-light btn"><i class="material-icons right">cloud</i>Global</a>
+      <a href="/top_videos/continent" class="waves-effect waves-light btn"><i class="material-icons right">cloud</i>Continent</a>
+      <a href="/top_videos/country" class="waves-effect waves-light btn"><i class="material-icons right">cloud</i>Country</a>
+  .row.vertical-s3
+    #search_area
+      / form id="form" action="/top_videos" method="POST"
+      /   .row
+      /     .input-field.col.s12
+      /       input {
+      /         type='text'
+      /         name='country_name'
+      /         id='country_name_input'
+      /         class="autocomplete"
+      /         placeholder="Search a country"
+      /       }
+      /       label for="country_name_input" Country
+      /     .input-field.col.s12
+      /       select id="select_category" name="category_id"
+      /         <option value="" disabled selected>Choose a category</option>
+      /       label Video Category
+      /     .col.s12.center
+      /       button {
+      /         class="btn waves-effect waves-light"
+      /         type="submit" name="action"
+      /       } Search
+      /         <i class="material-icons right">search</i>
+    #top_videos_list
+      / - if hot_videos_list.nil?
+      /   .row
+      /     .col.s12
+      /       .card.red.lighten-1
+      /         .card-content.white-text
+      /           span class="card-title center"
+      /             | Reminder
+      /           p
+      /             | Click a country on the map to see what's HOT there!
+      / - else
+        ul class="collection"
+          #list_title
+            i class="material-icons" location_on
+            span
+              = hot_videos_list.belonging_country
+          - hot_videos_list.each do |video|
+            li class="collection-item" id="#{video.index_str}"
+              iframe {
+                src= video.embed_link
+                width="100%"
+                frameborder="0"
+                allowfullscreen
+              }
+              p class="title"
+                = video.title
+              p class="channel_title"
+                = video.channel_title
+              span class="view_count"
+                = video.view_count 
+              span &nbsp;views
+              <a href="#!" class="secondary-content"><i class="material-icons">favorite</i></a>
+
+  / var data_country_borders_json = "#{ country_borders_json }".replace(/&quot;/g,'"');
+  / data_country_borders = JSON.parse(data_country_borders_json);
+  
+  / var data_country_code_json = "#{ country_code_json }".replace(/&quot;/g,'"');
+  / data_country_code = JSON.parse(data_country_code_json);
+  / console.log(data_country_code["Taiwan"]);
+
+javascript:
+  var dataCategories = "#{ categories.to_json }".replace(/&quot;/g,'"').replace(/&amp;/g, '&');
+  
+  var dataCountries = "#{ countries }".replace(/&quot;/g,'').replace(/&#39;/g, '\'');
+  dataCountries = dataCountries.slice(2, dataCountries.length - 2).split(', ');
+  
+  var countriesObj = new Object();
+  dataCountries.forEach(function(ele){
+    countriesObj[ele] = null;
+  });
+
+  $(document).ready(function(){
+    $('input.autocomplete').autocomplete({
+      data: countriesObj
+    });
+
+    $.each(JSON.parse(dataCategories), function(key, value) {  
+      $('#select_category').append(
+        $("<option></option>").attr("value",key).text(value)
+      ); 
+    });
+
+    $('#select_category').formSelect();
+  });
+
+  mapboxgl.accessToken = "#{mapbox_token}"
+  var mode = window.location.pathname.split("/").pop();
+  var map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v9',
+      center: [120.946, 23.754],
+      zoom: mode == 'country' ? 4 : 1,
+      maxZoom: 5,
+      minZoom: 1
+  });
+
+  map.on('load', function () {
+    switch(mode) {
+      case 'global':
+        break;
+      case 'continent':
+        map.addLayer({
+          'id': 'continents',
+          'source': {
+            'type': 'vector',
+            'url': 'mapbox://johnnylin.3z919zi2'
+          },
+          'source-layer': 'continent-9rtmk3',
+          'type': 'fill',
+          'paint': {
+            'fill-color': '#088',
+            'fill-opacity': 0.0,
+            'fill-outline-color': '#F2F2F2'
+          }
+        });
+        map.on('click', 'continents', function(mapElement) {
+          console.log(mapElement.features[0].properties.CONTINENT);
+          const continentName = mapElement.features[0].properties.CONTINENT;
+
+          // Check if the layer for clicked country has existed
+          var mapLayer = map.getLayer('continent_clicked');
+          if(typeof mapLayer == 'undefined') {
+            map.addLayer({
+              'id': 'continent_clicked',
+              'source': {
+                'type': 'vector',
+                'url': 'mapbox://johnnylin.3z919zi2'
+              },
+              'source-layer': 'continent-9rtmk3',
+              'type': 'fill',
+              'paint': {
+                'fill-color': '#088',
+                'fill-opacity': 0.7,
+                'fill-outline-color': '#F2F2F2'
+              }
+            });
+          }
+          
+          // Only the continent clicked shows the layer
+          map.setFilter('continent_clicked', ['in', 'CONTINENT'].concat([continentName]));
+          /*
+          $.ajax({
+            url: window.location.pathname,
+            method: 'POST',
+            data: {
+              'continent': continentName,
+              'category_id': category_id
+            } 
+          }).done(function(msg){
+            console.log('sent back to controller!');
+            $('#hot_videos_list').load(" #hot_videos_list > *");
+          });
+          */
+        });
+
+        break;
+      case 'country':
+        map.addLayer({
+          'id': 'countries',
+          'source': {
+            'type': 'vector',
+            'url': 'mapbox://johnnylin.232ssdz5'
+          },
+          'source-layer': 'ne_10m_admin_0_countries-6946lp',
+          'type': 'fill',
+          'paint': {
+            'fill-color': '#000000',
+            'fill-opacity': 0.0,
+            'fill-outline-color': '#F2F2F2'
+          }
+        });
+        map.on('click', 'countries', function(mapElement) {
+          const countryCodeISO = mapElement.features[0].properties.ISO_A2;
+          const countryCodeWB = mapElement.features[0].properties.WB_A2;
+          const countryName = mapElement.features[0].properties.NAME;
+
+          var countryCode = (countryCodeISO == '-99') ? countryCodeWB : countryCodeISO;
+          var codeFormat = (countryCodeISO == '-99') ? 'WB_A2' : 'ISO_A2';
+          if (countryName == 'Somaliland') {
+            countryCode = 'SO';
+          }
+          if (countryName == 'Baikonur') {
+            countryCode = 'KZ';
+          }
+          // Check if the layer for clicked country has existed
+          var mapLayer = map.getLayer('country_clicked');
+          if(typeof mapLayer == 'undefined') {
+            map.addLayer({
+              'id': 'country_clicked',
+              'source': {
+                'type': 'vector',
+                'url': 'mapbox://johnnylin.232ssdz5'
+              },
+              'source-layer': 'ne_10m_admin_0_countries-6946lp',
+              'type': 'fill',
+              'paint': {
+                'fill-color': '#088',
+                'fill-opacity': 0.7
+              }
+            });
+          }
+          
+          // Only the country clicked shows the layer
+          map.setFilter('country_clicked', ['in', codeFormat].concat([countryCode]));
+
+          /* Since the problem of rendering Norway (it should keep -99 ),
+          * we change its correct code here before passing to Youtube API
+          */
+          if (countryName == 'Norway'){
+            countryCode = 'NO';
+          }
+          console.log("You clicked on " + countryName + " (" + countryCode + ")");
+
+          var category_id = $('input[name=category_id]').val() == null? 0 : $('input[name=category_id]').val();
+          $.ajax({
+            url: window.location.pathname,
+            method: 'POST',
+            data: {
+              'region_code': countryCode,
+              'category_id': category_id
+            } 
+          }).done(function(msg){
+            console.log('sent back to controller!');
+            $('#hot_videos_list').load(" #hot_videos_list > *");
+          });
+        });
+    }
+  });

@@ -6,7 +6,11 @@
 
 javascript:
   $(document).ready(function(){
-    
+    console.log("#{global_top_videos_list.videos[0].view_count}");
+    console.log("#{global_top_videos_list.videos[1].view_count}");
+    console.log("#{global_top_videos_list.videos[2].view_count}");
+    console.log("#{global_top_videos_list.videos[3].view_count}");
+    console.log("#{global_top_videos_list.videos[4].view_count}");
   });
 
   mapboxgl.accessToken = "#{mapbox_token}"
@@ -19,7 +23,28 @@ javascript:
       minZoom: 1
   });
 
-  console.log(#{ trending_list })
+  map.on('load', function () {
+      map.addLayer({
+        'id': 'continents',
+        'source': {
+          'type': 'vector',
+          'url': 'mapbox://johnnylin.3z919zi2'
+        },
+        'source-layer': 'continent-9rtmk3',
+        'type': 'fill',
+        'paint': {
+          'fill-color': '#088',
+          'fill-opacity': 0.7,
+          'fill-outline-color': '#F2F2F2'
+        }
+      });
+  });
+
+  map.on('click', 'continents', function(mapElement) {
+    console.log(mapElement.features[0].properties.CONTINENT);
+  });
+
+  //console.log(#{ global_top_videos_list })
 
   var popup = new mapboxgl.Popup({closeOnClick: false})
     .setLngLat([-96, 37.8])
