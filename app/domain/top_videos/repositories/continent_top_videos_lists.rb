@@ -15,20 +15,22 @@ module YouTubeTrendingMap
         rebuild_entity(db_record)
       end
 
-      # def self.find_all_by_country(country_name)
-      #   # SELECT * FROM `trending_lists` LEFT JOIN `countries`
-      #   # ON (`countries`.`id` = `trending_lists`.`belonging_country_id`)
-      #   # WHERE (`name` = `country_name`)
-      #   db_lists =  Database::HotVideosListOrm
-      #               .left_join(:countries, id: :belonging_country_id)
-      #               .where(name: country_name)
-      #   rebuild_many(db_lists)
-      # end
+      def self.find_all_by_continent(continent_name)
+        # SELECT * FROM `continent_top_videos_lists`
+        # WHERE (`belonging_continent` = `continent_name`)
+        db_lists =  Database::ContinentTopVideosListOrm
+                    .where(belonging_continent: continent_name)
+        rebuild_many(db_lists)
+      end
 
-      def self.find_all_with_video(video_title)
-        # SELECT * FROM `trending_lists` LEFT JOIN `youtube_videos`
-        # ON (`youtube_videos`.`id` = `trending_lists`.`video_id`?)
-        # WHERE (`title` = `video_title`)
+      def self.find_by_continent(continent_name)
+        # SELECT * FROM `continent_top_videos_lists`
+        # WHERE (`belonging_continent` = `continent_name`)
+        db_list = Database::ContinentTopVideosListOrm
+                  .where(belonging_continent: continent_name)
+                  .first
+
+        rebuild_entity(db_list)
       end
 
       def self.find_or_create(entity)
@@ -42,13 +44,12 @@ module YouTubeTrendingMap
         rebuild_entity(db_list)
       end
 
-      def self.rebuild_entity(db_list)
+      def self.rebuild_entity(db_record)
         return nil unless db_record
 
         Entity::ContinentTopVideosList.new(
-          db_list.to_hash.merge(
-            # belonging_country: Countries.rebuild_entity(db_record.belonging_country),
-            videos: HotVideos.rebuild_many(db_list.videos)
+          db_record.to_hash.merge(
+            videos: TopVideos.rebuild_many(db_record.videos)
           )
         )
       end
@@ -61,8 +62,8 @@ module YouTubeTrendingMap
 
       private_class_method :rebuild_entity, :rebuild_many
 
-      # Helper class to create trending_list entity,
-      # also check its belonging country & videos on it from the databases
+      # Helper class to create continent top videos list entity,
+      # also check its belonging continent & videos on it from the databases
       class ContinentTopVideosListCreateHelper
         def initialize(entity)
           @entity = entity
