@@ -1,0 +1,15 @@
+- if flash[:error]
+  .card.red.lighten-1
+    .card-content.white-text
+      span class="card-title center"
+        | Error
+      p
+        = flash[:error]
+
+- if flash[:notice]
+  .card.green.lighten-1
+    .card-content.white-text
+      span class="card-title center"
+        | Notice
+      p
+        = flash[:notice]
