@@ -108,7 +108,6 @@ module YouTubeTrendingMap
         end
 
         routing.on 'global' do
-
           view 'top_videos', locals: {
             mapbox_token: App.config.MAPBOX_TOKEN,
             # global_top_videos_list: global_top_videos_list,
@@ -118,7 +117,6 @@ module YouTubeTrendingMap
         end
 
         routing.on 'continent' do
-
           view 'top_videos', locals: {
             mapbox_token: App.config.MAPBOX_TOKEN,
             # global_top_videos_list: global_top_videos_list,
