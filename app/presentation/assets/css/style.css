@@ -123,15 +123,23 @@ body {
 #top_videos {
     height: 95%;
 }
+#top_videos nav {
+    position: relative;
+    z-index: 5;
+    background-color: #000000bf;
+}
+#top_videos nav .nav-wrapper form {
+    width: 30%;
+}
 #top_videos .row {
     /* height: 100%; */
 }
 #top_videos .vertical-s9 {
-    height: 75%;
+    height: 68%;
     margin-bottom: auto;
 }
 #top_videos .vertical-s9 #map {
-    position: relative;
+    position: absolute;
     top: 0;
     bottom: 0;
     width: 100%;

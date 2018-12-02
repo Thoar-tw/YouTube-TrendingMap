@@ -1,13 +1,17 @@
 #top_videos
+  nav
+    .nav-wrapper
+      form class="left" id="search_bar"
+        .input-field
+          <input id="search" type="search" required>
+          <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+          <i class="material-icons">close</i>
+      ul class="right" id="mode"
+        <li id="global_btn"><a href="/top_videos/global">Global</a></li>
+        <li id="continent_btn"><a href="/top_videos/continent">Continent</a></li>
+        <li id="country_btn"><a href="/top_videos/country">Country</a></li>
   .row.vertical-s9
     #map
-    / a class="waves-effect waves-light btn-large"
-    /   img src="world.png" alt="global" /
-    / | Global
-    #mode
-      <a href="/top_videos/global" class="waves-effect waves-light btn"><i class="material-icons right">cloud</i>Global</a>
-      <a href="/top_videos/continent" class="waves-effect waves-light btn"><i class="material-icons right">cloud</i>Continent</a>
-      <a href="/top_videos/country" class="waves-effect waves-light btn"><i class="material-icons right">cloud</i>Country</a>
   .row.vertical-s3
     #search_area
       / form id="form" action="/top_videos" method="POST"
@@ -82,7 +86,14 @@ javascript:
     countriesObj[ele] = null;
   });
 
+  var mode = window.location.pathname.split("/").pop();
+
   $(document).ready(function(){
+    $('#map').height($('nav').height() + $('.row.vertical-s9').height());
+
+    $("#mode li").removeClass();
+    $('#mode #' + mode + '_btn').addClass('active');
+
     $('input.autocomplete').autocomplete({
       data: countriesObj
     });
@@ -97,7 +108,6 @@ javascript:
   });
 
   mapboxgl.accessToken = "#{mapbox_token}"
-  var mode = window.location.pathname.split("/").pop();
   var map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v9',
