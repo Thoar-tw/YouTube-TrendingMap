@@ -6,8 +6,8 @@ require 'slim'
 module YouTubeTrendingMap
   # Web app
   class App < Roda
-    plugin :render, engine: 'slim', views: 'app/views'
-    plugin :assets, css: 'style.css', path: 'app/views/assets'
+    plugin :render, engine: 'slim', views: 'app/presentation/views'
+    plugin :assets, css: 'style.css', path: 'app/presentation/assets'
     plugin :halt
     plugin :flash
 
