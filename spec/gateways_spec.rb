@@ -83,8 +83,8 @@ describe 'Tests Youtube API library' do
     it 'BAD: should raise exception while the key is invalid' do
       proc do
         YouTubeTrendingMap::Mapper::HotVideosList
-        .new('INVALID_KEY')
-        .get(COUNTRY_CODE, DEFAULT_CATEGORY, DEFAULT_MAX_RESULTS)
+          .new('INVALID_KEY')
+          .get(COUNTRY_CODE, DEFAULT_CATEGORY, DEFAULT_MAX_RESULTS)
       end.must_raise YouTubeTrendingMap::YoutubeAPI::Errors::BadRequest
     end
   end
