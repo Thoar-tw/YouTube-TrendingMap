@@ -2,6 +2,7 @@
 
 require 'roda'
 require 'slim'
+require 'slim/include'
 
 module YouTubeTrendingMap
   # Web app
@@ -108,6 +109,12 @@ module YouTubeTrendingMap
         end
 
         routing.on 'global' do
+          routing.post do # rubocop:disable Metrics/BlockLength
+            # user enter specific region and category
+
+            routing.redirect '/top_videos/global'
+          end
+
           view 'top_videos', locals: {
             mapbox_token: App.config.MAPBOX_TOKEN,
             # global_top_videos_list: global_top_videos_list,
@@ -117,6 +124,12 @@ module YouTubeTrendingMap
         end
 
         routing.on 'continent' do
+          routing.post do # rubocop:disable Metrics/BlockLength
+            # user enter specific region and category
+
+            routing.redirect '/top_videos/continent'
+          end
+
           view 'top_videos', locals: {
             mapbox_token: App.config.MAPBOX_TOKEN,
             # global_top_videos_list: global_top_videos_list,
@@ -126,6 +139,11 @@ module YouTubeTrendingMap
         end
 
         routing.on 'country' do
+          routing.post do # rubocop:disable Metrics/BlockLength
+            # user enter specific region and category
+
+            routing.redirect '/top_videos/country'
+          end
 
           view 'top_videos', locals: {
             mapbox_token: App.config.MAPBOX_TOKEN,
