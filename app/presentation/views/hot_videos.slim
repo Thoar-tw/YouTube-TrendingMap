@@ -2,7 +2,7 @@
   .row
     .col.s3
       #search_area
-        form id="form" action="/hot_videos" method="POST"
+        form id="search_form" action="/hot_videos" method="POST"
           .row
             .input-field.col.s12
               input {
@@ -20,6 +20,7 @@
             .col.s12.center
               button {
                 class="btn waves-effect waves-light"
+                id="search_btn"
                 type="submit" name="action"
               } Search
                 <i class="material-icons right">search</i>
@@ -27,14 +28,14 @@
         - if hot_videos_list.nil?
           .row
             .col.s12
-              .card.red.lighten-1
+              div class="card red lighten-1" id="reminder_card"
                 .card-content.white-text
                   span class="card-title center"
                     | Reminder
                   p
                     | Click a country on the map to see what's HOT there!
         - else
-          ul class="collection"
+          ul class="collection" id="hot_videos_list"
             #list_title
               i class="material-icons" location_on
               span
@@ -43,15 +44,16 @@
               li class="collection-item" id="#{video.index_str}"
                 iframe {
                   src= video.embed_link
+                  id="#{video.index_str}.embed_link"
                   width="100%"
                   frameborder="0"
                   allowfullscreen
                 }
-                p class="title"
+                p class="title" id="#{video.index_str}.title"
                   = video.title
-                p class="channel_title"
+                p class="channel_title" id="#{video.index_str}.channel_title"
                   = video.channel_title
-                span class="view_count"
+                span class="view_count" id="#{video.index_str}.view_count"
                   = video.view_count 
                 span &nbsp;views
                 <a href="#!" class="secondary-content"><i class="material-icons">favorite</i></a>
@@ -77,6 +79,22 @@ javascript:
   });
 
   $(document).ready(function(){
+    if ($('#modal_error').length) {
+      console.log("has modal");
+      $('#modal_error').modal();
+      $('#modal_error').modal('open');
+    }
+    
+    //dynamically modify the height of hot video list division
+    var left_nav_height = $('#search_area').parent().height();
+    var top_height = $('#search_area').height();
+    var footer_height = $('footer').height();
+    $('#hot_videos_list').height(left_nav_height - top_height - footer_height - 40);
+    console.log(left_nav_height);
+    console.log(top_height);
+    console.log($('form').height());
+
+    //prepare form input elements
     $('input.autocomplete').autocomplete({
       data: countriesObj
     });
@@ -88,10 +106,37 @@ javascript:
     });
 
     $('#select_category').formSelect();
-    
-    var left_nav_height = $('#search_area').parent().height();
-    var top_height = $('#search_area').height();
-    $('#hot_videos_list').height(left_nav_height - top_height - 20);
+
+    /*
+    //Use AJAX instead of default form submit
+    $('#search_form').submit(function(){
+      // stop form from submitting normally
+      event.preventDefault();
+
+      // get some values from elements on the page
+      var $form = $(this),
+          country_name_val = $form.find('input[name=country_name]').val(),
+          category_id_val = $form.find('input[name=category_id]').val() == null? 0 : $form.find('input[name=category_id]').val(),
+          url = $form.attr('action');
+
+      // Send the data using post
+      var posting = $.post(url, {
+          'country_name': country_name_val,
+          'category_id': category_id_val
+      });
+
+      posting.done(function(data) {
+        $('#flash_bar').load(" #flash_bar > *");
+        
+        if ($('.modal').length) {
+          $('.modal').modal();
+        }
+
+        console.log('data sent back from controller!');
+        //window.location.reload(true);
+      });
+    });
+    */
   });
 
   mapboxgl.accessToken = "#{mapbox_token}"
@@ -171,9 +216,10 @@ javascript:
             'region_code': countryCode,
             'category_id': category_id
           } 
-        }).done(function(msg){
-          console.log('sent back to controller!');
-          $('#hot_videos_list').load(" #hot_videos_list > *");
+        }).done(function(data){
+          console.log('data sent back from controller!');
+          //$('#hot_videos_list').load(" #hot_videos_list > *");
+          location.reload();
         });
       });
   });

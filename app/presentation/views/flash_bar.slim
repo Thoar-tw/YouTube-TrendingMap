@@ -1,15 +1,15 @@
 - if flash[:error]
-  .card.red.lighten-1
-    .card-content.white-text
-      span class="card-title center"
-        | Error
-      p
-        = flash[:error]
+  div id="modal_error" class="modal red lighten-1"
+    .modal-content
+      h4 Error
+      p= flash[:error]
+    .modal-footer
+      a href="#!" class="modal-close waves-effect waves-green btn-flat" OK
 
-- if flash[:notice]
-  .card.green.lighten-1
-    .card-content.white-text
-      span class="card-title center"
-        | Notice
-      p
-        = flash[:notice]
+/ - if flash[:notice]
+/   .card.green.lighten-1
+/     .card-content.white-text
+/       span class="card-title center"
+/         | Notice
+/       p
+/         = flash[:notice]
