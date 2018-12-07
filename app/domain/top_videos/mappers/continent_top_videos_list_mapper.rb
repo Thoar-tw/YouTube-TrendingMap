@@ -6,24 +6,23 @@ module YouTubeTrendingMap
     class ContinentTopVideosList
       include Mixins::TopVideosAggregator
 
-      def initialize(continent, api_key, gateway_class = YouTubeTrendingMap::YoutubeAPI)
-        @continent = continent
+      def initialize(api_key, gateway_class = YouTubeTrendingMap::YoutubeAPI)
         @api_key = api_key
         @gateway_class = gateway_class
       end
 
-      def get(category_id, max_results)
+      def get(continent, category_id, max_results)
         videos_lists =
-          get_lists_from_countries_in_(@continent, category_id, max_results)
+          get_lists_from_countries_in_(continent, category_id, max_results)
 
-        build_entity(aggregate(videos_lists))
+        build_entity(aggregate(videos_lists), continent)
       end
 
-      def build_entity(data)
+      def build_entity(data, continent)
         Entity::ContinentTopVideosList.new(
           id: nil,
           count: data.length,
-          belonging_continent: @continent,
+          belonging_continent: continent,
           videos: data
         )
       end

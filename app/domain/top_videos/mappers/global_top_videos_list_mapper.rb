@@ -32,8 +32,8 @@ module YouTubeTrendingMap
         list = []
         continents.each do |continent|
           list << Mapper::ContinentTopVideosList
-                  .new(continent, @api_key, @gateway_class)
-                  .get(category_id, max_results)
+                  .new(@api_key, @gateway_class)
+                  .get(continent, category_id, max_results)
         end
 
         puts "get_lists_from_continents"
