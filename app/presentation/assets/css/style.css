@@ -2,7 +2,8 @@ html {
     height: 100%;
 }
 body {
-    margin:0; padding:0;
+    margin:0;
+    padding:0;
     height: 100%;
 }
 .page-footer{
@@ -17,6 +18,13 @@ body {
     padding: 0;
     min-height: 35px;
     height: 100%;
+}
+.modal {
+    top: 35% !important;
+    color: white;
+}
+.modal .modal-content p {
+    font-size: 20px;
 }
 
 /* Home */
@@ -51,66 +59,72 @@ body {
     height: 100%;
     box-shadow: 1px 0px 10px #00000061;
 }
-#hot_videos .row .s3 #search_area {
+#hot_videos .s3 #search_area {
     margin-bottom: 20px;
 }
-#hot_videos .row .s3 #search_area form .row .input-field {
+#hot_videos .s3 #search_area .input-field {
     margin-top: 25px;
 }
-#hot_videos .row .s3 #search_area form .row .s12 button {
+#hot_videos .s3 #search_area .select-wrapper .dropdown-content {
+    height: 500px;
+}
+#hot_videos .s3 #search_area .s12 button {
     width: 90%;
 }
-#hot_videos .row .s3 #hot_videos_list .card .card-content {
+#hot_videos .s3 #hot_videos_list #reminder_card .card-content {
     padding: 16px;
     font-size: 16px;
 }
-#hot_videos .row .s3 #hot_videos_list .card .card-title {
+#hot_videos .s3 #hot_videos_list #reminder_card .card-title {
     font-weight: 500;
 }
-#hot_videos .row .s3 #hot_videos_list .collection {
+#hot_videos .s3 #hot_videos_list .collection {
     border: 0;
     height: 100%;
     overflow: scroll;
 }
-#hot_videos .row .s3 #hot_videos_list .collection #list_title {
+#hot_videos .s3 #hot_videos_list .collection #list_title {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0px;
+    padding-top: 7px;
+    background-color: #ffffffd9;
     text-align: center;
 }
-#hot_videos .row .s3 #hot_videos_list .collection #list_title span {
+#hot_videos .s3 #hot_videos_list .collection #list_title span {
     position: relative;
     bottom: 5px;
     font-size: 18px;
 }
-#hot_videos .row .s3 #hot_videos_list .collection .collection-item iframe {
+#hot_videos .s3 #hot_videos_list .collection .collection-item iframe {
     width: 100%;
 }
-#hot_videos .row .s3 #hot_videos_list .collection .collection-item p {
+#hot_videos .s3 #hot_videos_list .collection .collection-item p {
     margin: 0;
 } 
-#hot_videos .row .s3 #hot_videos_list .collection .collection-item .title {
+#hot_videos .s3 #hot_videos_list .collection .collection-item .title {
     font-size: 16px;
     font-weight: bold;
 }
-#hot_videos .row .s3 #hot_videos_list .collection .collection-item .channel_title {
+#hot_videos .s3 #hot_videos_list .collection .collection-item .channel_title {
     font-size: 14px;
     color: #111111cc;
 }
-#hot_videos .row .s3 #hot_videos_list .collection .collection-item .view_count {
+#hot_videos .s3 #hot_videos_list .collection .collection-item .view_count {
     font-size: 14px;
     color: #111111cc;
 }
-#hot_videos .row .s3 #hot_videos_list .collection .collection-item .secondary-content {
+#hot_videos .s3 #hot_videos_list .collection .collection-item .secondary-content {
     color: #ef5350;
 }
-#hot_videos .row .s9 {
+#hot_videos .s9 {
     height: 100%;
     padding: 0;
 }
-#hot_videos .row .s9 #map {
-    position:absolute;
-    top: 0;
-    bottom: 0;
-    width: 75%;
-    height: 95%;
+#hot_videos .s9 #map {
+    position: relative;;
+    width: 100%;
+    height: 100%;
     z-index: 0;
 }
 #hot_videos #toast-container {
@@ -128,14 +142,27 @@ body {
     z-index: 5;
     background-color: #000000bf;
 }
-#top_videos nav .nav-wrapper form {
-    width: 30%;
+#top_videos nav form {
+    width: 100%;
 }
-#top_videos .row {
-    /* height: 100%; */
+#top_videos nav form .row {
+    margin-bottom: 0;
+}
+#top_videos nav form .row .input-field #search_input {
+    height: 64px;
+}
+#top_videos nav form .row .input-field .select-wrapper {
+    margin-top: 8px;
+    height: 85%;
+}
+#top_videos nav form .row .input-field .select-wrapper input{
+    color: white;
+}
+#top_videos nav form .row .input-field .select-wrapper .dropdown-content {
+    height: 700px;
 }
 #top_videos .vertical-s9 {
-    height: 68%;
+    height: 64%;
     margin-bottom: auto;
 }
 #top_videos .vertical-s9 #map {
@@ -157,8 +184,96 @@ body {
 }
 #top_videos .vertical-s3 {
     position: relative;
-    height: 25%;
+    height: 27%;
     margin-bottom: auto;
     box-shadow: 0px -3px 10px #00000061;
     z-index: 1;
+}
+#top_videos .vertical-s3 #top_videos_list {
+    overflow: auto;
+}
+#top_videos .vertical-s3 #top_videos_list #reminder_card {
+    margin: auto;
+    left: auto;
+    right: auto;
+    width: 30%;
+    margin-top: 1%;
+}
+#top_videos .vertical-s3 #top_videos_list .collection {
+    margin-top: 0;
+    padding: 0 0.7%;
+    white-space: nowrap;
+    overflow: auto;
+} 
+#top_videos .vertical-s3 #top_videos_list .collection .collection-item {
+    display: inline-block;
+    width: 30%;
+    padding: 0.4% 0.6%;
+    margin: 0.6% 0%;
+    border-right: 1px solid #e0e0e0;
+    border-bottom: 0px;
+} 
+#top_videos .vertical-s3 #top_videos_list .collection .collection-item .top_order {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+    font-weight: 700;
+}
+#top_videos .vertical-s3 #top_videos_list .collection .collection-item #video_frame {
+    float: left;
+    width: 45%;
+}
+#top_videos .vertical-s3 #top_videos_list .collection .collection-item #video_info {
+    float: right;
+    width: 50%;
+} 
+#top_videos .vertical-s3 #top_videos_list .collection .collection-item #video_info p {
+    margin: 0;
+} 
+#top_videos .vertical-s3 #top_videos_list .collection .collection-item #video_info .title {
+    font-size: 14px;
+    font-weight: bold;
+    height: 60px;
+    white-space: normal;
+    overflow: auto;
+}
+#top_videos .vertical-s3 #top_videos_list .collection .collection-item #video_info .channel_title {
+    font-size: 13px;
+    line-height: 20px;
+    color: #111111cc;
+    padding: 5.5% 0;
+}
+#top_videos .vertical-s3 #top_videos_list .collection .collection-item #view_count {
+    clear: both;
+    padding: 2% 0;
+    margin-top: 28%;
+    text-align: center;
+}
+#top_videos .vertical-s3 #top_videos_list .collection .collection-item #view_count .view_count {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111111cc;
+}
+#top_videos .vertical-s3 #top_videos_list .collection .collection-item .secondary-content {
+    color: #ef5350;
+    padding-right: 5px;
+}
+
+@media only screen and (min-height: 800px) {
+    #top_videos .vertical-s9 {
+        height: 68%;
+    }
+
+    #top_videos .vertical-s3 {
+        height: 23%;
+    }
+}
+
+@media only screen and (min-height: 1000px) {
+    #top_videos .vertical-s9 {
+        height: 69%;
+    }
+
+    #top_videos .vertical-s3 {
+        height: 25%;
+    }
 }
