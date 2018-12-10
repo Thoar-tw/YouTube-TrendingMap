@@ -1,0 +1,103 @@
+#top_videos
+  nav
+    .nav-wrapper.row
+      .col.s6
+        form class="left" id="search_form" action="/top_videos/global" method="POST"
+          .row
+            .col.s6.input-field
+              input {
+                id="country_name_input"
+                type="search"
+                name='country_name'
+                disabled
+              }
+              <label class="label-icon" for="country_name_input"><i class="material-icons">search</i></label>
+              / i class="material-icons">close
+            .col.s6.input-field
+              select id="select_category" name="category_id"
+                <option value="" disabled selected>Choose a video category</option>
+      .col.s2.center
+        ul
+          li
+            a {
+              class="waves-effect waves-light btn"
+              id="search_btn"
+            } Search
+              <i class="material-icons right">search</i>
+      .col.s4
+        ul class="right" id="mode"
+          <li id="global_btn" class="active"><a href="/top_videos/global">Global</a></li>
+          <li id="continent_btn"><a href="/top_videos/continent">Continent</a></li>
+          <li id="country_btn"><a href="/top_videos/country">Country</a></li>
+  .row.vertical-s9
+    #map
+  .row.vertical-s3
+    #top_videos_list
+      - if global_top_videos_list.nil?
+        #reminder_card
+          .card.red.lighten-1.center
+            .card-content.white-text
+              span class="card-title center"
+                | Reminder
+              p
+                | Select a category and click SEARCH to see what's TOP in the world!
+      - else
+        ul class="collection"
+          - global_top_videos_list.each do |video|
+            li class="collection-item" id="#{video.index_str}"
+              p class="top_order"
+                | #
+                span
+                  = (video.index + 1).to_s
+              #video_frame
+                iframe {
+                  src= video.embed_link
+                  width="100%"
+                  frameborder="0"
+                  allowfullscreen
+                }
+              #video_info
+                p class="title"
+                  = video.title
+                p class="channel_title"
+                  = video.channel_title
+              div id="view_count" class="deep-orange lighten-5"
+                span class="view_count"
+                  = video.view_count  
+                span &nbsp;views
+                <a href="#!" class="secondary-content"><i class="material-icons">favorite</i></a>
+
+javascript:
+  var dataCategories = "#{ categories.to_json }".replace(/&quot;/g,'"').replace(/&amp;/g, '&');
+
+  $(document).ready(function(){
+    //dynamically set some css
+    $('#map').height($('nav').height() + $('.row.vertical-s9').height());
+    $('.collection-item iframe').height($('.collection-item iframe').width()*0.5625);
+
+    $.each(JSON.parse(dataCategories), function(key, value) {  
+      $('#select_category').append(
+        $("<option></option>").attr("value",key).text(value)
+      ); 
+    });
+
+    $('#select_category').formSelect();
+
+    $('#search_btn').click(function(){
+      console.log('click');
+      $('#search_form').submit();
+    });
+  });
+
+  mapboxgl.accessToken = "#{mapbox_token}"
+  var map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v9',
+      center: [120.946, 23.754],
+      zoom: 1,
+      maxZoom: 5,
+      minZoom: 1
+  });
+
+  map.on('load', function () {
+  });

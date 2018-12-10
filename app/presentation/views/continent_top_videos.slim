@@ -1,0 +1,189 @@
+#top_videos
+  nav
+    .nav-wrapper.row
+      .col.s6
+        form class="left" id="search_form" action="/top_videos/continent" method="POST"
+          .row
+            .col.s6.input-field
+              input {
+                type="search"
+                name='continent_name'
+                id="search_input"
+                class="autocomplete"
+                placeholder="Search here or click on map"
+              }
+              <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+              <i class="material-icons">close</i>
+            .col.s6.input-field
+              select id="select_category" name="category_id"
+                option {
+                  value=""
+                  disabled
+                  selected
+                } Choose a category
+      .col.s2.center
+        ul
+          li
+            a {
+              class="waves-effect waves-light btn"
+              id="search_btn"
+            } Search
+              <i class="material-icons right">search</i>
+      .col.s4
+        ul class="right" id="mode"
+          <li id="global_btn"><a href="/top_videos/global">Global</a></li>
+          <li id="continent_btn" class="active"><a href="/top_videos/continent">Continent</a></li>
+          <li id="country_btn"><a href="/top_videos/country">Country</a></li>
+  .row.vertical-s9
+    #map
+  .row.vertical-s3
+    #top_videos_list
+      - if continent_top_videos_list.nil?
+        #reminder_card
+          .card.red.lighten-1.center
+            .card-content.white-text
+              span class="card-title center"
+                | Reminder
+              p
+                | Click a continent on the map to see what's TOP there!
+      - else
+        ul class="collection"
+          - continent_top_videos_list.each do |video|
+            li class="collection-item" id="#{video.index_str}"
+              p class="top_order"
+                | #
+                span
+                  = (video.index + 1).to_s
+              #video_frame
+                iframe {
+                  src= video.embed_link
+                  width="100%"
+                  frameborder="0"
+                  allowfullscreen
+                }
+              #video_info
+                p class="title"
+                  = video.title
+                p class="channel_title"
+                  = video.channel_title
+              div id="view_count" class="deep-orange lighten-5"
+                span class="view_count"
+                  = video.view_count  
+                span &nbsp;views
+                <a href="#!" class="secondary-content"><i class="material-icons">favorite</i></a>
+
+javascript:
+  var dataCategories = "#{ categories.to_json }".replace(/&quot;/g,'"').replace(/&amp;/g, '&');
+  
+  var dataCountries = "#{ countries }".replace(/&quot;/g,'').replace(/&#39;/g, '\'');
+  dataCountries = dataCountries.slice(2, dataCountries.length - 2).split(', ');
+  
+  var countriesObj = new Object();
+  dataCountries.forEach(function(ele){
+    countriesObj[ele] = null;
+  });
+
+  $(document).ready(function(){
+    //dynamically set some css
+    $('#map').height($('nav').height() + $('.row.vertical-s9').height());
+    console.log($('.collection-item iframe').width());
+    $('.collection-item iframe').height($('.collection-item iframe').width()*0.5625);
+    $('#search_input + label').css({'transform': 'none', 'left': '1rem'});
+
+    $('input.autocomplete').autocomplete({
+      data: countriesObj
+    });
+
+    $.each(JSON.parse(dataCategories), function(key, value) {  
+      $('#select_category').append(
+        $("<option></option>").attr("value",key).text(value)
+      ); 
+    });
+
+    $('#select_category').formSelect();
+
+    $('#search_btn').click(function(){
+      console.log('click');
+      $('#search_form').submit();
+    });
+  });
+
+  mapboxgl.accessToken = "#{mapbox_token}"
+  var map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v9',
+      center: [120.946, 23.754],
+      zoom: 2,
+      maxZoom: 5,
+      minZoom: 1
+  });
+
+  // Add zoom and rotation controls to the map.
+  map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
+
+  map.on('load', function () {
+    map.addLayer({
+      'id': 'continents',
+      'source': {
+        'type': 'vector',
+        'url': 'mapbox://johnnylin.3z919zi2'
+      },
+      'source-layer': 'continent-9rtmk3',
+      'type': 'fill',
+      'paint': {
+        'fill-color': '#088',
+        'fill-opacity': 0.0,
+        'fill-outline-color': '#F2F2F2'
+      }
+    });
+    map.on('click', 'continents', function(mapElement) {
+      console.log(mapElement.features[0].properties.CONTINENT);
+      var continentName = mapElement.features[0].properties.CONTINENT;
+
+      // Check if the layer for clicked country has existed
+      var mapLayer = map.getLayer('continent_clicked');
+      if(typeof mapLayer == 'undefined') {
+        map.addLayer({
+          'id': 'continent_clicked',
+          'source': {
+            'type': 'vector',
+            'url': 'mapbox://johnnylin.3z919zi2'
+          },
+          'source-layer': 'continent-9rtmk3',
+          'type': 'fill',
+          'paint': {
+            'fill-color': '#088',
+            'fill-opacity': 0.7,
+            'fill-outline-color': '#F2F2F2'
+          }
+        });
+      }
+
+      var continentsFiltered = [];
+      if (continentName == 'Australia' || continentName == 'Oceania') {
+        continentsFiltered.push('Australia', 'Oceania');
+      }
+      else {
+        continentsFiltered.push(continentName);
+      }
+        
+      // Only the continent clicked shows the layer
+      map.setFilter('continent_clicked', ['in', 'CONTINENT'].concat(continentsFiltered));
+
+      var categoryId = $('input[name=category_id]').val() == null? 0 : $('input[name=category_id]').val();
+
+      $.ajax({
+        url: window.location.pathname,
+        method: 'POST',
+        data: {
+          'continent': continentName,
+          'category_id': categoryId
+        } 
+      }).done(function(msg){
+        console.log('sent back to controller!');
+        $('#top_videos_list').load(location.href + " #top_videos_list > *", "");
+        //location.reload();
+      });
+      
+    });
+  });

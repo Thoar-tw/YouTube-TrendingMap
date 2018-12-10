@@ -1,0 +1,203 @@
+#top_videos
+  nav
+    .nav-wrapper.row
+      .col.s6
+        form class="left" id="search_form" action="/top_videos/country" method="POST"
+          .row
+            .col.s6.input-field
+              input {
+                type="search"
+                name='country_name'
+                id="search_input"
+                class="autocomplete"
+                placeholder="Search here or click on map"
+              }
+              <label class="label-icon" for="country_name_input"><i class="material-icons">search</i></label>
+              <i class="material-icons">close</i>
+            .col.s6.input-field
+              select id="select_category" name="category_id"
+                option {
+                  value=""
+                  disabled
+                  selected 
+                } Choose a video category
+      .col.s2.center
+        ul
+          li
+            a {
+              class="waves-effect waves-light btn"
+              id="search_btn"
+            } Search
+              <i class="material-icons right">search</i>
+      .col.s4
+        ul class="right" id="mode"
+          <li id="global_btn"><a href="/top_videos/global">Global</a></li>
+          <li id="continent_btn"><a href="/top_videos/continent">Continent</a></li>
+          <li id="country_btn" class="active"><a href="/top_videos/country">Country</a></li>
+  .row.vertical-s9
+    #map
+  .row.vertical-s3
+    #top_videos_list
+      - if country_top_videos_list.nil?
+        #reminder_card
+          .card.red.lighten-1.center
+            .card-content.white-text
+              span class="card-title center"
+                | Reminder
+              p
+                | Click a country on the map to see what's TOP there!
+      - else
+        ul class="collection"
+          #list_title
+            i class="material-icons" location_on
+            span
+              = hot_videos_list.belonging_country
+          - country_top_videos_list.each do |video|
+            li class="collection-item" id="#{video.index_str}"
+              iframe {
+                src= video.embed_link
+                width="100%"
+                frameborder="0"
+                allowfullscreen
+              }
+              p class="title"
+                = video.title
+              p class="channel_title"
+                = video.channel_title
+              span class="view_count"
+                = video.view_count 
+              span &nbsp;views
+              <a href="#!" class="secondary-content"><i class="material-icons">favorite</i></a>
+
+  / var data_country_borders_json = "#{ country_borders_json }".replace(/&quot;/g,'"');
+  / data_country_borders = JSON.parse(data_country_borders_json);
+  
+  / var data_country_code_json = "#{ country_code_json }".replace(/&quot;/g,'"');
+  / data_country_code = JSON.parse(data_country_code_json);
+  / console.log(data_country_code["Taiwan"]);
+
+javascript:
+  var dataCategories = "#{ categories.to_json }".replace(/&quot;/g,'"').replace(/&amp;/g, '&');
+  
+  var dataCountries = "#{ countries }".replace(/&quot;/g,'').replace(/&#39;/g, '\'');
+  dataCountries = dataCountries.slice(2, dataCountries.length - 2).split(', ');
+  
+  var countriesObj = new Object();
+  dataCountries.forEach(function(ele){
+    countriesObj[ele] = null;
+  });
+
+  var mode = window.location.pathname.split("/").pop();
+
+  $(document).ready(function(){
+    //dynamically set some css
+    $('#map').height($('nav').height() + $('.row.vertical-s9').height());
+    $('.collection-item iframe').height($('.collection-item iframe').width()*0.5625);
+    $('#search_input + label').css({'transform': 'none', 'left': '1rem'});
+
+    //set active class to li according to current url 
+    $("#mode li").removeClass();
+    $('#mode #' + mode + '_btn').addClass('active');
+
+    $('input.autocomplete').autocomplete({
+      data: countriesObj
+    });
+
+    $.each(JSON.parse(dataCategories), function(key, value) {  
+      $('#select_category').append(
+        $("<option></option>").attr("value",key).text(value)
+      ); 
+    });
+
+    $('#select_category').formSelect();
+
+    $('#search_btn').click(function(){
+      console.log('click');
+      $('#search_form').submit();
+    });
+  });
+
+  mapboxgl.accessToken = "#{mapbox_token}"
+  var map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v9',
+      center: [120.946, 23.754],
+      zoom: 4,
+      maxZoom: 5,
+      minZoom: 1
+  });
+
+  // Add zoom and rotation controls to the map.
+  map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
+
+  map.on('load', function () {
+    map.addLayer({
+      'id': 'countries',
+      'source': {
+        'type': 'vector',
+        'url': 'mapbox://johnnylin.232ssdz5'
+      },
+      'source-layer': 'ne_10m_admin_0_countries-6946lp',
+      'type': 'fill',
+      'paint': {
+        'fill-color': '#000000',
+        'fill-opacity': 0.0,
+        'fill-outline-color': '#F2F2F2'
+      }
+    });
+    map.on('click', 'countries', function(mapElement) {
+      const countryCodeISO = mapElement.features[0].properties.ISO_A2;
+      const countryCodeWB = mapElement.features[0].properties.WB_A2;
+      const countryName = mapElement.features[0].properties.NAME;
+
+      var countryCode = (countryCodeISO == '-99') ? countryCodeWB : countryCodeISO;
+      var codeFormat = (countryCodeISO == '-99') ? 'WB_A2' : 'ISO_A2';
+      if (countryName == 'Somaliland') {
+        countryCode = 'SO';
+      }
+      if (countryName == 'Baikonur') {
+        countryCode = 'KZ';
+      }
+      // Check if the layer for clicked country has existed
+      var mapLayer = map.getLayer('country_clicked');
+      if(typeof mapLayer == 'undefined') {
+        map.addLayer({
+          'id': 'country_clicked',
+          'source': {
+            'type': 'vector',
+            'url': 'mapbox://johnnylin.232ssdz5'
+          },
+          'source-layer': 'ne_10m_admin_0_countries-6946lp',
+          'type': 'fill',
+          'paint': {
+            'fill-color': '#088',
+            'fill-opacity': 0.7
+          }
+        });
+      }
+      
+      // Only the country clicked shows the layer
+      map.setFilter('country_clicked', ['in', codeFormat].concat([countryCode]));
+
+      /* Since the problem of rendering Norway (it should keep -99 ),
+      * we change its correct code here before passing to Youtube API
+      */
+      if (countryName == 'Norway'){
+        countryCode = 'NO';
+      }
+      console.log("You clicked on " + countryName + " (" + countryCode + ")");
+
+      var category_id = $('input[name=category_id]').val() == null? 0 : $('input[name=category_id]').val();
+      $.ajax({
+        url: window.location.pathname,
+        method: 'POST',
+        data: {
+          'region_code': countryCode,
+          'category_id': category_id
+        } 
+      }).done(function(msg){
+        console.log('sent back to controller!');
+        $('#hot_videos_list').load(" #hot_videos_list > *");
+      });
+    });
+  });
