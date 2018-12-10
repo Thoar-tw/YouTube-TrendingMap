@@ -28,9 +28,9 @@
         - if hot_videos_list.nil?
           .row
             .col.s12
-              div class="card red lighten-1" id="reminder_card"
+              div class="card red lighten-1 center" id="reminder_card"
                 .card-content.white-text
-                  span class="card-title center"
+                  span class="card-title"
                     | Reminder
                   p
                     | Click a country on the map to see what's HOT there!
@@ -90,9 +90,6 @@ javascript:
     var top_height = $('#search_area').height();
     var footer_height = $('footer').height();
     $('#hot_videos_list').height(left_nav_height - top_height - footer_height - 40);
-    console.log(left_nav_height);
-    console.log(top_height);
-    console.log($('form').height());
 
     //prepare form input elements
     $('input.autocomplete').autocomplete({
@@ -218,7 +215,8 @@ javascript:
           } 
         }).done(function(data){
           console.log('data sent back from controller!');
-          //$('#hot_videos_list').load(" #hot_videos_list > *");
+
+          //$('#hot_videos_list').load(location.href + " #hot_videos_list > *", "");
           location.reload();
         });
       });

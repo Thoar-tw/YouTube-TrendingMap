@@ -17,6 +17,10 @@ module YouTubeTrendingMap
         end
       end
 
+      def type
+        @list
+      end
+
       def any?
         @videos.any?
       end

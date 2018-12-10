@@ -30,7 +30,14 @@ module YouTubeTrendingMap
       private
 
       def get_lists_from_countries_in_(continent, category_id, max_results)
-        country_codes = ['tw', 'jp']
+        country_codes = 
+          case continent
+          when 'asia'
+            ['tw', 'jp']
+          when 'europe'
+            ['fr', 'se']
+          end
+        puts country_codes
         # country_codes = country_codes_in_(continent)
         list = []
         country_codes.each do |country_code|

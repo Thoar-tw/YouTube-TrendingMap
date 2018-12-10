@@ -13,6 +13,10 @@ module YouTubeTrendingMap
         "video[#{@index}]"
       end
 
+      def index
+        @index
+      end
+
       def entity
         @video
       end
