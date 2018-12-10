@@ -86,7 +86,7 @@ module YouTubeTrendingMap
       param_part = 'part=snippet'
       param_region_code = 'regionCode=' + region_code
       param_video_category_id =
-        category_id.zero? ? '' : 'type=video&videoCategoryId=' + category_id.to_s
+        category_id.to_s == '0' ? '' : 'type=video&videoCategoryId=' + category_id.to_s
       param_max_results = 'maxResults=' + max_results_count.to_s
       param_order = 'order=viewCount'
       param_key = 'key=' + @api_key
