@@ -1,0 +1,4 @@
+en:
+  errors:
+    region_code: 'Invalid country name or region code'
+    category_id: 'Invalid category id'
