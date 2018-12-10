@@ -3,14 +3,28 @@
 source 'https://rubygems.org'
 ruby '2.5.3'
 
-# Web application related
+# PRESENTATION LAYER
+gem 'slim', '~> 4.0'
+
+# APPLICATION LAYER
+# Web application
 gem 'econfig', '~> 2.1'
 gem 'rack', '~> 2.0.6'
 gem 'puma', '~> 3.12'
 gem 'roda', '~> 3.13'
-gem 'slim', '~> 4.0'
 
-# Database related
+# Controllers and services
+gem 'dry-monads'
+gem 'dry-transaction'
+gem 'dry-validation'
+
+# DOMAIN LAYER
+# Entity
+gem 'dry-struct', '~> 0.5'
+gem 'dry-types', '~> 0.13'
+
+# INFRASTRUCTURE LAYER
+# Database
 gem 'hirb'
 gem 'sequel'
 
@@ -26,11 +40,7 @@ end
 # Networking
 gem 'http', '~> 4.0'
 
-# Entity
-gem 'dry-struct', '~> 0.5'
-gem 'dry-types', '~> 0.13'
-
-# Testing
+# TESTING
 group :test do
   gem 'headless', '~> 2.3'
   gem 'minitest', '~> 5.11'
@@ -42,19 +52,17 @@ group :test do
   gem 'watir', '~> 6.15'
 end
 
-# Quality testing
+# QUALITY
 group :development, :test do
   gem 'flog'
   gem 'reek'
   gem 'rubocop', '~> 0.61'
 end
 
-# Utilities
+# UTILITIES
 gem 'rake'
+gem 'pry', '~> 0.11'
 
 group :development, :test do
   gem 'rerun', '~> 0.13'
 end
-
-# Debug
-gem 'pry', '~> 0.11'
