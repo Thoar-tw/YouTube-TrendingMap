@@ -1,4 +1,5 @@
 en:
   errors:
-    region_code: 'Invalid country name or region code'
     category_id: 'Invalid category id'
+    region_code: 'Invalid country name or region code'
+    continent_name: 'Invalid continent name'
