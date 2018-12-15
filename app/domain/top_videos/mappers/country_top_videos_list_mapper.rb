@@ -31,6 +31,7 @@ module YouTubeTrendingMap
         def build_entity
           YouTubeTrendingMap::Entity::CountryTopVideosList.new(
             id: nil,
+            type: 'country',
             count: count,
             belonging_country: belonging_country,
             videos: videos
@@ -44,7 +45,8 @@ module YouTubeTrendingMap
         end
 
         def belonging_country
-          @country_mapper.build_entity_from_region_code(@list_data['region_code'])
+          # @country_mapper.build_entity_from_region_code(@list_data['region_code'])
+          COUNTRY_CODES.key(@list_data['region_code'].upcase)
         end
 
         # Return an array of TopVideo entities

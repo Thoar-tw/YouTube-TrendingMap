@@ -11,12 +11,13 @@ module YouTubeTrendingMap
       include Dry::Types.module
 
       attribute :id,                  Integer.optional
+      attribute :type,                Strict::String
       attribute :count,               Strict::Integer
-      attribute :belonging_country,   Country
+      attribute :belonging_country,   Strict::String
       attribute :videos,              Strict::Array.of(TopVideo)
 
       def to_attr_hash
-        to_hash.reject { |key, _| %i[id belonging_country videos].include? key }
+        to_hash.reject { |key, _| %i[id videos].include? key }
       end
     end
   end

@@ -9,6 +9,7 @@ module YouTubeTrendingMap
       include Dry::Types.module
 
       attribute :id,                  Integer.optional
+      attribute :type,                Strict::String
       attribute :count,               Strict::Integer
       attribute :belonging_continent, Strict::String
       attribute :videos,              Strict::Array.of(TopVideo)

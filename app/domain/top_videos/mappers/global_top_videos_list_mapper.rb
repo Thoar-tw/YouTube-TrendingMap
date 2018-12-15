@@ -19,6 +19,7 @@ module YouTubeTrendingMap
       def build_entity(data)
         YouTubeTrendingMap::Entity::GlobalTopVideosList.new(
           id: nil,
+          type: 'global',
           count: data.length,
           videos: data
         )
@@ -35,9 +36,6 @@ module YouTubeTrendingMap
                   .new(@api_key, @gateway_class)
                   .get(continent, category_id, max_results)
         end
-
-        puts "get_lists_from_continents"
-        puts list
 
         list
       end

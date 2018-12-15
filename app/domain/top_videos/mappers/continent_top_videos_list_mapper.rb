@@ -21,6 +21,7 @@ module YouTubeTrendingMap
       def build_entity(data, continent)
         Entity::ContinentTopVideosList.new(
           id: nil,
+          type: 'continent',
           count: data.length,
           belonging_continent: continent,
           videos: data
@@ -33,11 +34,13 @@ module YouTubeTrendingMap
         country_codes = 
           case continent
           when 'asia'
-            ['tw', 'jp']
+            %w[tw jp]
           when 'europe'
-            ['fr', 'se']
+            %w[fr se]
+          when 'north america'
+            %w[us ca]
           end
-        puts country_codes
+
         # country_codes = country_codes_in_(continent)
         list = []
         country_codes.each do |country_code|
@@ -45,8 +48,6 @@ module YouTubeTrendingMap
                   .new(@api_key, @gateway_class)
                   .get(country_code, category_id, max_results)
         end
-        puts "get_lists_from_countries_in_" + continent
-        puts list
 
         list
       end
