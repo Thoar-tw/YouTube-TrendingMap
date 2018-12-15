@@ -17,8 +17,15 @@ module YouTubeTrendingMap
         end
       end
 
-      def type
-        @list
+      def belonging_location
+        case @list.type
+        when 'global'
+          'Global'
+        when 'continent'
+          @list.belonging_continent
+        when 'country'
+          @list.belonging_country
+        end
       end
 
       def any?
