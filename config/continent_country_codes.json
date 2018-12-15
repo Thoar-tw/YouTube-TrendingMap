@@ -153,7 +153,20 @@
 		"kr": "korea",
 		"mv": "maldives",
 		"kz": "kazakhstan",
-		"my": "malaysia"
+		"my": "malaysia",
+		"om": "oman",
+		"lb": "lebanon",
+		"iq": "iraq",
+		"ye": "yemen",
+		"ir": "iran",
+		"bh": "bahrain",
+		"sy": "syria",
+		"qa": "qatar",
+		"jo": "jordan",
+		"kw": "kuwait",
+		"il": "israel",
+		"ae": "united arab emirates",
+		"sa": "saudi arabia"
 	},
 	"north america": {
 		"gt": "guatemala",
@@ -203,20 +216,5 @@
 		"pe": "peru",
 		"uy": "uruguay",
 		"fk": "falkland islands"
-	},
-	"middle east": {
-		"om": "oman",
-		"lb": "lebanon",
-		"iq": "iraq",
-		"ye": "yemen",
-		"ir": "iran",
-		"bh": "bahrain",
-		"sy": "syria",
-		"qa": "qatar",
-		"jo": "jordan",
-		"kw": "kuwait",
-		"il": "israel",
-		"ae": "united arab emirates",
-		"sa": "saudi arabia"
 	}
 }
