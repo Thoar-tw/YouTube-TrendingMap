@@ -71,6 +71,11 @@ javascript:
   var dataCategories = "#{ categories.to_json }".replace(/&quot;/g,'"').replace(/&amp;/g, '&');
 
   $(document).ready(function(){
+    if ($('#modal_error').length) {
+      $('#modal_error').modal();
+      $('#modal_error').modal('open');
+    }
+
     //dynamically set some css
     $('#map').height($('nav').height() + $('.row.vertical-s9').height());
     $('.collection-item iframe').height($('.collection-item iframe').width()*0.5625);
@@ -84,7 +89,6 @@ javascript:
     $('#select_category').formSelect();
 
     $('#search_btn').click(function(){
-      console.log('click');
       $('#search_form').submit();
     });
   });
