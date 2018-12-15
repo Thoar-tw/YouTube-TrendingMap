@@ -80,7 +80,6 @@ javascript:
 
   $(document).ready(function(){
     if ($('#modal_error').length) {
-      console.log("has modal");
       $('#modal_error').modal();
       $('#modal_error').modal('open');
     }
@@ -205,13 +204,13 @@ javascript:
 
         console.log("You clicked on " + countryName + " (" + countryCode + ")");
 
-        var category_id = $('input[name=category_id]').val() == null? 0 : $('input[name=category_id]').val();
+        var categoryId = $('input[name=category_id]').val() == null? 0 : $('input[name=category_id]').val();
         $.ajax({
           url: window.location.pathname,
           method: 'POST',
           data: {
             'region_code': countryCode,
-            'category_id': category_id
+            'category_id': categoryId
           } 
         }).done(function(data){
           console.log('data sent back from controller!');

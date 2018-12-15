@@ -150,6 +150,10 @@ body {
 }
 #top_videos nav form .row .input-field #search_input {
     height: 64px;
+    color: white;
+}
+#top_videos nav form .row .input-field #search_input:focus {
+    color: #26a69a;
 }
 #top_videos nav form .row .input-field .select-wrapper {
     margin-top: 8px;
