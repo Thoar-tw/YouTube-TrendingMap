@@ -7,7 +7,7 @@ module YouTubeTrendingMap
     # Domain entity for Youtube trending lists
     class GlobalTopVideosList < Dry::Struct
       include Dry::Types.module
-      
+
       attribute :id,                  Integer.optional
       attribute :type,                Strict::String
       attribute :count,               Strict::Integer
