@@ -265,10 +265,10 @@ module YouTubeTrendingMap
           if result.failure?
             flash[:error] = result.failure
             puts result.failure
-            routing.redirect '/' + routing.params['url_path']
+            routing.redirect routing.params['url_path']
           end
 
-          routing.redirect '/' + routing.params['url_path']
+          routing.redirect routing.params['url_path']
         end
       end
 

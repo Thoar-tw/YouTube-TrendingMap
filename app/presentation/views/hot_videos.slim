@@ -115,12 +115,12 @@ javascript:
       var url = '/add_favorite';
       // Send the data using post
       var posting = $.post(url, {
-          'origin_id': parent.children('.origin_id').text(),
-          'title': parent.children('.title').text(),
-          'channel_title': parent.children('.channel_title').text(),
-          'view_count': parent.children('.view_count').text(),
-          'embed_link': parent.children('iframe').attr('src'),
-          'url_path': window.location.pathname.split("/").pop()
+          'origin_id': parent.find('.origin_id').text(),
+          'title': parent.find('.title').text(),
+          'channel_title': parent.find('.channel_title').text(),
+          'view_count': parent.find('.view_count').text(),
+          'embed_link': parent.find('iframe').attr('src'),
+          'url_path': window.location.pathname
       });
 
       posting.done(function(data) {
