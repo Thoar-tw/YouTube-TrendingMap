@@ -8,6 +8,7 @@ module YouTubeTrendingMap
 
       step :validate_input
       step :get_from_api
+      step :reify_videos_list
 
       private
 
@@ -16,15 +17,25 @@ module YouTubeTrendingMap
         Success(category_id: category_id)
       end
 
-      def get_from_api(input)
-        global_top_videos_list =
-          YouTubeTrendingMap::Mapper::GlobalTopVideosList
-          .new(App.config.GOOGLE_CLOUD_KEY)
-          .get(input[:category_id], 10)
+      def get_from_api(input) # rubocop:disable Metrics/AbcSize
+        result =
+          Gateway::Api
+          .new(YouTubeTrendingMap::App.config)
+          .get_global_top_videos(input[:category_id], 10)
 
-        Success(global_top_videos_list)
-      rescue StandardError => error
-        Failure(error.to_s)
+        result.success? ? Success(result.payload) : Failure(result.message)
+      rescue StandardError
+        puts e.inspect + '\n' + e.backtrace
+        Failure('Cannot get global top videos list, please try again later!')
+      end
+
+      def reify_videos_list(videos_list_json)
+        Representer::GlobalTopVideosList
+          .new(OpenStruct.new)
+          .from_json(videos_list_json)
+          .yield_self { |videos| Success(videos) }
+      rescue StandardError
+        Failure('Error in the global top videos list, please try again!')
       end
     end
   end

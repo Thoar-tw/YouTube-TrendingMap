@@ -8,6 +8,7 @@ module YouTubeTrendingMap
 
       step :validate_input
       step :get_from_api
+      step :reify_videos_list
 
       private
 
@@ -18,15 +19,27 @@ module YouTubeTrendingMap
         Success(continent_name: continent_name, category_id: category_id)
       end
 
-      def get_from_api(input)
-        continent_top_videos_list =
-          YouTubeTrendingMap::Mapper::ContinentTopVideosList
-          .new(App.config.GOOGLE_CLOUD_KEY)
-          .get(input[:continent_name], input[:category_id], 10)
+      def get_from_api(input) # rubocop:disable Metrics/AbcSize
+        result =
+          Gateway::Api
+          .new(YouTubeTrendingMap::App.config)
+          .get_continent_top_videos(
+            input[:continent_name], input[:category_id], 10
+          )
 
-        Success(continent_top_videos_list)
-      rescue StandardError => error
-        Failure(error.to_s)
+        result.success? ? Success(result.payload) : Failure(result.message)
+      rescue StandardError
+        puts e.inspect + '\n' + e.backtrace
+        Failure('Cannot get continent top videos list, please try again later!')
+      end
+
+      def reify_videos_list(videos_list_json)
+        Representer::ContinentTopVideosList
+          .new(OpenStruct.new)
+          .from_json(videos_list_json)
+          .yield_self { |videos| Success(videos) }
+      rescue StandardError
+        Failure('Error in the continent top videos list, please try again!')
       end
     end
   end
