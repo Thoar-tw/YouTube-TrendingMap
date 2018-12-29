@@ -70,7 +70,8 @@
                 span class="view_count"
                   = video.view_count  
                 span &nbsp;views
-                <a href="#!" class="secondary-content"><i class="material-icons">favorite</i></a>
+                a href="#!" class="secondary-content red-text text-lighten-3"
+                  i class="material-icons" favorite
 
 javascript:
   var dataCategories = "#{ categories.to_json }".replace(/&quot;/g,'"').replace(/&amp;/g, '&');
@@ -110,6 +111,25 @@ javascript:
 
     $('#search_btn').click(function(){
       $('#search_form').submit();
+    });
+
+    $('.collection-item .secondary-content').click(function(){
+      var parent = $(this).parent().parent();
+      var url = '/add_favorite';
+      // Send the data using post
+      var posting = $.post(url, {
+          'origin_id': parent.find('.origin_id').text(),
+          'title': parent.find('.title').text(),
+          'channel_title': parent.find('.channel_title').text(),
+          'view_count': parent.find('.view_count').text(),
+          'embed_link': parent.find('iframe').attr('src'),
+          'url_path': window.location.pathname
+      });
+
+      posting.done(function(data) {
+        console.log('data sent back from controller!');
+        parent.find(".secondary-content").removeClass('text-lighten-3').addClass('text-lighten-1');
+      });
     });
   });
 

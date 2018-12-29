@@ -1,52 +1,71 @@
 #home
   .row
+    #title 
+      p YouTube Trending Map
+  .row
     .col.s12
-      #map
+      p id="favorite_list" Favorite List
+      #favorite_videos
+        - if favorite_videos.nil?
+          #reminder_card
+            .card.red.lighten-1.center
+              .card-content.white-text
+                span class="card-title center"
+                  | Reminder
+                p
+                  | There is no any video added to your favorite list.
+        - else
+          - favorite_videos.each do |video|
+            .card
+              p {
+                class="origin_id"
+                hidden
+              }
+                = video.origin_id
+              .card-image
+                iframe {
+                  id="video_frame"
+                  allowfullscreen=""
+                  frameborder="0"
+                  src=video.embed_link
+                  width="100%"
+                }
+              .card-content
+                #video_info
+                  p class="title"
+                    = video.title
+                  p class="channel_title"
+                    = video.channel_title
+                div class="deep-orange lighten-5" id="view_count"
+                  span class="view_count"
+                    = video.view_count
+                  span &nbsp;views
+                .delete
+                  a href="#!"
+                    i class="material-icons grey-text text-darken-3" delete
+  .row
+    #button_links
+      div id="hot_videos_link" class="videos_link"
+        a class="waves-effect waves-light btn-large" href="/hot_videos" Hot Videos
+      div id="top_videos_link" class="videos_link"
+        a class="waves-effect waves-light btn-large" href="/top_videos" Top Videos
+    
 
 
 javascript:
   $(document).ready(function(){
-    console.log("#{global_top_videos_list.videos[0].view_count}");
-    console.log("#{global_top_videos_list.videos[1].view_count}");
-    console.log("#{global_top_videos_list.videos[2].view_count}");
-    console.log("#{global_top_videos_list.videos[3].view_count}");
-    console.log("#{global_top_videos_list.videos[4].view_count}");
-  });
-
-  mapboxgl.accessToken = "#{mapbox_token}"
-  var map = new mapboxgl.Map({
-      container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v9',
-      center: [120.946, 23.754],
-      zoom: 1,
-      maxZoom: 5,
-      minZoom: 1
-  });
-
-  map.on('load', function () {
-      map.addLayer({
-        'id': 'continents',
-        'source': {
-          'type': 'vector',
-          'url': 'mapbox://johnnylin.3z919zi2'
-        },
-        'source-layer': 'continent-9rtmk3',
-        'type': 'fill',
-        'paint': {
-          'fill-color': '#088',
-          'fill-opacity': 0.7,
-          'fill-outline-color': '#F2F2F2'
-        }
+    $('.delete').click(function(){
+      console.log('click!');
+      var parent = $(this).parent().parent();
+      var url = '/delete_favorite';
+      // Send the data using post
+      var posting = $.post(url, {
+          'origin_id': parent.children('.origin_id').text()
       });
+
+      posting.done(function(data) {
+        console.log('data sent back from controller!');
+        location.reload();
+      });
+    });
   });
-
-  map.on('click', 'continents', function(mapElement) {
-    console.log(mapElement.features[0].properties.CONTINENT);
-  });
-
-  //console.log(#{ global_top_videos_list })
-
-  var popup = new mapboxgl.Popup({closeOnClick: false})
-    .setLngLat([-96, 37.8])
-    .setHTML('<p>Hello World!</p>')
-    .addTo(map);

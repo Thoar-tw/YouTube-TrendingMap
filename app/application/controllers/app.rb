@@ -9,6 +9,9 @@ module YouTubeTrendingMap
   class App < Roda # rubocop:disable Metrics/ClassLength
     plugin :render, engine: 'slim', views: 'app/presentation/views'
     plugin :assets, css: 'style.css', path: 'app/presentation/assets'
+    opts[:root] = 'app/presentation/'
+    plugin :public, root: 'static'
+    # plugin :public, root: 'app/presentation/public'
     plugin :halt
     plugin :flash
     plugin :caching
@@ -32,19 +35,21 @@ module YouTubeTrendingMap
         # Get viewer's previously seen lists from session
         session[:watching] ||= []
 
-        global_top_videos_list =
-          Mapper::GlobalTopVideosList
-          .new(App.config.GOOGLE_CLOUD_KEY)
-          .get(DEFAULT_CATEGORY, DEFAULT_MAX_RESULTS)
-
-        if global_top_videos_list.nil?
-          flash[:error] = 'global top videos list is nil'
-          routing.redirect '/'
+        result = Services::ListFavoriteVideos.new.call
+        if result.failure?
+          flash[:error] = result.failure
+          view 'home', locals: { favorite_videos: [] }
         end
 
+        favorite_videos = result.value!
+        if favorite_videos.none?
+          flash.now[:notice] = 'Click on heart icon to add any video into favorite'
+        end
+
+        view_favorite_videos = Views::FavoriteVideosList.new(favorite_videos)
+
         view 'home', locals: {
-          mapbox_token: App.config.MAPBOX_TOKEN,
-          global_top_videos_list: global_top_videos_list
+          favorite_videos: view_favorite_videos
         }
       end
 
@@ -247,6 +252,35 @@ module YouTubeTrendingMap
             countries: COUNTRIES,
             categories: CATEGORIES
           }
+        end
+      end
+
+      routing.on 'add_favorite' do
+        routing.post do
+          # Add favorite video to database
+          result = Services::AddFavoriteVideo.new.call(
+            origin_id: routing.params['origin_id'],
+            title: routing.params['title'],
+            channel_title: routing.params['channel_title'],
+            view_count: routing.params['view_count'].to_i,
+            embed_link: routing.params['embed_link']
+          )
+          if result.failure?
+            flash[:error] = result.failure
+            puts result.failure
+            routing.redirect routing.params['url_path']
+          end
+
+          routing.redirect routing.params['url_path']
+        end
+      end
+
+      routing.on 'delete_favorite' do
+        routing.post do
+          Services::DeleteFavoriteVideo.new.call(
+            origin_id: routing.params['origin_id']
+          )
+          routing.redirect '/'
         end
       end
     end

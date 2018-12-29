@@ -42,6 +42,11 @@
                 = hot_videos_list.belonging_country
             - hot_videos_list.each do |video|
               li class="collection-item" id="#{video.index_str}"
+                p {
+                  class="origin_id"
+                  hidden
+                }
+                  = video.origin_id
                 iframe {
                   src= video.embed_link
                   id="#{video.index_str}.embed_link"
@@ -56,7 +61,8 @@
                 span class="view_count" id="#{video.index_str}.view_count"
                   = video.view_count 
                 span &nbsp;views
-                <a href="#!" class="secondary-content"><i class="material-icons">favorite</i></a>
+                a href="#!" class="secondary-content red-text text-lighten-3"
+                  i class="material-icons" favorite
     .col.s9
       #map
 
@@ -102,6 +108,26 @@ javascript:
     });
 
     $('#select_category').formSelect();
+
+    $('.collection-item .secondary-content').click(function(){
+      var parent = $(this).parent();
+
+      var url = '/add_favorite';
+      // Send the data using post
+      var posting = $.post(url, {
+          'origin_id': parent.find('.origin_id').text(),
+          'title': parent.find('.title').text(),
+          'channel_title': parent.find('.channel_title').text(),
+          'view_count': parent.find('.view_count').text(),
+          'embed_link': parent.find('iframe').attr('src'),
+          'url_path': window.location.pathname
+      });
+
+      posting.done(function(data) {
+        console.log('data sent back from controller!');
+        parent.children(".secondary-content").removeClass('text-lighten-3').addClass('text-lighten-1');
+      });
+    });
 
     /*
     //Use AJAX instead of default form submit
