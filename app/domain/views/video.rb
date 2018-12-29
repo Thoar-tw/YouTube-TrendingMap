@@ -21,6 +21,10 @@ module YouTubeTrendingMap
         @video
       end
 
+      def origin_id
+        @video.origin_id
+      end
+
       def title
         @video.title
       end
