@@ -25,23 +25,6 @@ module YouTubeTrendingMap
       end
     end
 
-    configure :development, :test do
-      ENV['DATABASE_URL'] = 'sqlite://' + config.DB_FILENAME
-    end
-
-    configure :production do
-      # Use deployment platform's DATABASE_URL environment variable
-    end
-
-    configure do
-      require 'sequel'
-      DB = Sequel.connect(ENV['DATABASE_URL'])
-
-      def self.DB # rubocop:disable Naming/MethodName
-        DB
-      end
-    end
-
     # File for Youtube API
     CATEGORIES = YAML.safe_load(File.read('config/category.yml'))
 
