@@ -11,6 +11,9 @@ module YouTubeTrendingMap
     plugin :assets, css: 'style.css', path: 'app/presentation/assets'
     plugin :halt
     plugin :flash
+    plugin :caching
+
+    use Rack::MethodOverride
 
     DEFAULT_CATEGORY = 0
     DEFAULT_MAX_RESULTS = 10
