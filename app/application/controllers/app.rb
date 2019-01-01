@@ -14,6 +14,9 @@ module YouTubeTrendingMap
     # plugin :public, root: 'app/presentation/public'
     plugin :halt
     plugin :flash
+    plugin :caching
+
+    use Rack::MethodOverride
 
     DEFAULT_CATEGORY = 0
     DEFAULT_MAX_RESULTS = 10
