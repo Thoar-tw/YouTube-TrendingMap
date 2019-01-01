@@ -18,26 +18,11 @@ gem 'dry-monads'
 gem 'dry-transaction'
 gem 'dry-validation'
 
-# DOMAIN LAYER
-# Entity
-gem 'dry-struct', '~> 0.5'
-gem 'dry-types', '~> 0.13'
+# Representers
+gem 'multi_json'
+gem 'roar'
 
 # INFRASTRUCTURE LAYER
-# Database
-gem 'hirb'
-gem 'sequel'
-
-group :development, :test do
-  gem 'database_cleaner'
-  gem 'sqlite3'
-end
-
-group :production do
-  gem 'thin'
-  gem 'pg'
-end
-
 # Networking
 gem 'http', '~> 4.0'
 
