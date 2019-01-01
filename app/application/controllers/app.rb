@@ -3,7 +3,6 @@
 require 'roda'
 require 'slim'
 require 'slim/include'
-require 'rails/all'
 module YouTubeTrendingMap
   # Web app
   class App < Roda # rubocop:disable Metrics/ClassLength
