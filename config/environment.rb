@@ -14,6 +14,7 @@ module YouTubeTrendingMap
     Econfig.env = environment.to_s
     Econfig.root = '.'
 
+
    # use Rack::Session::Cookie, secret: config.SESSION_SECRET
 
     configure :development, :test do
@@ -22,6 +23,23 @@ module YouTubeTrendingMap
       # Allows running reload! in pry to restart entire app
       def self.reload!
         exec 'pry -r ./init.rb'
+      end
+    end
+
+    configure :development, :test do
+      ENV['DATABASE_URL'] = 'sqlite://' + config.DB_FILENAME
+    end
+
+    configure :production do
+      # Use deployment platform's DATABASE_URL environment variable
+    end
+
+    configure do
+      require 'sequel'
+      DB = Sequel.connect(ENV['DATABASE_URL'])
+
+      def self.DB # rubocop:disable Naming/MethodName
+        DB
       end
     end
 
