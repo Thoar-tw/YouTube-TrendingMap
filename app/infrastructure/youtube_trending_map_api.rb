@@ -15,12 +15,24 @@ module YouTubeTrendingMap
         @request.get_root.success?
       end
 
-      def get_hot_videos(list)
-        @request.get_hot_videos(list)
+      def get_hot_videos(region_code, category_id)
+        @request.get_hot_videos(region_code, category_id)
       end
 
-      def get_top_videos(list)
-        @request.get_top_videos(list)
+      def get_global_top_videos(category_id)
+        @request.get_global_top_videos(category_id)
+      end
+
+      def get_continent_top_videos(continent_name, category_id)
+        @request.get_continent_top_videos(continent_name, category_id)
+      end
+
+      def get_country_top_videos(region_code, category_id)
+        @request.get_country_top_videos(region_code, category_id)
+      end
+
+      def list_favorite_videos(list)
+        @request.list_favorite_videos(list)
       end
 
       # HTTP request transmitter
@@ -34,13 +46,24 @@ module YouTubeTrendingMap
           call_api('get')
         end
 
-        def get_hot_videos(list)
-          call_api('post', ['hot_videos'],
-                   'list' => Value::VideosListRequest.to_encoded(list))
+        def get_hot_videos(region_code, category_id)
+          call_api('post', ['hot_videos', region_code, category_id])
         end
 
-        def get_top_videos(list)
-          call_api('post', ['top_videos'],
+        def get_global_top_videos(category_id)
+          call_api('post', ['top_videos', 'global', category_id])
+        end
+
+        def get_continent_top_videos(category_id)
+          call_api('post', ['top_videos', 'continent', continent_name, category_id])
+        end
+
+        def get_country_top_videos(region_code, category_id)
+          call_api('post', ['top_videos', 'country', region_code, category_id])
+        end
+
+        def list_favorite_videos(list)
+          call_api('get', ['favorite_videos'],
                    'list' => Value::VideosListRequest.to_encoded(list))
         end
 
