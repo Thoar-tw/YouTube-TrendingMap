@@ -3,6 +3,8 @@
 require 'roar/decorator'
 require 'roar/json'
 
+require_relative 'top_video_representer'
+
 module YouTubeTrendingMap
   module Representer
     # Represents folder summary about repo's folder

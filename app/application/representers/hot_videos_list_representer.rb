@@ -3,6 +3,8 @@
 require 'roar/decorator'
 require 'roar/json'
 
+require_relative 'hot_video_representer'
+
 module YouTubeTrendingMap
   module Representer
     # Represents HotVideoList information for API output

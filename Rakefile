@@ -43,8 +43,7 @@ end
 namespace :db do
   task :config do
     require 'sequel'
-    require_relative  'config/environment.rb'
-    require_relative  'spec/helpers/database_helper.rb'
+    require_relative 'config/environment.rb'
     def app
       YouTubeTrendingMap::App
     end
@@ -59,6 +58,7 @@ namespace :db do
 
   desc 'Wipe records from all tables'
   task wipe: :config do
+    require_relative 'spec/helpers/database_helper.rb'
     DatabaseHelper.setup_database_cleaner
     DatabaseHelper.wipe_database
   end
