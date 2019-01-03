@@ -31,9 +31,18 @@ module YouTubeTrendingMap
         @request.get_country_top_videos(region_code, category_id)
       end
 
-      def list_favorite_videos(list)
-        @request.list_favorite_videos(list)
+      def list_favorite_videos
+        @request.list_favorite_videos
       end
+
+      def add_favorite_video(video)
+        @request.add_favorite_video(video)
+      end
+
+      def delete_favorite_video(video)
+        @request.delete_favorite_video(video)
+      end
+
 
       # HTTP request transmitter
       class Request
@@ -54,7 +63,7 @@ module YouTubeTrendingMap
           call_api('post', ['top_videos', 'global', category_id])
         end
 
-        def get_continent_top_videos(category_id)
+        def get_continent_top_videos(continent_name, category_id)
           call_api('post', ['top_videos', 'continent', continent_name, category_id])
         end
 
@@ -62,9 +71,18 @@ module YouTubeTrendingMap
           call_api('post', ['top_videos', 'country', region_code, category_id])
         end
 
-        def list_favorite_videos(list)
-          call_api('get', ['favorite_videos'],
-                   'list' => Value::VideosListRequest.to_encoded(list))
+        def list_favorite_videos
+          call_api('get', ['favorite_videos'])
+        end
+
+        def add_favorite_video(video)
+          call_api('post', ['favorite_videos'],
+                   'video' => Value::VideoRequest.to_encoded(video))
+        end
+
+        def delete_favorite_video(video)
+          call_api('delete', ['favorite_videos'],
+                   'video' => Value::VideoRequest.to_encoded(video))
         end
 
         private
@@ -77,6 +95,7 @@ module YouTubeTrendingMap
         def call_api(method, resources = [], params = {})
           api_path = resources.empty? ? @api_host : @api_root
           url = [api_path, resources].flatten.join('/') + params_str(params)
+          puts url
           HTTP.headers('Accept' => 'application/json').send(method, url)
               .yield_self { |http_response| Response.new(http_response) }
         rescue StandardError
