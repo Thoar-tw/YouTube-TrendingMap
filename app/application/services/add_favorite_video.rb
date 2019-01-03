@@ -7,36 +7,36 @@ module YouTubeTrendingMap
       include Dry::Transaction
 
       step :validate_input
-      step :store_video
+      step :request_api
 
       private
 
       def validate_input(input)
-        if !(input[:origin_id].nil? || input[:title].nil? || 
-          input[:channel_title].nil? || input[:view_count].nil? ||
-          input[:embed_link].nil?)
+        if !input_is_nil(input)
           Success(input)
         else
           puts 'Failure: nil'
-          Failure('Some inputs are nil!')
+          Failure(input.errors.values.join('; '))
         end
       end
 
-      def store_video(input) # rubocop:disable Metrics/MethodLength
-        video = Entity::FavoriteVideo.new(
-          origin_id: input[:origin_id],
-          title: input[:title],
-          channel_title: input[:channel_title],
-          view_count: input[:view_count],
-          embed_link: input[:embed_link]
-        )
+      def request_api(input)
+        result =
+          Gateway::Api
+          .new(YouTubeTrendingMap::App.config)
+          .add_favorite_video(input)
 
-        video_stored = FavoriteVideosRepository::For.entity(video).find_or_create(video)
+        result.success? ? Success(result.payload) : Failure(result.message)
+      rescue StandardError => e
+        puts e.inspect
+        puts e.backtrace
+        Failure('Cannot add projects right now; please try again later')
+      end
 
-        Success(video_stored)
-      rescue StandardError => error
-        puts error.backtrace.join("\n")
-        Failure('Having trouble accessing the database')
+      def input_is_nil(input)
+        input[:origin_id].nil? || input[:title].nil? ||
+          input[:channel_title].nil? || input[:view_count].nil? ||
+          input[:embed_link].nil?
       end
     end
   end

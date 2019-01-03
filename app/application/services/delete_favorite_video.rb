@@ -6,22 +6,21 @@ module YouTubeTrendingMap
     class DeleteFavoriteVideo
       include Dry::Transaction
 
-      step :delete_video
+      step :request_api
 
       private
 
-      def delete_video(input)
-        puts 'inside delete_video'
-        puts input[:origin_id]
+      def request_api(input)
         result =
-          FavoriteVideosRepository::FavoriteVideos
-          .delete_video(input[:origin_id])
+          Gateway::Api
+          .new(YouTubeTrendingMap::App.config)
+          .delete_favorite_video(input)
 
-        Success(result)
-      rescue StandardError => error
-        puts error.backtrace.join("\n")
-        puts 'Having trouble accessing the database'
-        Failure('Having trouble accessing the database')
+        result.success? ? Success(result.payload) : Failure(result.message)
+      rescue StandardError => e
+        puts e.inspect
+        puts e.backtrace
+        Failure('Cannot delete projects right now; please try again later')
       end
     end
   end

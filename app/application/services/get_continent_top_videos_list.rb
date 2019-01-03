@@ -7,7 +7,7 @@ module YouTubeTrendingMap
       include Dry::Transaction
 
       step :validate_input
-      step :get_from_api
+      step :request_api
       step :reify_videos_list
 
       private
@@ -19,17 +19,16 @@ module YouTubeTrendingMap
         Success(continent_name: continent_name, category_id: category_id)
       end
 
-      def get_from_api(input) # rubocop:disable Metrics/AbcSize
+      def request_api(input) # rubocop:disable Metrics/AbcSize
         result =
           Gateway::Api
           .new(YouTubeTrendingMap::App.config)
-          .get_continent_top_videos(
-            input[:continent_name], input[:category_id], 10
-          )
+          .get_continent_top_videos(input[:continent_name], input[:category_id])
 
         result.success? ? Success(result.payload) : Failure(result.message)
-      rescue StandardError
-        puts e.inspect + '\n' + e.backtrace
+      rescue StandardError => e
+        puts e.inspect
+        puts e.backtrace
         Failure('Cannot get continent top videos list, please try again later!')
       end
 
