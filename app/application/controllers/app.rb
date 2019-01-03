@@ -38,14 +38,12 @@ module YouTubeTrendingMap
         if result.failure?
           flash[:error] = result.failure
           view 'home', locals: { favorite_videos: [] }
+        else
+          favorite_videos = result.value!.videos
+          unless favorite_videos.none?
+            view_favorite_videos = Views::FavoriteVideosList.new(favorite_videos)
+          end
         end
-
-        favorite_videos = result.value!
-        if favorite_videos.none?
-          flash.now[:notice] = 'Click on heart icon to add any video into favorite'
-        end
-
-        view_favorite_videos = Views::FavoriteVideosList.new(favorite_videos)
 
         view 'home', locals: {
           favorite_videos: view_favorite_videos
@@ -54,7 +52,7 @@ module YouTubeTrendingMap
 
       routing.on 'hot_videos' do # rubocop:disable Metrics/BlockLength
         routing.is do # rubocop:disable Metrics/BlockLength
-          # POST /trending_map/
+          # POST /hot_videos?region_code={}&category_id={}
           routing.post do # rubocop:disable Metrics/BlockLength
             # If user request from country name field, mapping it to region code
             unless routing.params['country_name'].nil?
@@ -83,7 +81,9 @@ module YouTubeTrendingMap
 
             hot_videos_list_result = Services::GetHotVideosList.new.call(request)
             if hot_videos_list_result.failure?
-              flash[:error] = hot_videos_list_result.failure
+              failure = hot_videos_list_result.failure
+              puts failure
+              flash[:error] = failure
               routing.redirect '/hot_videos'
             end
 
@@ -107,7 +107,8 @@ module YouTubeTrendingMap
           routing.redirect '/top_videos/global'
         end
 
-        routing.on 'global' do # rubocop:disable Metrics/BlockLength
+        routing.on 'global' do
+          # POST /top_videos/global?category_id={}
           routing.post do
             # user enter specific category
             category_id_request = Forms::CategoryIdRequest.call(routing.params)
@@ -118,19 +119,17 @@ module YouTubeTrendingMap
               routing.redirect '/top_videos/global'
             end
 
-            global_top_videos_list_result =
-              Services::GetGlobalTopVideosList.new.call(category_id_request)
-            if global_top_videos_list_result.failure?
-              failure = global_top_videos_list_result.failure
-              puts 'global_top_videos_list_result: ' + failure
+            result = Services::GetGlobalTopVideosList.new.call(category_id_request)
+            if result.failure?
+              failure = result.failure
+              puts failure
               flash[:error] = failure
               routing.redirect '/top_videos/global'
             end
 
-            global_top_videos_list =
-              global_top_videos_list_result.value!
+            videos_list = result.value!
             view_global_top_videos_list =
-              Views::TopVideosList.new(global_top_videos_list)
+              Views::TopVideosList.new(videos_list)
 
             routing.redirect '/top_videos/global'
           end
@@ -143,6 +142,7 @@ module YouTubeTrendingMap
         end
 
         routing.on 'continent' do # rubocop:disable Metrics/BlockLength
+          # POST /top_videos/continent?continent_name={}&category_id={}
           routing.post do # rubocop:disable Metrics/BlockLength
             ### user enter specific region and category
             # downcase the input for continent name
@@ -198,6 +198,7 @@ module YouTubeTrendingMap
         end
 
         routing.on 'country' do # rubocop:disable Metrics/BlockLength
+          # POST /top_videos/country?region_code={}&category_id={}
           routing.post do # rubocop:disable Metrics/BlockLength
             ### user enter specific region and category
             # If user request from country name field, mapping it to region code
@@ -236,8 +237,8 @@ module YouTubeTrendingMap
               routing.redirect '/top_videos/country'
             end
 
-            puts  'Getting top videos list for ' + request[:region_code] +
-                  ' in category ' + request[:category_id]
+            puts 'Getting top videos list for ' + request[:region_code] +
+                 ' in category ' + request[:category_id]
             country_top_videos_list = country_top_videos_list_result.value!
             view_country_top_videos_list =
               Views::TopVideosList.new(country_top_videos_list)
@@ -256,7 +257,7 @@ module YouTubeTrendingMap
 
       routing.on 'add_favorite' do
         routing.post do
-          # Add favorite video to database
+          # Add video to favorite list (database)
           result = Services::AddFavoriteVideo.new.call(
             origin_id: routing.params['origin_id'],
             title: routing.params['title'],
@@ -267,7 +268,6 @@ module YouTubeTrendingMap
           if result.failure?
             flash[:error] = result.failure
             puts result.failure
-            routing.redirect routing.params['url_path']
           end
 
           routing.redirect routing.params['url_path']
@@ -276,9 +276,15 @@ module YouTubeTrendingMap
 
       routing.on 'delete_favorite' do
         routing.post do
-          Services::DeleteFavoriteVideo.new.call(
+          # Delete video from favorite list (database)
+          result = Services::DeleteFavoriteVideo.new.call(
             origin_id: routing.params['origin_id']
           )
+
+          if result.failure?
+            flash[:error] = result.failure
+            puts result.failure
+          end
           routing.redirect '/'
         end
       end
