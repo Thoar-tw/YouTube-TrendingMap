@@ -145,12 +145,13 @@ module YouTubeTrendingMap
           # POST /top_videos/continent?continent_name={}&category_id={}
           routing.post do # rubocop:disable Metrics/BlockLength
             ### user enter specific region and category
-            # downcase the input for continent name
             routing.params['continent_name'] =
               routing.params['continent_name'].downcase
+
             # Check if continent request matches it's valid string values
             continent_name_request =
               Forms::ContinentNameRequest.call(routing.params)
+
             if continent_name_request.failure?
               error = continent_name_request.errors[:continent_name][0]
               puts 'continent_name_request: ' + error

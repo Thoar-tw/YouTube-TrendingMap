@@ -78,7 +78,6 @@ javascript:
 
   var dataContinents = "#{ continents }".replace(/&quot;/g,'');
   dataContinents = dataContinents.slice(1, dataContinents.length - 1).split(', ');
-  console.log(dataContinents);
   
   var continentsObj = new Object();
   dataContinents.forEach(function(ele){
@@ -93,7 +92,6 @@ javascript:
 
     //dynamically set some css
     $('#map').height($('nav').height() + $('.row.vertical-s9').height());
-    console.log($('.collection-item iframe').width());
     $('.collection-item iframe').height($('.collection-item iframe').width()*0.5625);
     $('#search_input + label').css({'transform': 'none', 'left': '1rem'});
 
