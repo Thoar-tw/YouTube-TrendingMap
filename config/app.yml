@@ -8,6 +8,12 @@ test:
   APP_HOST: http://localhost:9000
   # Infrastructure
   API_HOST: http://localhost:9090
+
+app_test:
+  # Application
+  APP_HOST: http://localhost:9000
+  # Infrastructure
+  API_HOST: http://localhost:9090
   
 production:
   # Infrastructure

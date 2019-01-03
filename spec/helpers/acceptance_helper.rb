@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ENV['RACK_ENV'] = 'test'
+ENV['RACK_ENV'] = 'app_test'
 
 require 'headless'
 require 'watir'
