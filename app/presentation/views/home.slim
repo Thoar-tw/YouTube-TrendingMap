@@ -8,12 +8,12 @@
       #favorite_videos
         - if favorite_videos.nil?
           #reminder_card
-            .card.red.lighten-1.center
+            .card.grey.darken-1.center
               .card-content.white-text
                 span class="card-title center"
-                  | Reminder
+                  | There is no any video in your favorite list 
                 p
-                  | There is no any video added to your favorite list.
+                  | Click the heart icon on any video to add into your favorite list.
         - else
           - favorite_videos.each do |video|
             .card
@@ -54,6 +54,11 @@
 
 javascript:
   $(document).ready(function(){
+    if ($('#modal_error').length) {
+      $('#modal_error').modal();
+      $('#modal_error').modal('open');
+    }
+
     $('.delete').click(function(){
       console.log('click!');
       var parent = $(this).parent().parent();

@@ -55,6 +55,10 @@ body {
     height: 300px;
     padding: 0 3%;
 }
+#home .s12 #favorite_videos #reminder_card .card{
+    width: 100%;
+    margin: 0;
+}
 #home .row .card {
     display: inline-block;
     width: 30%;
@@ -242,7 +246,7 @@ body {
     height: 700px;
 }
 #top_videos .vertical-s9 {
-    height: 64%;
+    height: 62%;
     margin-bottom: auto;
 }
 #top_videos .vertical-s9 #map {
@@ -264,7 +268,7 @@ body {
 }
 #top_videos .vertical-s3 {
     position: relative;
-    height: 27%;
+    height: 28%;
     margin-bottom: auto;
     box-shadow: 0px -3px 10px #00000061;
     z-index: 1;
