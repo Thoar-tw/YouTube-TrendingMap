@@ -54,6 +54,11 @@
           /     = country_top_videos_list.belonging_location
           - country_top_videos_list.each do |video|
             li class="collection-item" id="#{video.index_str}"
+              p {
+                class="origin_id"
+                hidden
+              }
+                = video.origin_id
               p class="top_order"
                 | #
                 span
