@@ -74,12 +74,11 @@ module YouTubeTrendingMap
               routing.redirect '/hot_videos'
             end
 
-            request[:region_code] = region_code_request[:region_code]
-            request[:category_id] = category_id_request[:category_id]
-            puts  'Getting hot videos list for ' + request[:region_code] +
-                  ' in category ' + request[:category_id]
+            hot_videos_list_result = Services::GetHotVideosList.new.call(
+              region_code: region_code_request[:region_code],
+              category_id: category_id_request[:category_id]
+            )
 
-            hot_videos_list_result = Services::GetHotVideosList.new.call(request)
             if hot_videos_list_result.failure?
               failure = hot_videos_list_result.failure
               puts failure
@@ -87,8 +86,8 @@ module YouTubeTrendingMap
               routing.redirect '/hot_videos'
             end
 
-            hot_videos_list = hot_videos_list_result.value!
-            view_hot_videos_list = Views::HotVideosList.new(hot_videos_list)
+            view_hot_videos_list =
+              Views::HotVideosList.new(hot_videos_list_result.value!)
 
             routing.redirect '/hot_videos'
           end
@@ -127,9 +126,8 @@ module YouTubeTrendingMap
               routing.redirect '/top_videos/global'
             end
 
-            videos_list = result.value!
             view_global_top_videos_list =
-              Views::TopVideosList.new(videos_list)
+              Views::TopVideosList.new(result.value!)
 
             routing.redirect '/top_videos/global'
           end
@@ -168,24 +166,20 @@ module YouTubeTrendingMap
               routing.redirect '/top_videos/continent'
             end
 
-            request[:continent_name] = continent_name_request[:continent_name]
-            request[:category_id] = category_id_request[:category_id]
-            puts  'Getting top videos list for ' + request[:continent_name] +
-                  ' in category ' + request[:category_id]
+            result = Services::GetContinentTopVideosList.new.call(
+              continent_name: continent_name_request[:continent_name],
+              category_id: category_id_request[:category_id]
+            )
 
-            continent_top_videos_list_result =
-              Services::GetContinentTopVideosList.new.call(request)
-            if continent_top_videos_list_result.failure?
-              failure = continent_top_videos_list_result.failure
+            if result.failure?
+              failure = result.failure
               puts 'continent_top_videos_list_result: ' + failure
               flash[:error] = failure
               routing.redirect '/top_videos/continent'
             end
 
-            continent_top_videos_list =
-              continent_top_videos_list_result.value!
             view_continent_top_videos_list =
-              Views::TopVideosList.new(continent_top_videos_list)
+              Views::TopVideosList.new(result.value!)
 
             routing.redirect '/top_videos/continent'
           end
@@ -226,23 +220,20 @@ module YouTubeTrendingMap
               routing.redirect '/top_videos/country'
             end
 
-            request[:region_code] = region_code_request[:region_code]
-            request[:category_id] = category_id_request[:category_id]
-            country_top_videos_list_result =
-              Services::GetCountryTopVideosList.new.call(request)
+            result = Services::GetCountryTopVideosList.new.call(
+              region_code: region_code_request[:region_code],
+              category_id: category_id_request[:category_id]
+            )
 
-            if country_top_videos_list_result.failure?
-              failure = country_top_videos_list_result.failure
+            if result.failure?
+              failure = result.failure
               puts 'country_top_videos_list_result: ' + failure
               flash[:error] = failure
               routing.redirect '/top_videos/country'
             end
 
-            puts 'Getting top videos list for ' + request[:region_code] +
-                 ' in category ' + request[:category_id]
-            country_top_videos_list = country_top_videos_list_result.value!
             view_country_top_videos_list =
-              Views::TopVideosList.new(country_top_videos_list)
+              Views::TopVideosList.new(result.value!)
 
             routing.redirect '/top_videos/country'
           end
