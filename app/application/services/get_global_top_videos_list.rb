@@ -13,8 +13,12 @@ module YouTubeTrendingMap
       private
 
       def validate_input(input)
-        category_id = input[:category_id]
-        Success(category_id: category_id)
+        if input.success?
+          category_id = input[:category_id]
+          Success(category_id: category_id)
+        else
+          Failure(input.errors.values.join('; '))
+        end
       end
 
       def request_api(input)

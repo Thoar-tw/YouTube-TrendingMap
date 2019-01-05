@@ -13,10 +13,14 @@ module YouTubeTrendingMap
       private
 
       def validate_input(input)
-        continent_name = input[:continent_name]
-        category_id = input[:category_id]
+        if input.key?(:continent_name) && input.key?(:category_id)
+          continent_name = input[:continent_name]
+          category_id = input[:category_id]
 
-        Success(continent_name: continent_name, category_id: category_id)
+          Success(continent_name: continent_name, category_id: category_id)
+        else
+          Failure(input.errors.values.join('; '))
+        end
       end
 
       def request_api(input) # rubocop:disable Metrics/AbcSize
