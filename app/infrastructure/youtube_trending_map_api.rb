@@ -4,7 +4,7 @@ require 'http'
 
 module YouTubeTrendingMap
   module Gateway
-    # Infrastructure to call CodePraise API
+    # Infrastructure to call YouTubeTrendingMap API
     class Api
       def initialize(config)
         @config = config
