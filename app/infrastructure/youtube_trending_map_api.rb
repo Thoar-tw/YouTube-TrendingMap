@@ -39,6 +39,10 @@ module YouTubeTrendingMap
         @request.add_favorite_video(video)
       end
 
+      def add_favorite_videos_by_list(videos)
+        @request.add_favorite_videos_by_list(videos)
+      end
+
       def delete_favorite_video(video)
         @request.delete_favorite_video(video)
       end
@@ -77,12 +81,17 @@ module YouTubeTrendingMap
 
         def add_favorite_video(video)
           call_api('post', ['favorite_videos'],
-                   'video' => Value::VideoRequest.to_encoded(video))
+                   'videos' => Value::VideosRequest.to_encoded(video))
+        end
+
+        def add_favorite_videos_by_list(videos)
+          call_api('post', %w[favorite_videos all],
+                   'videos' => Value::VideosRequest.to_encoded(videos))
         end
 
         def delete_favorite_video(video)
           call_api('delete', ['favorite_videos'],
-                   'video' => Value::VideoRequest.to_encoded(video))
+                   'videos' => Value::VideosRequest.to_encoded(video))
         end
 
         private

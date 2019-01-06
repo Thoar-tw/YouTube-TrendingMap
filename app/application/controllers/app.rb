@@ -248,21 +248,38 @@ module YouTubeTrendingMap
       end
 
       routing.on 'add_favorite' do
-        routing.post do
-          # Add video to favorite list (database)
-          result = Services::AddFavoriteVideo.new.call(
-            origin_id: routing.params['origin_id'],
-            title: routing.params['title'],
-            channel_title: routing.params['channel_title'],
-            view_count: routing.params['view_count'].to_i,
-            embed_link: routing.params['embed_link']
-          )
-          if result.failure?
-            flash[:error] = result.failure
-            puts result.failure
-          end
+        routing.is do
+          routing.post do
+            # Add video to favorite list (database)
+            result = Services::AddFavoriteVideo.new.call(
+              origin_id: routing.params['origin_id'],
+              title: routing.params['title'],
+              channel_title: routing.params['channel_title'],
+              view_count: routing.params['view_count'].to_i,
+              embed_link: routing.params['embed_link']
+            )
+            if result.failure?
+              flash[:error] = result.failure
+              puts result.failure
+            end
 
-          routing.redirect routing.params['url_path']
+            routing.redirect routing.params['url_path']
+          end
+        end
+
+        routing.on 'all' do
+          routing.post do
+            # Add video list to favorite list (database)
+            result = Services::AddFavoriteVideosByList.new.call(
+              videos: routing.params['videos']
+            )
+            if result.failure?
+              flash[:error] = result.failure
+              puts result.failure
+            end
+
+            routing.redirect routing.params['url_path']
+          end
         end
       end
 

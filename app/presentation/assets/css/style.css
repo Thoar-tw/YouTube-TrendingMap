@@ -172,6 +172,10 @@ body {
     background-color: #ffffffd9;
     text-align: center;
 }
+#hot_videos .s3 #hot_videos_list .collection #list_title #icon_add_all {
+    position: absolute;
+    left: 20px;
+}
 #hot_videos .s3 #hot_videos_list .collection #list_title span {
     position: relative;
     bottom: 5px;

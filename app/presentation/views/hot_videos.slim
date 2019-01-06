@@ -37,6 +37,8 @@
         - else
           ul class="collection" id="hot_videos_list"
             #list_title
+              a href="#!" class="grey-text text-darken-1" id="icon_add_all"
+                i class="material-icons" playlist_add
               i class="material-icons" location_on
               span
                 = hot_videos_list.belonging_country
@@ -126,6 +128,32 @@ javascript:
       posting.done(function(data) {
         console.log('data sent back from controller!');
         parent.children(".secondary-content").removeClass('text-lighten-3').addClass('text-lighten-1');
+      });
+    });
+
+    $('#list_title #icon_add_all').click(function(){
+      var videos_data = [];
+
+      $('.collection-item').each(function(index){
+        var data = {};
+        data['origin_id'] = $(this).find('.origin_id').text();
+        data['title'] = $(this).find('.title').text();
+        data['channel_title'] = $(this).find('.channel_title').text();
+        data['view_count'] = $(this).find('.view_count').text();
+        data['embed_link'] = $(this).find('iframe').attr('src');
+        
+        videos_data.push(data);
+      });
+
+      var url = '/add_favorite/all';
+      // Send the data using post
+      var posting = $.post(url, {
+          'videos': videos_data,
+          'url_path': window.location.pathname
+      });
+
+      posting.done(function(data) {
+        console.log('data sent back from controller!');
       });
     });
 
